@@ -1,0 +1,9 @@
+{
+  "name": "finmap-org",
+  "version": "1.0.0",
+  "author": "Ruslan Bay",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}

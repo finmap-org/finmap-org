@@ -1,0 +1,217 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JPNQ2",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПИФ \"Югра Недвижимость 2\"",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФЮгрНед2",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1172-94141712",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JPNQ2",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "Ugra Nedvigimosty 2",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2008-03-18",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1205",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JPNQ2",
+                "TQNL",
+                "Т+: Б-Акции и паи - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2013-09-02",
+                "2013-10-24",
+                "2013-09-02",
+                "2013-10-24",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JPNQ2",
+                "EQNL",
+                "Основной режим: Б-Акции и паи - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2008-03-18",
+                "2013-08-30",
+                "2008-03-18",
+                "2013-08-30",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JPNQ2",
+                "PTNL",
+                "РПС С ЦК: Б-Акции и паи - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2013-09-02",
+                "2013-10-24",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JPNQ2",
+                "PSNL",
+                "РПС: Б-Акции и паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                "2008-12-25",
+                "2013-10-16",
+                "2008-12-25",
+                "2013-10-24",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

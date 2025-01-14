@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "PAVT",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "Промавтоматика НПО (ОАО) ао",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "Промавт-ао",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JPZR4",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-01-33125-E",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "15445",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "1000",
+                "number",
+                8,
+                0,
+                2
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2012-07-09",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "Promavtomatika",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "3554",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "PAVT",
+                "EQNE",
+                "Основной режим: Акции и паи внесписочные - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2012-07-09",
+                "2013-05-03",
+                "2012-07-09",
+                "2013-05-03",
+                1,
+                "RUB"
+            ],
+            [
+                "PAVT",
+                "RPMA",
+                "РЕПО c акциями - адрес.",
+                95,
+                3,
+                "repo",
+                1,
+                "stock",
+                0,
+                3,
+                null,
+                null,
+                "2012-07-09",
+                "2013-05-03",
+                0,
+                "RUB"
+            ],
+            [
+                "PAVT",
+                "PSNE",
+                "РПС: Акции, паи и ДР внесписочные - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2012-07-09",
+                "2013-05-03",
+                0,
+                "RUB"
+            ],
+            [
+                "PAVT",
+                "CLMR",
+                "Classica - безадрес.",
+                43,
+                25,
+                "classica",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2012-07-06",
+                "2012-09-03",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

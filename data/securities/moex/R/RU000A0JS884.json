@@ -1,0 +1,163 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JS884",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "КОНКОРДИЯ ПИФ Подмоск.просторы",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФПростор",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "2175-94176656",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JS884",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "ZPIF Podmosk.Pros UK Konkordia",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2012-05-23",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1141",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JS884",
+                "EQQI",
+                "Основной режим: Для квал. инвесторов - безадрес.",
+                60,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                0,
+                "2012-05-23",
+                "2013-06-07",
+                "2012-05-23",
+                "2013-06-07",
+                1,
+                "RUB"
+            ]
+        ]
+    }
+}

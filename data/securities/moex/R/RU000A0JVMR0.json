@@ -1,0 +1,199 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JVMR0",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ЗПИФТрастИпотечн.УК РегТраст",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ТрастИпт",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "3007",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JVMR0",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "ZPIF Trast Ipotechniy",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2015-09-04",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1355",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JVMR0",
+                "TQIF",
+                "Т+: Паи - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                1,
+                "2015-09-04",
+                "2015-10-13",
+                "2015-09-04",
+                "2015-10-13",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JVMR0",
+                "PTIF",
+                "РПС с ЦК: Паи - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2015-09-04",
+                "2015-10-13",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JVMR0",
+                "PSIF",
+                "РПС: Паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2015-09-04",
+                "2015-10-13",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

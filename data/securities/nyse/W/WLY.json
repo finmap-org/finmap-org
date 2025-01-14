@@ -1,0 +1,63 @@
+{
+  "data": {
+      "ModuleTitle": {
+          "label": "Module Title",
+          "value": "Company Description"
+      },
+      "CompanyName": {
+          "label": "Company Name",
+          "value": "John Wiley & Sons, Inc."
+      },
+      "Symbol": {
+          "label": "Symbol",
+          "value": "WLY"
+      },
+      "Address": {
+          "label": "Address",
+          "value": "111 River St, Hoboken, NJ 07030-5723, United States"
+      },
+      "Phone": {
+          "label": "Phone",
+          "value": "+1 201 748 6000"
+      },
+      "Industry": {
+          "label": "Industry",
+          "value": "Books"
+      },
+      "Sector": {
+          "label": "Sector",
+          "value": "Consumer Discretionary"
+      },
+      "Region": {
+          "label": "Region",
+          "value": "North America"
+      },
+      "CompanyDescription": {
+          "label": "Company Description",
+          "value": "<p><b>John Wiley & Sons, Inc.</b>, commonly known as Wiley (/ˈwaɪli/), is an American multinational publishing company that focuses on academic publishing and instructional materials. The company was founded in 1807 and produces books, journals, and encyclopedias, in print and electronically, as well as online products and services, training materials, and educational materials for undergraduate, graduate, and continuing education students.</p><table class='infobox vcard'><caption class='infobox-title fn org'></caption><tbody><tr><td colspan='2' class='infobox-image'><span class='mw-default-size skin-invert' typeof='mw:File/Frameless'><a href='/wiki/File:Wiley_logo.svg' class='mw-file-description'><img src='//upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiley_logo.svg/220px-Wiley_logo.svg.png' decoding='async' width='220' height='46' class='mw-file-element' srcset='//upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiley_logo.svg/330px-Wiley_logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiley_logo.svg/440px-Wiley_logo.svg.png 2x' data-file-width='512' data-file-height='108'></a></span></td></tr><tr><th scope='row' class='infobox-label'>Status</th><td class='infobox-data category'>Active</td></tr><tr><th scope='row' class='infobox-label'><a href='/wiki/Ticker_symbol' title='Ticker symbol'>Traded&nbsp;as</a></th><td class='infobox-data'><style data-mw-deduplicate='TemplateStyles:r1126788409'>.mw-parser-output .plainlist ol,.mw-parser-output .plainlist ul{line-height:inherit;list-style:none;margin:0;padding:0}.mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0}</style><div class='plainlist'><ul><li><a href='/wiki/New_York_Stock_Exchange' title='New York Stock Exchange'>NYSE</a>:&nbsp;<a rel='nofollow' class='external text' href='https://www.nyse.com/quote/XNYS:WLY'>WLY</a> (Class A)</li><li><a href='/wiki/New_York_Stock_Exchange' title='New York Stock Exchange'>NYSE</a>:&nbsp;<a rel='nofollow' class='external text' href='https://www.nyse.com/quote/XNYS:WLYB'>WLYB</a> (Class B)</li><li><a href='/wiki/S%26P_600' title='S&amp;P 600'>S&amp;P 600</a> component (WLY)</li></ul></div></td></tr><tr><th scope='row' class='infobox-label'>Founded</th><td class='infobox-data'>1807<span class='noprint'>; 217&nbsp;years ago</span><span style='display:none'>&nbsp;(<span class='bday dtstart published updated'>1807</span>)</span><br><a href='/wiki/New_York_City' title='New York City'>New York City</a>, United States</td></tr><tr><th scope='row' class='infobox-label'>Founder</th><td class='infobox-data'><a href='/wiki/Charles_Wiley' title='Charles Wiley'>Charles Wiley</a></td></tr><tr><th scope='row' class='infobox-label'>Country of origin</th><td class='infobox-data'>United States</td></tr><tr><th scope='row' class='infobox-label'>Headquarters location</th><td class='infobox-data label'><a href='/wiki/Hoboken,_New_Jersey' title='Hoboken, New Jersey'>Hoboken, New Jersey</a>, U.S.</td></tr><tr><th scope='row' class='infobox-label'>Distribution</th><td class='infobox-data'>Worldwide</td></tr><tr><th scope='row' class='infobox-label'>Nonfiction topics</th><td class='infobox-data'><style data-mw-deduplicate='TemplateStyles:r1129693374'>.mw-parser-output .hlist dl,.mw-parser-output .hlist ol,.mw-parser-output .hlist ul{margin:0;padding:0}.mw-parser-output .hlist dd,.mw-parser-output .hlist dt,.mw-parser-output .hlist li{margin:0;display:inline}.mw-parser-output .hlist.inline,.mw-parser-output .hlist.inline dl,.mw-parser-output .hlist.inline ol,.mw-parser-output .hlist.inline ul,.mw-parser-output .hlist dl dl,.mw-parser-output .hlist dl ol,.mw-parser-output .hlist dl ul,.mw-parser-output .hlist ol dl,.mw-parser-output .hlist ol ol,.mw-parser-output .hlist ol ul,.mw-parser-output .hlist ul dl,.mw-parser-output .hlist ul ol,.mw-parser-output .hlist ul ul{display:inline}.mw-parser-output .hlist .mw-empty-li{display:none}.mw-parser-output .hlist dt::after{content:': '}.mw-parser-output .hlist dd::after,.mw-parser-output .hlist li::after{content:' · ';font-weight:bold}.mw-parser-output .hlist dd:last-child::after,.mw-parser-output .hlist dt:last-child::after,.mw-parser-output .hlist li:last-child::after{content:none}.mw-parser-output .hlist dd dd:first-child::before,.mw-parser-output .hlist dd dt:first-child::before,.mw-parser-output .hlist dd li:first-child::before,.mw-parser-output .hlist dt dd:first-child::before,.mw-parser-output .hlist dt dt:first-child::before,.mw-parser-output .hlist dt li:first-child::before,.mw-parser-output .hlist li dd:first-child::before,.mw-parser-output .hlist li dt:first-child::before,.mw-parser-output .hlist li li:first-child::before{content:' (';font-weight:normal}.mw-parser-output .hlist dd dd:last-child::after,.mw-parser-output .hlist dd dt:last-child::after,.mw-parser-output .hlist dd li:last-child::after,.mw-parser-output .hlist dt dd:last-child::after,.mw-parser-output .hlist dt dt:last-child::after,.mw-parser-output .hlist dt li:last-child::after,.mw-parser-output .hlist li dd:last-child::after,.mw-parser-output .hlist li dt:last-child::after,.mw-parser-output .hlist li li:last-child::after{content:')';font-weight:normal}.mw-parser-output .hlist ol{counter-reset:listitem}.mw-parser-output .hlist ol>li{counter-increment:listitem}.mw-parser-output .hlist ol>li::before{content:' 'counter(listitem)'\\a0 '}.mw-parser-output .hlist dd ol>li:first-child::before,.mw-parser-output .hlist dt ol>li:first-child::before,.mw-parser-output .hlist li ol>li:first-child::before{content:' ('counter(listitem)'\\a0 '}</style><div class='hlist'><ul><li>Science</li><li>technology</li><li>medicine</li><li>professional development</li><li>higher education</li></ul></div></td></tr><tr><th scope='row' class='infobox-label'>Revenue</th><td class='infobox-data'><span typeof='mw:File'><span title='Decrease'><img alt='Decrease' src='//upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Decrease2.svg/11px-Decrease2.svg.png' decoding='async' width='11' height='11' class='mw-file-element' srcset='//upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Decrease2.svg/17px-Decrease2.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Decrease2.svg/22px-Decrease2.svg.png 2x' data-file-width='300' data-file-height='300'></span></span> <span style='white-space: nowrap'><a href='/wiki/United_States_dollar' title='United States dollar'>US$</a>1.87 billion</span> (2024)<sup id='cite_ref-AR24_1-0' class='reference'><a href='#cite_note-AR24-1'><span class='cite-bracket'>[</span>1<span class='cite-bracket'>]</span></a></sup></td></tr><tr><th scope='row' class='infobox-label'><abbr title='Number'>No.</abbr> of employees</th><td class='infobox-data'>6,400 (2024)<sup id='cite_ref-AR24_1-1' class='reference'><a href='#cite_note-AR24-1'><span class='cite-bracket'>[</span>1<span class='cite-bracket'>]</span></a></sup></td></tr><tr><th scope='row' class='infobox-label'>Official website</th><td class='infobox-data url'><span class='url'><a rel='nofollow' class='external text' href='https://www.wiley.com/'>www<wbr>.wiley<wbr>.com</a></span> <span class='mw-valign-text-top noprint' typeof='mw:File/Frameless'><a href='https://www.wikidata.org/wiki/Q1479654#P856' title='Edit this at Wikidata'><img alt='Edit this at Wikidata' src='//upload.wikimedia.org/wikipedia/en/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/10px-OOjs_UI_icon_edit-ltr-progressive.svg.png' decoding='async' width='10' height='10' class='mw-file-element' srcset='//upload.wikimedia.org/wikipedia/en/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/15px-OOjs_UI_icon_edit-ltr-progressive.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png 2x' data-file-width='20' data-file-height='20'></a></span></td></tr></tbody></table><br><iframe align='middle' width='400' height='225' src='https://www.youtube-nocookie.com/embed/K0Dub0vFoaU?si=65-xVLifkl5B1IkS&amp;controls=0' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>"
+      },
+      "CompanyUrl": {
+          "label": "Company Url",
+          "value": "https://www.wiley.com"
+      },
+      "KeyExecutives": {
+          "label": "Key Executives",
+          "value": [
+              {
+                  "name": "Matt Kissner",
+                  "title": "President and Chief Executive Officer of Wiley"
+              },
+              {
+                  "name": "Christopher Caridi",
+                  "title": "Interim Chief Financial Officer at Wiley"
+              }
+          ]
+      }
+  },
+  "message": null,
+  "status": {
+      "rCode": 200,
+      "bCodeMessage": null,
+      "developerMessage": null
+  }
+}

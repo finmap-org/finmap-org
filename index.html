@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>finmap.org</title>
+    <base href="https://finmap.org/" />
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Global stock market visualisation and your personal RSS/news feed reader. Free and Open Source"
+    />
+    <meta name="theme-color" content="#414554" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="finmap.org" />
+
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <link rel="icon" href="images/icons/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="images/icons/ios/152.png" />
+
+    <script src="scripts/plotly-2.35.2.min.js"></script>
+    <script src="scripts/currency.js"></script>
+    <script src="scripts/histogram.js"></script>
+    <script src="scripts/listings.js"></script>
+    <script src="scripts/overlay.js"></script>
+    <script src="scripts/treemap-us.js"></script>
+    <script src="scripts/treemap-ru.js"></script>
+    <script src="scripts/treemap.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <img id="logo" src="" height="30px" />
+      <select id="inputExchange">
+        <option value="nasdaq" selected="selected">nasdaq</option>
+        <option value="nyse">nyse</option>
+        <option value="amex">amex</option>
+        <option value="all">us-all</option>
+        <option value="moex">moex</option>
+      </select>
+      <input type="file" id="inputFile" accept=".csv,.txt" hidden />
+      <label for="inputFile" id="inputFileLabel">
+        <img
+          src="images/icons/filter.png"
+          title="Apply filter"
+          style="height: 31px; margin-top: 5px"
+        />
+      </label>
+      <a
+        id="linkEraseFilter"
+        onclick="localStorage.removeItem('filterCsv'); refreshChart();"
+        hidden
+      >
+        <img
+          src="images/icons/erasefilter.png"
+          title="Erase filter"
+          style="height: 31px; margin-top: 5px"
+        />
+      </a>
+      <form id="inputForm" onsubmit="return false;">
+        <div class="autocomplete">
+          <input
+            type="text"
+            id="inputSearch"
+            placeholder="🔎 AAPL"
+            maxlength="40"
+          />
+        </div>
+      </form>
+      <select id="inputCurrency">
+        <option value="USD" selected="selected">&nbsp; $ &nbsp;</option>
+        <option value="EUR">&nbsp; € &nbsp;</option>
+        <option value="CNY">&nbsp; ¥ &nbsp;</option>
+        <option value="RUB">&nbsp; ₽ &nbsp;</option>
+      </select>
+      <select id="inputChartType">
+        <option value="treemap" selected="selected">treemap</option>
+        <option value="history">history</option>
+        <option value="listings">listings</option>
+      </select>
+      <select id="inputDataType">
+        <option value="marketcap" selected="selected">marketcap</option>
+        <option value="value">value</option>
+        <option value="trades">trades</option>
+      </select>
+      <input
+        type="date"
+        id="inputDate"
+        name="date"
+        pattern="\d{4}-\d{2}-\d{2}"
+        value="2023-12-08"
+        min="2011-12-19"
+        max="2024-03-04"
+      />
+    </header>
+    <div id="chart"></div>
+    <div id="loading">rendering, please wait...</div>
+    <ul class="menu">
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://www.patreon.com/finmap">PATREON</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://boosty.to/finmap/donate">BOOSTY</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://x.com/finmaporg">X.COM</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://www.youtube.com/@finmaporg/videos?view=0&sort=dd&shelf_id=1">YOUTUBE</a></li>
+      <!-- <li><a class="menuItem" target="_blank" rel="noopener" href="#">DISCORD<p style="font-size: 12px;">Patreon/Boosty members only</p></a></li> -->
+      <!-- <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org">GITHUB</a></li> -->
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/issues">SUPPORT</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="mailto:contact@finmap.org">CONTACT</a></li>
+      <!-- <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/wiki">F.A.Q.</a></li> -->
+    </ul>
+    <button class="hamburger">
+      <i class="menuIcon material-icons">menu</i>
+      <i class="closeIcon material-icons">close</i>
+    </button>
+    <footer>
+      <a href="https://www.patreon.com/finmap" target="_blank" rel="noopener">
+        <img src="images/icons/patreon.png" height="14px" /> Patreon
+      </a>
+      <a href="https://boosty.to/finmap/donate" target="_blank" rel="noopener">
+        <img src="images/icons/boosty.png" height="14px" /> Boosty
+      </a>
+      <a id="share">♡︎ Share</a>
+      <a id="install" hidden>✓ Install</a>
+      <a id="langToggle">ENG</a>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/menu.js"></script>
+    <script src="scripts/install.js"></script>
+    <script src="scripts/share.js"></script>
+  </body>
+</html>

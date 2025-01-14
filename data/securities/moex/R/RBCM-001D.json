@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RBCM-001D",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "РБК ОАО 001D ао",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "РБК-001Dао",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JS2V0",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-02-56413-H-001D",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "46740385",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "0.00064",
+                "number",
+                8,
+                0,
+                5
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2012-07-05",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "RBK-001D ao",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "4463",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RBCM-001D",
+                "EQNL",
+                "Основной режим: Б-Акции и паи - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                3,
+                "2012-07-05",
+                "2012-10-24",
+                "2012-07-05",
+                "2012-10-24",
+                1,
+                "RUB"
+            ],
+            [
+                "RBCM-001D",
+                "SMAL",
+                "Т+: Неполные лоты (акции) - безадрес.",
+                21,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                3,
+                null,
+                null,
+                "2012-07-05",
+                "2012-10-24",
+                0,
+                "RUB"
+            ],
+            [
+                "RBCM-001D",
+                "RPMA",
+                "РЕПО c акциями - адрес.",
+                95,
+                3,
+                "repo",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2012-07-05",
+                "2012-10-24",
+                0,
+                "RUB"
+            ],
+            [
+                "RBCM-001D",
+                "PSNL",
+                "РПС: Б-Акции и паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                3,
+                null,
+                null,
+                "2012-07-05",
+                "2012-10-24",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

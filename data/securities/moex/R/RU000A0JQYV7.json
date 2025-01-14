@@ -1,0 +1,181 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JQYV7",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "Кастом Кэпитал ПИФ акций VIP",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФ VIP",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "0312-73904637",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JQYV7",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "Kastom Capital PIF VIP",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2010-08-11",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай интервального ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "interval_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "4376",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JQYV7",
+                "EQQI",
+                "Основной режим: Для квал. инвесторов - безадрес.",
+                60,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                0,
+                "2011-02-24",
+                "2013-06-19",
+                "2011-02-24",
+                "2013-06-19",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JQYV7",
+                "PSQI",
+                "РПС: Для квал. инвесторов - адрес.",
+                61,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2013-06-11",
+                "2013-06-19",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

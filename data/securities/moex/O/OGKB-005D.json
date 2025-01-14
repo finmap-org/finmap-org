@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "OGKB-005D",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ОГК-2 ОАО ао 005D",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ОГК-2-005D",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JSXH4",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-02-65105-D-005D",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "51113233910",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "0.3627",
+                "number",
+                8,
+                0,
+                4
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2013-07-17",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "OGK-2-005D",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "895",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "OGKB-005D",
+                "EQNL",
+                "Основной режим: Б-Акции и паи - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                4,
+                "2007-01-12",
+                "2013-08-19",
+                "2007-01-12",
+                "2013-08-19",
+                1,
+                "RUB"
+            ],
+            [
+                "OGKB-005D",
+                "SMAL",
+                "Т+: Неполные лоты (акции) - безадрес.",
+                21,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2013-07-17",
+                "2013-08-19",
+                0,
+                "RUB"
+            ],
+            [
+                "OGKB-005D",
+                "RPMA",
+                "РЕПО c акциями - адрес.",
+                95,
+                3,
+                "repo",
+                1,
+                "stock",
+                0,
+                6,
+                null,
+                null,
+                "2013-07-17",
+                "2013-08-19",
+                0,
+                "RUB"
+            ],
+            [
+                "OGKB-005D",
+                "PSNL",
+                "РПС: Б-Акции и паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2013-07-17",
+                "2013-08-19",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

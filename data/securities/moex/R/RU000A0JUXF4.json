@@ -1,0 +1,217 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JUXF4",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ИСУ ЕФГ-2 ЕФГУпр.Активами",
+                "string",
+                2,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ИСУ ЕФГ-2",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JUXF4",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "0013",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2014-11-19",
+                "date",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "ISU EFG-2",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Ипотечный сертификат",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_mortgage",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "stock_mortgage",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Ипотечный сертификат",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "6256",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JUXF4",
+                "TQIF",
+                "Т+: Паи - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2014-11-19",
+                "2017-05-04",
+                "2014-11-19",
+                "2017-05-04",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JUXF4",
+                "SOTC",
+                "Репортинг внебиржевых сделок (6264-У)",
+                71,
+                29,
+                "otc",
+                1,
+                "stock",
+                0,
+                5,
+                "2014-12-01",
+                "2014-12-01",
+                "2014-12-01",
+                "2014-12-01",
+                0,
+                null
+            ],
+            [
+                "RU000A0JUXF4",
+                "PTIF",
+                "РПС с ЦК: Паи - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2014-11-19",
+                "2017-05-04",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JUXF4",
+                "PSIF",
+                "РПС: Паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                "2014-11-26",
+                "2015-07-29",
+                "2014-11-19",
+                "2017-05-04",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

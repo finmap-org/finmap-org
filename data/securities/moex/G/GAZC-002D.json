@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "GAZC-002D",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ГАЗКОН (ОАО) ао 002D",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ГАЗКОН-02D",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JRR66",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-01-09870-A-002D",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "30590000",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "10",
+                "number",
+                8,
+                0,
+                2
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2011-12-16",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "Gazkon ao 002D",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "3654",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "GAZC-002D",
+                "EQNL",
+                "Основной режим: Б-Акции и паи - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                2,
+                "2011-12-16",
+                "2012-03-20",
+                "2011-12-16",
+                "2012-03-20",
+                1,
+                "RUB"
+            ],
+            [
+                "GAZC-002D",
+                "SMAL",
+                "Т+: Неполные лоты (акции) - безадрес.",
+                21,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2012-03-20",
+                "2012-03-20",
+                0,
+                "RUB"
+            ],
+            [
+                "GAZC-002D",
+                "RPMA",
+                "РЕПО c акциями - адрес.",
+                95,
+                3,
+                "repo",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2012-03-20",
+                "2012-03-20",
+                0,
+                "RUB"
+            ],
+            [
+                "GAZC-002D",
+                "PSNL",
+                "РПС: Б-Акции и паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2012-03-20",
+                "2012-03-20",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "UCSS-003D",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПАО ОКС ао 003D",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ОКС-003Dао",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JVHE8",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-01-15296-A-003D",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "3817000",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "1000",
+                "number",
+                8,
+                0,
+                2
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2015-08-24",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "PAO OKS ao 003D",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "6002",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "UCSS-003D",
+                "TQBR",
+                "Т+: Акции и ДР - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                1,
+                "2015-08-24",
+                "2015-09-01",
+                "2015-08-24",
+                "2015-09-01",
+                1,
+                "RUB"
+            ],
+            [
+                "UCSS-003D",
+                "PTEQ",
+                "РПС с ЦК: Акции и ДР - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2015-08-24",
+                "2015-09-01",
+                0,
+                "RUB"
+            ],
+            [
+                "UCSS-003D",
+                "PSEQ",
+                "РПС: Акции - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2015-08-24",
+                "2015-09-01",
+                0,
+                "RUB"
+            ],
+            [
+                "UCSS-003D",
+                "PSAU",
+                "Размещение - адрес.",
+                107,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                "2015-08-24",
+                "2015-09-01",
+                "2015-08-24",
+                "2015-09-01",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

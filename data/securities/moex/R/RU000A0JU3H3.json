@@ -1,0 +1,199 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JU3H3",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПИФПрофинвест УК Академ-Финанс",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФПрофинв",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "2485",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JU3H3",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "PIFProfinvest UK Akadem-Finans",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2013-09-10",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "4538",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JU3H3",
+                "TQQI",
+                "Т+: Для квал. инвесторов - безадрес.",
+                63,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                1,
+                "2013-09-10",
+                "2014-05-27",
+                "2013-09-10",
+                "2014-05-27",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JU3H3",
+                "PSQI",
+                "РПС: Для квал. инвесторов - адрес.",
+                61,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2013-09-10",
+                "2014-05-27",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JU3H3",
+                "PTQI",
+                "РПС с ЦК: Для квал. инвесторов - адрес.",
+                64,
+                28,
+                "qnv",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2013-09-10",
+                "2014-05-27",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

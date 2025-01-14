@@ -1,0 +1,217 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0EABC0",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПИФ Адекта-Фонд ликвидн.актив.",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "Адекта-ФЛА",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "0049-18548833",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0EABC0",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "PIF Adekta-Fond Likvidn.Aktiv.",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2007-02-09",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай открытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "public_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "4202",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0EABC0",
+                "TQNE",
+                "Т+: Акции, паи и ДР внесписочные - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                1,
+                "2013-09-02",
+                "2014-01-16",
+                "2013-09-02",
+                "2014-01-16",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0EABC0",
+                "EQNE",
+                "Основной режим: Акции и паи внесписочные - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                1,
+                "2007-02-09",
+                "2013-08-30",
+                "2007-02-09",
+                "2013-08-30",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0EABC0",
+                "PTNE",
+                "РПС С ЦК: Акции, паи и ДР внесписочные - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2013-09-02",
+                "2014-01-16",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0EABC0",
+                "PSNE",
+                "РПС: Акции, паи и ДР внесписочные - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2012-04-12",
+                "2014-01-16",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

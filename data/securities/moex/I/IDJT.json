@@ -1,0 +1,262 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "IDJT",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПАО \"ИДЖАТ\"",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ИДЖАТ",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JQYW5",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-01-55421-E",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "72907930",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "100",
+                "number",
+                8,
+                0,
+                2
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "SUR",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2014-04-25",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "\"IDJAT\"",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "LISTLEVEL",
+                "Уровень листинга",
+                "3",
+                "number",
+                18,
+                0,
+                0
+            ],
+            [
+                "ISQUALIFIEDINVESTORS",
+                "Бумаги для квалифицированных инвесторов",
+                "0",
+                "boolean",
+                20,
+                0,
+                0
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "4465",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "IDJT",
+                "TQDE",
+                "Т+: Акции Д - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                2,
+                "2014-04-25",
+                "2017-05-23",
+                "2014-04-25",
+                "2017-05-23",
+                1,
+                "RUB"
+            ],
+            [
+                "IDJT",
+                "SMAL",
+                "Т+: Неполные лоты (акции) - безадрес.",
+                21,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2014-04-25",
+                "2017-05-23",
+                0,
+                "RUB"
+            ],
+            [
+                "IDJT",
+                "PTDE",
+                "РПС с ЦК: Акции Д - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2014-04-25",
+                "2017-05-23",
+                0,
+                "RUB"
+            ],
+            [
+                "IDJT",
+                "PSDE",
+                "РПС: Акции Д - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2014-04-25",
+                "2017-05-23",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

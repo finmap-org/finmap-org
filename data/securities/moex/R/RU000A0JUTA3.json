@@ -1,0 +1,235 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JUTA3",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ИСУ-4 Менеджмент-КонсалтингООО",
+                "string",
+                2,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ИСУ-4МнКон",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JUTA3",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "0025",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2014-09-22",
+                "date",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "ISU-4 Men.Cons.",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Ипотечный сертификат",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_mortgage",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "stock_mortgage",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Ипотечный сертификат",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1140",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JUTA3",
+                "TQIF",
+                "Т+: Паи - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                1,
+                "2014-09-22",
+                "2018-08-20",
+                "2014-09-22",
+                "2018-08-20",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JUTA3",
+                "LIQB",
+                "Продажа обеспечения бирж.рынок - безадрес.",
+                120,
+                36,
+                "mamc",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2018-05-21",
+                "2018-08-20",
+                0,
+                null
+            ],
+            [
+                "RU000A0JUTA3",
+                "SOTC",
+                "Репортинг внебиржевых сделок (6264-У)",
+                71,
+                29,
+                "otc",
+                1,
+                "stock",
+                0,
+                5,
+                "2015-06-16",
+                "2015-06-17",
+                "2015-06-16",
+                "2015-06-18",
+                0,
+                null
+            ],
+            [
+                "RU000A0JUTA3",
+                "PTIF",
+                "РПС с ЦК: Паи - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2014-09-22",
+                "2018-08-20",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JUTA3",
+                "PSIF",
+                "РПС: Паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                1,
+                null,
+                null,
+                "2014-09-22",
+                "2018-08-20",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

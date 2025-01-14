@@ -1,0 +1,244 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "igip",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "Акционерное общество Институт \"ГИПРОПРОС\"",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "АО Институт \"ГИПРОПРОС\"",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU0001206443",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "1-01-01840-A",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "ISSUESIZE",
+                "Объем выпуска",
+                "43896",
+                "number",
+                7,
+                0,
+                0
+            ],
+            [
+                "FACEVALUE",
+                "Номинальная стоимость",
+                "1",
+                "number",
+                8,
+                0,
+                2
+            ],
+            [
+                "FACEUNIT",
+                "Валюта номинала",
+                "RUB",
+                "string",
+                9,
+                0,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2012-06-25",
+                "date",
+                10,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "Joint-Stock Company Institut \"Gipropros\"",
+                "string",
+                11,
+                1,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Акция обыкновенная",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_shares",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "common_share",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Акции",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1955",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "igip",
+                "EQNE",
+                "Основной режим: Акции и паи внесписочные - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2012-06-25",
+                "2012-12-27",
+                "2012-06-25",
+                "2012-12-27",
+                1,
+                "RUB"
+            ],
+            [
+                "igip",
+                "MXBD",
+                "MOEX Board",
+                72,
+                33,
+                "moexboard",
+                1,
+                "stock",
+                0,
+                4,
+                "2014-12-08",
+                "2024-10-10",
+                "2014-12-08",
+                "2024-10-10",
+                0,
+                null
+            ],
+            [
+                "igip",
+                "PSNE",
+                "РПС: Акции, паи и ДР внесписочные - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2012-06-25",
+                "2012-12-27",
+                0,
+                "RUB"
+            ],
+            [
+                "igip",
+                "CLMR",
+                "Classica - безадрес.",
+                43,
+                25,
+                "classica",
+                1,
+                "stock",
+                0,
+                4,
+                null,
+                null,
+                "2012-06-22",
+                "2014-07-25",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

@@ -1,0 +1,217 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JPCY9",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПИФ Паев.фонд недвиж.УК УМ",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФ ПФН",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "0099-14166951",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JPCY9",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "PIF PFN UK UM",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2007-09-04",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "1286",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JPCY9",
+                "TQBR",
+                "Т+: Акции и ДР - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2013-09-02",
+                "2014-06-05",
+                "2013-09-02",
+                "2014-06-05",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JPCY9",
+                "EQBR",
+                "Основной режим: А1-Акции и паи - безадрес.",
+                6,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2007-09-04",
+                "2013-08-30",
+                "2007-09-04",
+                "2013-08-30",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JPCY9",
+                "PTEQ",
+                "РПС с ЦК: Акции и ДР - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2013-09-02",
+                "2014-06-05",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JPCY9",
+                "PSEQ",
+                "РПС: Акции - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                "2009-04-06",
+                "2014-03-18",
+                "2009-04-06",
+                "2014-06-05",
+                0,
+                "RUB"
+            ]
+        ]
+    }
+}

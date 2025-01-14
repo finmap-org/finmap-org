@@ -1,0 +1,288 @@
+function parsePubDate(item) {
+  const pubDateStr = item.getElementsByTagName("pubDate")[0].textContent;
+  return new Date(pubDateStr);
+}
+
+// Get Related News Feed
+async function getNews() {
+  // Format the date to a readable local time string
+  const options = {
+    month: "long", // Full month name (e.g., "January")
+    day: "2-digit", // Day of the month, 2 digits (e.g., "05")
+    hour: "2-digit", // Hour in 2 digits (e.g., "09")
+    minute: "2-digit", // Minute in 2 digits (e.g., "07")
+    hour12: false, // Use 24-hour format
+  };
+
+  let newsLang;
+  switch (currentLanguage) {
+    case "ENG":
+      newsLang = "hl=en-US&gl=US&ceid=US:en";
+      break;
+    case "RUS":
+      newsLang = "hl=ru&gl=RU&ceid=RU:ru";
+      break;
+    default:
+      newsLang = "hl=en-US&gl=US&ceid=US:en";
+      break;
+  }
+  let date = inputDate.value;
+  const newsQuery = companyName.split(" ").slice(0, 2).join(" ");
+  const url = `https://d3sk7vmzjz3uox.cloudfront.net/${currentLanguage}:${clickedLabel}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(":")[0]}`;
+  let html = "";
+  try {
+    const response = await fetch(url);
+    const xmlText = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+    const items = Array.from(xmlDoc.getElementsByTagName("item"));
+    items.sort((a, b) => parsePubDate(b) - parsePubDate(a));
+    items.forEach((item) => {
+      const title = item.getElementsByTagName("title")[0].textContent;
+      const pubDate = item.getElementsByTagName("pubDate")[0].textContent;
+      const link = item.getElementsByTagName("link")[0].textContent;
+      const source = item.getElementsByTagName("source")[0]?.textContent;
+      const sourceUrl = item
+        .getElementsByTagName("source")[0]
+        ?.getAttribute("url");
+      html += `
+      <article>
+        <h4>
+          <a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a>
+        </h4>
+        <a href="${sourceUrl}" target="_blank" rel="noopener">${source}</a>, ${pubDate}<br><br>
+      </article>
+      `;
+    });
+  } catch (error) {
+    html = "<h1>Woops! Nothing was found 🕵🏽</h1>";
+  }
+
+  return html;
+}
+
+var wikiPageTitleList;
+
+async function getWikiPageTitleByTicker(ticker) {
+  let wikiPageTitle;
+  try {
+    if (wikiPageTitleList === undefined) {
+      const url = "data/securities-by-sector/moex.tsv";
+      const response = await fetch(url);
+      const text = await response.text();
+      wikiPageTitleList = text.trim().split("\n");
+    }
+
+    for (let i = 1; i < wikiPageTitleList.length; i++) {
+      const columns = wikiPageTitleList[i].split("\t");
+      if (columns[1] && columns[1] === ticker) {
+        let columnIndex;
+        switch (currentLanguage) {
+          case "ENG":
+            columnIndex = 9;
+            break;
+          case "RUS":
+            columnIndex = 8;
+            break;
+          default:
+            columnIndex = 9;
+            break;
+        }
+        wikiPageTitle = columns[columnIndex];
+        break;
+      }
+    }
+  } catch (error) {
+    console.error("Error reading TSV file:", error);
+  }
+  return wikiPageTitle;
+}
+
+// Get Company Info
+async function getCompanyInfo() {
+  let wikiPageTitle, url, response, json;
+  let html = "";
+  let description;
+  let sourceLink;
+  let labelExchange = clickedLabel.split(":")[0];
+  switch (inputExchange.value) {
+    case "nasdaq":
+    case "nyse":
+    case "amex":
+    case "all":
+      let labelTicker = clickedLabel.split(":")[1];
+      url = `data/securities/${labelExchange}/${labelTicker.slice(0, 1)}/${labelTicker}.json`;
+      response = await fetch(url);
+
+      if (response.ok) {
+        json = await response.json();
+        description = json.data.CompanyDescription.value;
+        sourceLink = json.data.CompanyUrl.value;
+      } else if (response.status === 404) {
+        wikiPageTitle = `${labelExchange}:${labelTicker}`;
+        url = `https://en.wikipedia.org/w/api.php?action=query&titles=${wikiPageTitle}&prop=langlinks|extracts&lllimit=500&exintro&explaintext&format=json&origin=*`;
+        response = await fetch(url);
+        json = await response.json();
+        const pages = json.query.pages;
+        const firstPage = Object.keys(pages)[0];
+        if (!response.ok || pages[firstPage].extract === undefined) {
+          html = "<h1>Woops! Nothing was found 🕵🏽</h1>";
+          return html;
+        }
+        description = pages[firstPage].extract;
+        sourceLink = `https://en.wikipedia.org/wiki/${wikiPageTitle}`;
+      } else {
+        console.error(`Error fetching from fallback URL: ${response.status}`);
+      }
+      break;
+    case "moex":
+      let infoLang;
+      switch (currentLanguage) {
+        case "ENG":
+          infoLang = "en";
+          break;
+        case "RUS":
+          infoLang = "ru";
+          break;
+        default:
+          infoLang = "en";
+          break;
+      }
+      wikiPageTitle = await getWikiPageTitleByTicker(clickedLabel);
+      url = `https://${infoLang}.wikipedia.org/w/api.php?action=query&titles=${wikiPageTitle}&prop=langlinks|extracts&lllimit=500&exintro&explaintext&format=json&origin=*`;
+      response = await fetch(url);
+      json = await response.json();
+      const pages = json.query.pages;
+      const firstPage = Object.keys(pages)[0];
+      description = pages[firstPage].extract;
+      sourceLink = `https://${infoLang}.wikipedia.org/wiki/${wikiPageTitle}`;
+      break;
+  }
+
+  html = `<p>
+            ${description}
+            <br>
+            <b>Link: <a href="${sourceLink}" target="_blank" rel="noopener">${sourceLink}</a></b>
+          </p>
+        `;
+
+  return html;
+}
+
+// Add Overlay widget
+let overlayDiv, newsDiv, infoDiv;
+async function addOverlayWidget() {
+  const slices = document.querySelectorAll("g.slice.cursor-pointer");
+
+  if (inputChartType.value !== "treemap") {
+    return;
+  }
+
+  if (slices.length === 1) {
+    return;
+  }
+  const bbox = slices[0].getBBox();
+
+  if (typeof overlayDiv !== "undefined") {
+    overlayDiv.style.visibility = "visible";
+    newsDiv.innerHTML = "";
+    infoDiv.innerHTML = "";
+    newsDiv.innerHTML = await getNews();
+    infoDiv.innerHTML = await getCompanyInfo();
+    return;
+  }
+
+  // Create a new div element
+  overlayDiv = document.createElement("div");
+  overlayDiv.id = "overlay";
+
+  const closeOverlayBtn = document.createElement("button");
+  closeOverlayBtn.id = "closeOverlayBtn";
+  closeOverlayBtn.innerHTML = "close";
+  closeOverlayBtn.style.top = "5px";
+  closeOverlayBtn.style.right = "10px";
+
+  const showNewsBtn = document.createElement("button");
+  showNewsBtn.id = "showNewsBtn";
+  showNewsBtn.innerHTML = "news";
+  showNewsBtn.style.top = "5px";
+  showNewsBtn.style.right = "100px";
+
+  const showInfoBtn = document.createElement("button");
+  showInfoBtn.id = "showInfoBtn";
+  showInfoBtn.innerHTML = "info";
+  showInfoBtn.style.top = "5px";
+  showInfoBtn.style.right = "190px";
+
+  const buyBtn = document.createElement("button");
+  buyBtn.id = "buyBtn";
+  buyBtn.innerHTML = "buy";
+  buyBtn.style.top = "5px";
+  buyBtn.style.right = "260px";
+  buyBtn.style["background-color"] = "rgba(59, 161, 66, 0.5)";
+
+  const buyDiv = document.createElement("div");
+  buyDiv.id = "buyDiv";
+  buyDiv.innerHTML = "Interested in integration? Contact us: <a href='mailto:integration@finmap.org'>integration@finmap.org</a>";
+  buyDiv.setAttribute("hidden", "");
+  
+  closeOverlayBtn.addEventListener("click", function () {
+    overlayDiv.style.visibility = "hidden";
+  });
+
+  // Position the div based on the bounding box of the slice
+  overlayDiv.style.left = bbox.x + 10 + "px";
+  overlayDiv.style.top = bbox.y + 150 + "px";
+  // overlayDiv.style.width = bbox.width - 20 + "px";
+  // overlayDiv.style.height = bbox.height - 120 + "px";
+  overlayDiv.style.width = "95%";
+  overlayDiv.style["max-width"] = "960px";
+  overlayDiv.style.height = "75%";
+  overlayDiv.style.display = "flex";
+
+  overlayDiv.appendChild(showInfoBtn);
+  overlayDiv.appendChild(showNewsBtn);
+  overlayDiv.appendChild(closeOverlayBtn);
+  overlayDiv.appendChild(buyBtn);
+  overlayDiv.appendChild(buyDiv);
+
+  newsDiv = document.createElement("div");
+  newsDiv.id = "news";
+  newsDiv.innerHTML = await getNews();
+  overlayDiv.appendChild(newsDiv);
+
+  infoDiv = document.createElement("div");
+  infoDiv.id = "info";
+  infoDiv.innerHTML = await getCompanyInfo();
+  overlayDiv.appendChild(infoDiv);
+
+  // Append the div to the body or a specific container
+  document.body.appendChild(overlayDiv);
+
+  document.onclick = function (event) {
+    if (!overlayDiv.contains(event.target)) {
+      overlayDiv.style.visibility = "hidden";
+    }
+  };
+
+  infoDiv.removeAttribute("hidden");
+  newsDiv.setAttribute("hidden", "");
+
+  showInfoBtn.addEventListener("click", function () {
+    newsDiv.setAttribute("hidden", "");
+    infoDiv.removeAttribute("hidden");
+    buyDiv.setAttribute("hidden", "");
+  });
+
+  showNewsBtn.addEventListener("click", function () {
+    newsDiv.removeAttribute("hidden");
+    infoDiv.setAttribute("hidden", "");
+    buyDiv.setAttribute("hidden", "");
+  });
+
+  buyBtn.addEventListener("click", function () {
+    infoDiv.setAttribute("hidden", "");
+    newsDiv.setAttribute("hidden", "");
+    buyDiv.removeAttribute("hidden");
+  });
+}

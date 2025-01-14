@@ -1,0 +1,253 @@
+{
+    "description": {
+        "columns": [
+            "name",
+            "title",
+            "value",
+            "type",
+            "sort_order",
+            "is_hidden",
+            "precision"
+        ],
+        "data": [
+            [
+                "SECID",
+                "Код ценной бумаги",
+                "RU000A0JUN16",
+                "string",
+                1,
+                0,
+                null
+            ],
+            [
+                "NAME",
+                "Полное наименование",
+                "ПИФ Аршин УК Диана",
+                "string",
+                3,
+                0,
+                null
+            ],
+            [
+                "SHORTNAME",
+                "Краткое наименование",
+                "ПИФ Аршин",
+                "string",
+                4,
+                0,
+                null
+            ],
+            [
+                "REGNUMBER",
+                "Номер государственной регистрации",
+                "2691",
+                "string",
+                5,
+                0,
+                null
+            ],
+            [
+                "ISIN",
+                "ISIN код",
+                "RU000A0JUN16",
+                "string",
+                6,
+                0,
+                null
+            ],
+            [
+                "LATNAME",
+                "Английское наименование",
+                "PIF Arshin UK Diana",
+                "string",
+                7,
+                1,
+                null
+            ],
+            [
+                "ISSUEDATE",
+                "Дата начала торгов",
+                "2014-07-23",
+                "date",
+                8,
+                0,
+                null
+            ],
+            [
+                "LISTLEVEL",
+                "Уровень листинга",
+                "3",
+                "number",
+                15,
+                0,
+                0
+            ],
+            [
+                "ISQUALIFIEDINVESTORS",
+                "Бумаги для квалифицированных инвесторов",
+                "0",
+                "boolean",
+                16,
+                0,
+                0
+            ],
+            [
+                "TYPENAME",
+                "Вид/категория ценной бумаги",
+                "Пай закрытого ПИФа",
+                "string",
+                9000,
+                0,
+                null
+            ],
+            [
+                "GROUP",
+                "Код типа инструмента",
+                "stock_ppif",
+                "string",
+                9001,
+                1,
+                null
+            ],
+            [
+                "TYPE",
+                "Тип бумаги",
+                "private_ppif",
+                "string",
+                10000,
+                1,
+                null
+            ],
+            [
+                "GROUPNAME",
+                "Типа инструмента",
+                "Паи ПИФов",
+                "string",
+                10011,
+                1,
+                null
+            ],
+            [
+                "EMITTER_ID",
+                "Код эмитента",
+                "6995",
+                "number",
+                11000,
+                1,
+                null
+            ]
+        ]
+    },
+    "boards": {
+        "columns": [
+            "secid",
+            "boardid",
+            "title",
+            "board_group_id",
+            "market_id",
+            "market",
+            "engine_id",
+            "engine",
+            "is_traded",
+            "decimals",
+            "history_from",
+            "history_till",
+            "listed_from",
+            "listed_till",
+            "is_primary",
+            "currencyid"
+        ],
+        "data": [
+            [
+                "RU000A0JUN16",
+                "TQIF",
+                "Т+: Паи - безадрес.",
+                57,
+                1,
+                "shares",
+                1,
+                "stock",
+                0,
+                0,
+                "2014-07-23",
+                "2019-08-21",
+                "2014-07-23",
+                "2019-08-21",
+                1,
+                "RUB"
+            ],
+            [
+                "RU000A0JUN16",
+                "LIQB",
+                "Продажа обеспечения бирж.рынок - безадрес.",
+                120,
+                36,
+                "mamc",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2018-05-21",
+                "2019-08-21",
+                0,
+                null
+            ],
+            [
+                "RU000A0JUN16",
+                "PTIF",
+                "РПС с ЦК: Паи - адрес.",
+                59,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2014-07-23",
+                "2019-08-21",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JUN16",
+                "PSIF",
+                "РПС: Паи - адрес.",
+                8,
+                4,
+                "ndm",
+                1,
+                "stock",
+                0,
+                0,
+                null,
+                null,
+                "2014-07-23",
+                "2019-08-21",
+                0,
+                "RUB"
+            ],
+            [
+                "RU000A0JUN16",
+                "LIQR",
+                "РЕПО с ЦК: Урегулирование - безадрес.",
+                148,
+                27,
+                "ccp",
+                1,
+                "stock",
+                0,
+                2,
+                null,
+                null,
+                "2019-03-04",
+                "2019-08-21",
+                0,
+                null
+            ]
+        ]
+    }
+}
