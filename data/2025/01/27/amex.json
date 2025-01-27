@@ -967,7 +967,7 @@
   },
   {
     "symbol": "amex:DXF",
-    "name": "Eason Technology Limited",
+    "name": "Eason Technology Limited American Depositary Shares (each representing sixty-thousand (60000) Ordinary Shares)",
     "lastsale": "$29.00",
     "netchange": "29.00",
     "pctchange": "",
@@ -3470,20 +3470,6 @@
     "industry": "Steel/Iron Ore",
     "sector": "Industrials",
     "url": "/market-activity/stocks/sim"
-  },
-  {
-    "symbol": "amex:SKYH",
-    "name": "Sky Harbour Group Corporation Class A Common Stock",
-    "lastsale": "$11.15",
-    "netchange": "-0.11",
-    "pctchange": "-0.977%",
-    "volume": "75534",
-    "marketCap": "796530277.00",
-    "country": "United States",
-    "ipoyear": "2022",
-    "industry": "Real Estate",
-    "sector": "Finance",
-    "url": "/market-activity/stocks/skyh"
   },
   {
     "symbol": "amex:SLI",
