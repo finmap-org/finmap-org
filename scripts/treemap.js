@@ -65,7 +65,7 @@ async function selectTreemapItemByLabel(label) {
     case "nasdaq":
     case "nyse":
     case "amex":
-    case "all":
+    case "us-all":
       skipItems = 12;
       break;
     case "moex":
@@ -172,7 +172,7 @@ async function refreshTreemap() {
     case "nasdaq":
     case "nyse":
     case "amex":
-    case "all":
+    case "us-all":
       chartData = await prepTreemapData_us();
       await renderTreemapChart(chartData);
       break;
