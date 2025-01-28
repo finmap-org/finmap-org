@@ -1,7 +1,7 @@
 [
   {
     "symbol": "amex:ACCS",
-    "name": "ACCESS Newswire Inc.",
+    "name": "ACCESS Newswire Inc. Common Stock",
     "lastsale": "$9.75",
     "netchange": "0.10",
     "pctchange": "1.036%",
@@ -2764,7 +2764,7 @@
     "netchange": "-0.0455",
     "pctchange": "-5.38%",
     "volume": "11595498",
-    "marketCap": "71038736.00",
+    "marketCap": "116860183.00",
     "country": "United States",
     "ipoyear": "2007",
     "industry": "Electric Utilities: Central",
