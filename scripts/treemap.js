@@ -20,15 +20,15 @@ async function applyFilter(csv) {
     ticker: [],
     // date: [],
     // price: [],
-    ammount: [],
+    amount: [],
     // operation: [],
   };
   data.forEach((row) => {
-    const [ticker, ammount, date, price, operation] = row;
+    const [ticker, amount, date, price, operation] = row;
     filterCsv["ticker"].push(ticker);
     // filterCsv["date"].push(date);
     // filterCsv["price"].push(price);
-    filterCsv["ammount"].push(ammount);
+    filterCsv["amount"].push(amount);
     // filterCsv["operation"].push(operation);
   });
   return filterCsv;
@@ -95,7 +95,7 @@ async function renderTreemapChart(chartData) {
       parents: chartData["sector"],
       values: chartData["size"],
       marker: {
-        colors: chartData["priceChange"],
+        colors: chartData["priceChangePct"],
         colorscale: [
           [0, "rgb(236, 48, 51)"],
           [0.5, "rgb(64, 68, 82)"],
@@ -109,7 +109,7 @@ async function renderTreemapChart(chartData) {
           color: chartData["borderColor"],
         },
       },
-      text: chartData.customdata[4],
+      text: chartData.customdata[8],
       textinfo: "label+text+value",
       customdata: chartData.customdata,
       branchvalues: "total",
@@ -151,7 +151,7 @@ async function renderTreemapChart(chartData) {
 }
 
 let filterList;
-const highlightList = ["nasdaq:AAPL", "nasdaq:ASML", "nyse:WLY", "GCHE"];
+const highlightList = ["AAPL", "ASML", "WLY", "GCHE"];
 
 async function refreshTreemap() {
   const localFilterCsv = localStorage.getItem("filterCsv");
@@ -168,21 +168,171 @@ async function refreshTreemap() {
   }
 
   let chartData;
-  switch (inputExchange.value) {
+  let currencyExchangeRate = 1;
+  const dataType = inputDataType.value;
+  const date = inputDate.value;
+  const exchange = inputExchange.value;
+  switch (exchange) {
     case "nasdaq":
     case "nyse":
     case "amex":
     case "us-all":
-      chartData = await prepTreemapData_us();
-      await renderTreemapChart(chartData);
+      currencyExchangeRate = 1;
       break;
     case "moex":
-      chartData = await prepTreemapData_ru();
-      await renderTreemapChart(chartData);
+      currencyExchangeRate = await getCurrencyRateByDate(date, "USD2RUB");
       break;
     default:
-      chartData = await prepTreemapData_us();
-      await renderTreemapChart(chartData);
+      currencyExchangeRate = 1;
       break;
   }
+  chartData = await prepTreemapData(dataType, date, exchange, currencyExchangeRate);
+  await renderTreemapChart(chartData);
+}
+
+
+async function getMarketDataJson(date, exchange) {
+  let url = `data/${date.replace(/-/g, "/")}/${exchange}.json`;
+
+  if (date === new Date().toISOString().split("T")[0]) {
+    url = url + `?_=${new Date().toISOString().split(":")[0]}`;
+  }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      alert("Oops! There's no data. Please select another date.");
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseJson = await response.json();
+    return responseJson.securities.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+
+async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
+  const marketData = await getMarketDataJson(date, exchange);
+  let filteredMarketData = marketData;
+
+  if (filterList && filterList["ticker"].length > 0) {
+    filteredMarketData = marketData.filter((item) => {
+      const ticker = item[6];
+      const type = item[2];
+      return filterList["ticker"].includes(ticker) || type === "sector";
+    });
+  }
+  if (filterList && filterList["amount"].some((value) => value > 0)) {
+    isPortfolio = true;
+  }
+
+  const chartData = {
+    exchange: filteredMarketData.map((item) => item[0]),
+    country: filteredMarketData.map((item) => item[1]),
+    type: filteredMarketData.map((item) => item[2]),
+    sector: filteredMarketData.map((item) => item[3]),
+    industry: filteredMarketData.map((item) => item[4]),
+    currencyId: filteredMarketData.map((item) => item[5]),
+    ticker: filteredMarketData.map((item) => item[6]),
+    nameEng: filteredMarketData.map((item) => item[7]),
+    nameEngShort: filteredMarketData.map((item) => item[8]),
+    nameRus: filteredMarketData.map((item) => item[9]),
+    nameRusShort: filteredMarketData.map((item) => item[10]),
+    priceOpen: filteredMarketData.map((item) => item[11]),
+    priceLastSale: filteredMarketData.map((item) => item[12]),
+    priceChangePct: filteredMarketData.map((item) => item[13]),
+    volume: filteredMarketData.map((item) => item[14]),
+    value: filteredMarketData.map((item) => item[15]),
+    numTrades: filteredMarketData.map((item) => item[16]),
+    marketCap: filteredMarketData.map((item) => item[17]),
+    listedFrom: filteredMarketData.map((item) => item[18]),
+    listedTill: filteredMarketData.map((item) => item[19]),
+    wikiPageIdEng: filteredMarketData.map((item) => item[20]),
+    wikiPageIdOriginal: filteredMarketData.map((item) => item[21]),
+    size: [],
+    borderWidth: new Array(filteredMarketData.length).fill(2),
+    borderColor: new Array(filteredMarketData.length).fill("rgb(63,67,81)"),
+    customdata: [],
+  };
+  
+  chartData.ticker.forEach((ticker, i) => {
+    if (highlightList.includes(ticker)) {
+      chartData["borderWidth"][i] = 5;
+      chartData["borderColor"][i] = "rgb(206,218,109)";
+    }
+    if (isPortfolio && !filterList["ticker"].includes(ticker)) {
+      return;
+    }
+
+    let size;
+    if (isPortfolio) {
+      const filterListIndex = filterList["ticker"].indexOf(ticker);
+      size = chartData.priceLastSale[i] * filterList["amount"][filterListIndex];
+    } else {
+      switch (dataType) {
+        case "marketcap":
+          size = chartData.marketCap[i];
+          size = size / currencyExchangeRate;
+          break;
+        case "value":
+          size = chartData.value[i];
+          size = size / currencyExchangeRate;
+          break;
+        case "trades":
+          size = chartData.numTrades[i];
+          break;
+      }
+    }
+    chartData.size.push(size);
+
+    chartData.customdata.push([
+      chartData.exchange[i],
+      chartData.country[i],
+      chartData.type[i],
+      chartData.sector[i],
+      chartData.industry[i],
+      chartData.currencyId[i],
+      chartData.ticker[i],
+      chartData.nameEng[i],
+      chartData.nameEngShort[i],
+      chartData.nameRus[i],
+      chartData.nameRusShort[i],
+      chartData.priceOpen[i],
+      chartData.priceLastSale[i],
+      chartData.priceChangePct[i],
+      chartData.volume[i],
+      chartData.value[i],
+      chartData.numTrades[i],
+      chartData.marketCap[i],
+      chartData.listedFrom[i],
+      chartData.listedTill[i],
+      chartData.wikiPageIdEng[i],
+      chartData.wikiPageIdOriginal[i],
+    ]);
+  });
+
+  chartData["texttemplate"] = `<b>%{label}</b><br>
+%{customdata[7]}<br>
+%{customdata[12]} (%{customdata[13]:.2f}%)<br>
+MarketCap: %{customdata[17]:,.0f}`;
+
+  chartData["hovertemplate"] = `<b>%{customdata[6]}</b><br>
+%{customdata[7]}<br>
+Price: %{customdata[12]}<br>
+Price change: %{customdata[13]:.2f}%<br>
+MarketCap: %{customdata[17]:,.0f}<br>
+Volume: %{customdata[14]:,.0f}<br>
+Value: %{customdata[15]:,.0f}<br>
+Trades: %{customdata[16]:,.0f}<br>
+Exchange: %{customdata[0]}<br>
+Country: %{customdata[1]}<br>
+Listed Since: %{customdata[18]}<br>
+Industry: %{customdata[4]}<br>
+Size: %{value:,.2f}<br>
+percentParent: %{percentParent:.2p}<br>
+percentRoot: %{percentRoot:.2p}
+<extra></extra>`;
+
+  return chartData;
 }

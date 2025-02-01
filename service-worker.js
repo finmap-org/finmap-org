@@ -21,8 +21,6 @@ const FILES_TO_CACHE = [
   "/scripts/plotly-2.35.2.min.js",
   "/scripts/share.js",
   "/scripts/treemap.js",
-  "/scripts/treemap-ru.js",
-  "/scripts/treemap-us.js",
 ];
 
 self.addEventListener("install", async (evt) => {
