@@ -1,0 +1,19 @@
+{
+"securities": {
+	"columns": ["SECID", "CURRENCYID", "OPEN", "CLOSE", "VOLUME", "VALUE", "NUMTRADES", "DAILYCAPITALIZATION"], 
+	"data": [
+
+	]
+},
+"securities.cursor": {
+	"columns": ["INDEX", "TOTAL", "PAGESIZE"], 
+	"data": [
+		[0, 0, 10000]
+	]
+},
+"securities.dates": {
+	"columns": ["from", "till"], 
+	"data": [
+		["2011-12-19", "2024-02-22"]
+	]
+}}
