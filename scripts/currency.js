@@ -1,7 +1,7 @@
-async function getCurrencyRates(currencyType) {
+async function getCurrencyRates(currency) {
   const startDate = "2011-12-19";
   const response = await fetch(
-    `data/FIXME${currencyType}.csv?_=${new Date().toISOString().split("T")[0]}`,
+    `data/currency/${currency}.csv?_=${new Date().toISOString().split("T")[0]}`,
   );
   const textResponse = await response.text();
   const data = textResponse.split("\n").map((row) => row.split(","));
@@ -16,9 +16,8 @@ async function getCurrencyRates(currencyType) {
   return currencyRates;
 }
 
-async function getCurrencyRateByDate(date) {
-  const currencyType = inputCurrency.value;
-  const currencyRates = await getCurrencyRates(currencyType);
+async function getCurrencyRateByDate(date, currency) {
+  const currencyRates = await getCurrencyRates(currency);
 
   let rate = currencyRates[date];
   let d = new Date(date);
