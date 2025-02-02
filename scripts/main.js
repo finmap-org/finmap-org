@@ -165,6 +165,7 @@ function toggleInput() {
   history.replaceState(null, "", url);
 }
 
+let clickedTreemapItem;
 let hasPlotlyClickListener = false;
 let uniqSectors = [];
 async function refreshChart() {
@@ -180,6 +181,7 @@ async function refreshChart() {
       if (!hasPlotlyClickListener) {
         hasPlotlyClickListener = true;
         divChart.on("plotly_click", async (event) => {
+          clickedTreemapItem = event.points[0].customdata;
           clickedLabel = event.points[0].label;
           companyName = event.points[0].customdata[4];
           if (!uniqSectors.includes(clickedLabel)) await addOverlayWidget();

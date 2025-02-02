@@ -61,46 +61,9 @@ async function getNews() {
   return html;
 }
 
-var wikiPageTitleList;
-
-async function getWikiPageTitleByTicker(ticker) {
-  let wikiPageTitle;
-  try {
-    if (wikiPageTitleList === undefined) {
-      const url = "data/securities-by-sector/moex.tsv";
-      const response = await fetch(url);
-      const text = await response.text();
-      wikiPageTitleList = text.trim().split("\n");
-    }
-
-    for (let i = 1; i < wikiPageTitleList.length; i++) {
-      const columns = wikiPageTitleList[i].split("\t");
-      if (columns[1] && columns[1] === ticker) {
-        let columnIndex;
-        switch (currentLanguage) {
-          case "ENG":
-            columnIndex = 9;
-            break;
-          case "RUS":
-            columnIndex = 8;
-            break;
-          default:
-            columnIndex = 9;
-            break;
-        }
-        wikiPageTitle = columns[columnIndex];
-        break;
-      }
-    }
-  } catch (error) {
-    console.error("Error reading TSV file:", error);
-  }
-  return wikiPageTitle;
-}
-
 // Get Company Info
 async function getCompanyInfo() {
-  let wikiPageTitle, url, response, json;
+  let wikiPageId, url, response, json;
   let html = "";
   let description;
   let sourceLink;
@@ -118,19 +81,6 @@ async function getCompanyInfo() {
         json = await response.json();
         description = json.data.CompanyDescription.value;
         sourceLink = json.data.CompanyUrl.value;
-      } else if (response.status === 404) {
-        wikiPageTitle = `${labelExchange}:${labelTicker}`;
-        url = `https://en.wikipedia.org/w/api.php?action=query&titles=${wikiPageTitle}&prop=langlinks|extracts&lllimit=500&exintro&explaintext&format=json&origin=*`;
-        response = await fetch(url);
-        json = await response.json();
-        const pages = json.query.pages;
-        const firstPage = Object.keys(pages)[0];
-        if (!response.ok || pages[firstPage].extract === undefined) {
-          html = "<h1>Woops! Nothing was found 🕵🏽</h1>";
-          return html;
-        }
-        description = pages[firstPage].extract;
-        sourceLink = `https://en.wikipedia.org/wiki/${wikiPageTitle}`;
       } else {
         console.error(`Error fetching from fallback URL: ${response.status}`);
       }
@@ -140,22 +90,24 @@ async function getCompanyInfo() {
       switch (currentLanguage) {
         case "ENG":
           infoLang = "en";
+          wikiPageId = clickedTreemapItem[20];
           break;
         case "RUS":
           infoLang = "ru";
+          wikiPageId = clickedTreemapItem[21];
           break;
         default:
           infoLang = "en";
+          wikiPageId = clickedTreemapItem[20];
           break;
       }
-      wikiPageTitle = await getWikiPageTitleByTicker(clickedLabel);
-      url = `https://${infoLang}.wikipedia.org/w/api.php?action=query&titles=${wikiPageTitle}&prop=langlinks|extracts&lllimit=500&exintro&explaintext&format=json&origin=*`;
+      url = `https://${infoLang}.wikipedia.org/w/api.php?action=query&pageids=${wikiPageId}&prop=langlinks|extracts&lllimit=500&exintro&explaintext&format=json&origin=*`;
       response = await fetch(url);
       json = await response.json();
       const pages = json.query.pages;
       const firstPage = Object.keys(pages)[0];
       description = pages[firstPage].extract;
-      sourceLink = `https://${infoLang}.wikipedia.org/wiki/${wikiPageTitle}`;
+      sourceLink = `https://${infoLang}.wikipedia.org/wiki/?curid=${wikiPageId}`;
       break;
   }
 
