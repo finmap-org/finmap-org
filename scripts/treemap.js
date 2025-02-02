@@ -250,7 +250,7 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     listedTill: filteredMarketData.map((item) => item[19]),
     wikiPageIdEng: filteredMarketData.map((item) => item[20]),
     wikiPageIdOriginal: filteredMarketData.map((item) => item[21]),
-    size: [],
+    size: new Array(filteredMarketData.length).fill(0),
     borderWidth: new Array(filteredMarketData.length).fill(2),
     borderColor: new Array(filteredMarketData.length).fill("rgb(63,67,81)"),
     customdata: [],
@@ -261,14 +261,18 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
       chartData["borderWidth"][i] = 5;
       chartData["borderColor"][i] = "rgb(206,218,109)";
     }
-    if (isPortfolio && !filterList["ticker"].includes(ticker)) {
+    if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
 
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);
-      size = chartData.priceLastSale[i] * filterList["amount"][filterListIndex];
+      if (filterListIndex == -1)
+        size = 0;
+      else {
+        size = chartData.priceLastSale[i] * filterList["amount"][filterListIndex];
+      }
     } else {
       switch (dataType) {
         case "marketcap":
@@ -284,7 +288,8 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
           break;
       }
     }
-    chartData.size.push(size);
+    
+    chartData.size[i] = size;
 
     chartData.customdata.push([
       chartData.exchange[i],
@@ -311,6 +316,23 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
       chartData.wikiPageIdOriginal[i],
     ]);
   });
+
+if (isPortfolio) {
+  const rootIndex = chartData.sector.findIndex(sector => sector === "");
+  if (rootIndex === -1) return;
+
+  chartData.type.forEach((type, index) => {
+    if (type === "sector") return;
+
+    const itemSize = chartData.size[index];
+    const sectorIndex = chartData.ticker.indexOf(chartData.sector[index]);
+    
+    if (sectorIndex !== -1) {
+      chartData.size[sectorIndex] += itemSize;
+      chartData.size[rootIndex] += itemSize;
+    }
+  });
+}
 
   chartData["texttemplate"] = `<b>%{label}</b><br>
 %{customdata[7]}<br>
