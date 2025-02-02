@@ -72,14 +72,14 @@ async function getCompanyInfo() {
   let html = "";
   let description;
   let sourceLink;
-  let labelExchange = clickedLabel.split(":")[0];
   switch (inputExchange.value) {
     case "nasdaq":
     case "nyse":
     case "amex":
     case "all":
-      let labelTicker = clickedLabel.split(":")[1];
-      url = `data/securities/${labelExchange}/${labelTicker.slice(0, 1)}/${labelTicker}.json`;
+      const clickedExchange = clickedTreemapItem[0];
+      const clickedLabel = clickedTreemapItem[6];
+      url = `data/securities/${clickedExchange}/${clickedLabel.slice(0, 1)}/${clickedLabel}.json`;
       response = await fetch(url);
 
       if (response.ok) {
