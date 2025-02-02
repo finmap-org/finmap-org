@@ -51,12 +51,9 @@ async function handleEnterKey(event) {
 // ToDo
 // function searchBoxAutocomplete()
 
-let clickedLabel;
-let companyName;
 let isPortfolio;
 
 async function selectTreemapItemByLabel(label) {
-  clickedLabel = label;
   label = label.toLowerCase();
 
   var boxes = divChart.querySelectorAll("g.slice.cursor-pointer");

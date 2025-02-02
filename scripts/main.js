@@ -182,9 +182,8 @@ async function refreshChart() {
         hasPlotlyClickListener = true;
         divChart.on("plotly_click", async (event) => {
           clickedTreemapItem = event.points[0].customdata;
-          clickedLabel = event.points[0].label;
-          companyName = event.points[0].customdata[4];
-          if (!uniqSectors.includes(clickedLabel)) await addOverlayWidget();
+          const clickedTreemapItemType = clickedTreemapItem[2];
+          if (clickedTreemapItemType !== "sector") await addOverlayWidget();
         });
       }
       break;

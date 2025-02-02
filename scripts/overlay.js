@@ -15,18 +15,23 @@ async function getNews() {
   };
 
   let newsLang;
+  let companyName;
   switch (currentLanguage) {
     case "ENG":
       newsLang = "hl=en-US&gl=US&ceid=US:en";
+      companyName = clickedTreemapItem[7];
       break;
     case "RUS":
       newsLang = "hl=ru&gl=RU&ceid=RU:ru";
+      companyName = clickedTreemapItem[9];
       break;
     default:
       newsLang = "hl=en-US&gl=US&ceid=US:en";
+      companyName = clickedTreemapItem[7];
       break;
   }
   let date = inputDate.value;
+  const clickedLabel = clickedTreemapItem[6];
   const newsQuery = companyName.split(" ").slice(0, 2).join(" ");
   const url = `https://d3sk7vmzjz3uox.cloudfront.net/${currentLanguage}:${clickedLabel}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(":")[0]}`;
   let html = "";
