@@ -76,7 +76,7 @@ async function getCompanyInfo() {
     case "nasdaq":
     case "nyse":
     case "amex":
-    case "all":
+    case "us-all":
       const clickedExchange = clickedTreemapItem[0];
       const clickedLabel = clickedTreemapItem[6];
       url = `data/securities/${clickedExchange}/${clickedLabel.slice(0, 1)}/${clickedLabel}.json`;
