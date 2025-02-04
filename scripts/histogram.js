@@ -1,5 +1,5 @@
 async function prepHistogramData() {
-  const currencyType = inputCurrency.value;
+  const currencyType = "USD2RUB";
   try {
     const startDate = "2011-12-19";
 
@@ -144,7 +144,7 @@ async function prepHistogramData() {
 }
 
 function refreshHistogram() {
-  var currency = inputCurrency.value;
+  var currency = "USD2RUB";
   toggleInput();
 
   prepHistogramData()
