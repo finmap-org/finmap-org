@@ -36,7 +36,7 @@ switch (inputExchange.value) {
   case "nasdaq":
   case "nyse":
   case "amex":
-  case "all":
+  case "us-all":
     openHour = 10;
     break;
 }
@@ -79,7 +79,7 @@ inputDate.addEventListener("change", refreshChart);
 
 if (
   urlExchange &&
-  ["nasdaq", "nyse", "amex", "all", "moex"].includes(urlExchange)
+  ["nasdaq", "nyse", "amex", "us-all", "moex"].includes(urlExchange)
 ) {
   inputExchange.value = urlExchange;
 }
@@ -144,7 +144,7 @@ function toggleInput() {
     case "nasdaq":
     case "nyse":
     case "amex":
-    case "all":
+    case "us-all":
       inputSearch.removeAttribute("hidden");
       // inputCurrency.setAttribute("hidden", "");
       inputChartType.value = "treemap";
