@@ -275,7 +275,7 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
         case "marketcap":
           size = chartData.marketCap[i];
           size = size / currencyExchangeRate;
-          if (chartData.sector[i] === "Foreign Companies") {
+          if (chartData.sector[i] === "Foreign Companies" || ticker === "Foreign Companies") {
             size = 0;
           }
           break;
