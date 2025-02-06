@@ -1,0 +1,46 @@
+sectorGroup	sector	sectorId
+Consumer Discretionary	Automobiles and Parts	401010
+Consumer Discretionary	Consumer Services	402010
+Consumer Discretionary	Household Goods and Home Construction	402020
+Consumer Discretionary	Leisure Goods	402030
+Consumer Discretionary	Media	403010
+Consumer Discretionary	Retailers	404010
+Consumer Discretionary	Travel and Leisure	405010
+Consumer Discretionary	Personal Goods	402040
+Consumer Staples	Beverages	451010
+Consumer Staples	Food Producers	451020
+Consumer Staples	Personal Care, Drug and Grocery Stores	452010
+Consumer Staples	Tobacco	451030
+Energy	Alternative Energy	601020
+Energy	Oil, Gas and Coal	601010
+Finance	Banks	301010
+Finance	Closed End Investments	302040
+Finance	Finance and Credit Services	302010
+Finance	Investment Banking and Brokerage Services	302020
+Finance	Life Insurance	303010
+Finance	Mortgage Real Estate Investment Trusts	302030
+Finance	Non-life Insurance	303020
+Finance	Open End and Miscellaneous Investment Vehicles	302050
+Health Care	Health Care Providers	201010
+Health Care	Medical Equipment and Services	201020
+Health Care	Pharmaceuticals and Biotechnology	201030
+Industrials	Aerospace and Defense	502010
+Industrials	Construction and Materials	501010
+Industrials	Electronic and Electrical Equipment	502020
+Industrials	General Industrials	502030
+Industrials	Industrial Engineering	502040
+Industrials	Industrial Support Services	502050
+Industrials	Industrial Transportation	502060
+Industrials	Chemicals	552010
+Industrials	Industrial Materials	551010
+Industrials	Industrial Metals and Mining	551020
+Industrials	Precious Metals and Mining	551030
+Real Estate	Real Estate Investment and Services	351010
+Real Estate	Real Estate Investment Trusts	351020
+Technology	Software and Computer Services	101010
+Technology	Technology Hardware and Equipment	101020
+Telecommunications	Telecommunications Equipment	151010
+Telecommunications	Telecommunications Service Providers	151020
+Utilities	Electricity	651010
+Utilities	Gas, Water and Multi-utilities	651020
+Utilities	Waste and Disposal Services	651030
