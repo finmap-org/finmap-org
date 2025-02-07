@@ -1,7 +1,7 @@
-"use strict";
+plotly-3.0.0.min.js"use strict";
 
-const CACHE_NAME = "my-app-static-cache-v2";
-const DATA_CACHE_NAME = "my-app-data-cache-v2";
+const CACHE_NAME = "my-app-static-cache-v3";
+const DATA_CACHE_NAME = "my-app-data-cache-v3";
 
 const FILES_TO_CACHE = [
   "/",
@@ -18,7 +18,7 @@ const FILES_TO_CACHE = [
   "/scripts/main.js",
   "/scripts/menu.js",
   "/scripts/overlay.js",
-  "/scripts/plotly-2.35.2.min.js",
+  "/scripts/plotly-3.0.0.min.js",
   "/scripts/share.js",
   "/scripts/treemap.js",
 ];
