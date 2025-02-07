@@ -31,10 +31,10 @@ Industrials	General Industrials	502030
 Industrials	Industrial Engineering	502040
 Industrials	Industrial Support Services	502050
 Industrials	Industrial Transportation	502060
-Industrials	Chemicals	552010
-Industrials	Industrial Materials	551010
-Industrials	Industrial Metals and Mining	551020
-Industrials	Precious Metals and Mining	551030
+Basic Materials	Chemicals	552010
+Basic Materials	Industrial Materials	551010
+Basic Materials	Industrial Metals and Mining	551020
+Basic Materials	Precious Metals and Mining	551030
 Real Estate	Real Estate Investment and Services	351010
 Real Estate	Real Estate Investment Trusts	351020
 Technology	Software and Computer Services	101010
