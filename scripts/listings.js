@@ -16,7 +16,7 @@ async function prepListingsData() {
   const delistedSecurities = new Map(totalSecurities);
 
   const response = await fetch(
-    `data/securities-by-sector/moex.tsv?_=${new Date().toISOString().split("T")[0]}`,
+    `data/sectors/moex.tsv?_=${new Date().toISOString().split("T")[0]}`,
   );
   const data = await response.text();
   const rows = data.split("\n").slice(32);
