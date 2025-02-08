@@ -247,6 +247,7 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     listedTill: filteredMarketData.map((item) => item[19]),
     wikiPageIdEng: filteredMarketData.map((item) => item[20]),
     wikiPageIdOriginal: filteredMarketData.map((item) => item[21]),
+    nestedItemsCount: filteredMarketData.map((item) => item[22]),
     size: new Array(filteredMarketData.length).fill(0),
     borderWidth: new Array(filteredMarketData.length).fill(2),
     borderColor: new Array(filteredMarketData.length).fill("rgb(63,67,81)"),
@@ -311,6 +312,7 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
       chartData.listedTill[i],
       chartData.wikiPageIdEng[i],
       chartData.wikiPageIdOriginal[i],
+      chartData.nestedItemsCount[i],
     ]);
   });
 
@@ -348,9 +350,10 @@ Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
 Listed Since: %{customdata[18]}<br>
 Industry: %{customdata[4]}<br>
-Size: %{value:,.2f}<br>
+Size: %{value:,.0f}<br>
 percentParent: %{percentParent:.2p}<br>
-percentRoot: %{percentRoot:.2p}
+percentRoot: %{percentRoot:.2p}<br>
+Nested Items Count: %{customdata[22]:,.0f}
 <extra></extra>`;
 
   return chartData;
