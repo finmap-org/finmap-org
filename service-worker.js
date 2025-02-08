@@ -1,4 +1,4 @@
-plotly-3.0.0.min.js"use strict";
+"use strict";
 
 const CACHE_NAME = "my-app-static-cache-v4";
 const DATA_CACHE_NAME = "my-app-data-cache-v4";

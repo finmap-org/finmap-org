@@ -4,7 +4,7 @@ async function prepHistogramData() {
     const startDate = "2011-12-19";
 
     let response = await fetch(
-      `data/securities-by-sector/moex.tsv?_=${new Date().toISOString().split("T")[0]}`,
+      `data/sectors/moex.tsv?_=${new Date().toISOString().split("T")[0]}`,
     );
     response = await response.text();
     let data = response
