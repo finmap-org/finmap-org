@@ -262,7 +262,8 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
-
+    chartData.marketCap[i] = chartData.marketCap[i] / currencyExchangeRate;
+    chartData.value[i] = chartData.value[i] / currencyExchangeRate;
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);
@@ -275,11 +276,9 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
       switch (dataType) {
         case "marketcap":
           size = chartData.marketCap[i];
-          size = size / currencyExchangeRate;
           break;
         case "value":
           size = chartData.value[i];
-          size = size / currencyExchangeRate;
           break;
         case "trades":
           size = chartData.numTrades[i];
