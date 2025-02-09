@@ -1,0 +1,203 @@
+sector	industry
+Basic Materials	Forest Products
+Basic Materials	Metal Mining
+Basic Materials	Other Metals and Minerals
+Basic Materials	Paper
+Basic Materials	Precious Metals
+Consumer Discretionary	Advertising
+Consumer Discretionary	Aerospace
+Consumer Discretionary	Air Freight/Delivery Services
+Consumer Discretionary	Apparel
+Consumer Discretionary	Auto & Home Supply Stores
+Consumer Discretionary	Auto Manufacturing
+Consumer Discretionary	Automotive Aftermarket
+Consumer Discretionary	Auto Parts:O.E.M.
+Consumer Discretionary	Books
+Consumer Discretionary	Broadcasting
+Consumer Discretionary	Building Materials
+Consumer Discretionary	Building Products
+Consumer Discretionary	Business Services
+Consumer Discretionary	Catalog/Specialty Distribution
+Consumer Discretionary	Clothing/Shoe/Accessory Stores
+Consumer Discretionary	Construction/Ag Equipment/Trucks
+Consumer Discretionary	Consumer Electronics/Appliances
+Consumer Discretionary	Consumer Electronics/Video Chains
+Consumer Discretionary	Consumer Specialties
+Consumer Discretionary	Containers/Packaging
+Consumer Discretionary	Department/Specialty Retail Stores
+Consumer Discretionary	Diversified Commercial Services
+Consumer Discretionary	Durable Goods
+Consumer Discretionary	Electronic Components
+Consumer Discretionary	Electronics Distribution
+Consumer Discretionary	Engineering & Construction
+Consumer Discretionary	Food Distributors
+Consumer Discretionary	General Bldg Contractors - Nonresidential Bldgs
+Consumer Discretionary	Homebuilding
+Consumer Discretionary	Home Furnishings
+Consumer Discretionary	Hotels/Resorts
+Consumer Discretionary	Industrial Machinery/Components
+Consumer Discretionary	Industrial Specialties
+Consumer Discretionary	Marine Transportation
+Consumer Discretionary	Metal Fabrications
+Consumer Discretionary	Military/Government/Technical
+Consumer Discretionary	Miscellaneous manufacturing industries
+Consumer Discretionary	Motor Vehicles
+Consumer Discretionary	Movies/Entertainment
+Consumer Discretionary	Newspapers/Magazines
+Consumer Discretionary	Office Equipment/Supplies/Services
+Consumer Discretionary	Oil Refining/Marketing
+Consumer Discretionary	Other Consumer Services
+Consumer Discretionary	Other Specialty Stores
+Consumer Discretionary	Package Goods/Cosmetics
+Consumer Discretionary	Paints/Coatings
+Consumer Discretionary	Professional and commerical equipment
+Consumer Discretionary	Professional Services
+Consumer Discretionary	Publishing
+Consumer Discretionary	Recreational Games/Products/Toys
+Consumer Discretionary	Rental/Leasing Companies
+Consumer Discretionary	Restaurants
+Consumer Discretionary	Retail-Auto Dealers and Gas Stations
+Consumer Discretionary	RETAIL: Building Materials
+Consumer Discretionary	Services-Misc. Amusement & Recreation
+Consumer Discretionary	Shoe Manufacturing
+Consumer Discretionary	Specialty Chemicals
+Consumer Discretionary	Specialty Foods
+Consumer Discretionary	Telecommunications Equipment
+Consumer Discretionary	Textiles
+Consumer Discretionary	Tobacco
+Consumer Discretionary	Tools/Hardware
+Consumer Discretionary	Transportation Services
+Consumer Discretionary	Wholesale Distributors
+Consumer Staples	Apparel
+Consumer Staples	Beverages (Production/Distribution)
+Consumer Staples	Consumer Electronics/Appliances
+Consumer Staples	Diversified Electronic Products
+Consumer Staples	Farming/Seeds/Milling
+Consumer Staples	Food Chains
+Consumer Staples	Meat/Poultry/Fish
+Consumer Staples	Packaged Foods
+Consumer Staples	Retail-Drug Stores and Proprietary Stores
+Consumer Staples	Specialty Foods
+Energy	Coal Mining
+Energy	Electrical Products
+Energy	Electric Utilities: Central
+Energy	Industrial Machinery/Components
+Energy	Integrated oil Companies
+Energy	Miscellaneous
+Energy	Natural Gas Distribution
+Energy	Oilfield Services/Equipment
+Energy	Oil & Gas Production
+Energy	Oil Refining/Marketing
+ETF	ETF
+Finance	Accident &Health Insurance
+Finance	Banks
+Finance	Blank Checks
+Finance	Commercial Banks
+Finance	Diversified Commercial Services
+Finance	Diversified Financial Services
+Finance	Finance Companies
+Finance	Finance: Consumer Services
+Finance	Finance/Investors Services
+Finance	Investment Bankers/Brokers/Service
+Finance	Investment Managers
+Finance	Life Insurance
+Finance	Major Banks
+Finance	Property-Casualty Insurers
+Finance	Real Estate
+Finance	Savings Institutions
+Finance	Specialty Insurers
+Finance	Trusts Except Educational Religious and Charitable
+Health Care	Biotechnology: Biological Products (No Diagnostic Substances)
+Health Care	Biotechnology: Commercial Physical & Biological Resarch
+Health Care	Biotechnology: Electromedical & Electrotherapeutic Apparatus
+Health Care	Biotechnology: In Vitro & In Vivo Diagnostic Substances
+Health Care	Biotechnology: Pharmaceutical Preparations
+Health Care	Hospital/Nursing Management
+Health Care	Industrial Specialties
+Health Care	Managed Health Care
+Health Care	Medical/Dental Instruments
+Health Care	Medical Electronics
+Health Care	Medical/Nursing Services
+Health Care	Medical Specialities
+Health Care	 Medicinal Chemicals and Botanical Products 
+Health Care	Misc Health and Biotechnology Services
+Health Care	Ophthalmic Goods
+Health Care	Other Pharmaceuticals
+Health Care	Pharmaceuticals and Biotechnology
+Health Care	Precision Instruments
+Industrials	Aerospace
+Industrials	Agricultural Chemicals
+Industrials	Aluminum
+Industrials	Auto Parts:O.E.M.
+Industrials	Biotechnology: Laboratory Analytical Instruments
+Industrials	Broadcasting
+Industrials	Building Materials
+Industrials	Building Products
+Industrials	Construction/Ag Equipment/Trucks
+Industrials	Consumer Electronics/Appliances
+Industrials	Containers/Packaging
+Industrials	Electrical Products
+Industrials	Engineering & Construction
+Industrials	Environmental Services
+Industrials	Farming/Seeds/Milling
+Industrials	Fluid Controls
+Industrials	Homebuilding
+Industrials	Home Furnishings
+Industrials	Industrial Machinery/Components
+Industrials	Industrial Specialties
+Industrials	Major Chemicals
+Industrials	Marine Transportation
+Industrials	Medical Specialities
+Industrials	Metal Fabrications
+Industrials	Military/Government/Technical
+Industrials	Mining & Quarrying of Nonmetallic Minerals (No Fuels)
+Industrials	Misc Corporate Leasing Services
+Industrials	Miscellaneous
+Industrials	Office Equipment/Supplies/Services
+Industrials	Ordnance And Accessories
+Industrials	Other Specialty Stores
+Industrials	Plastic Products
+Industrials	Pollution Control Equipment
+Industrials	Precious Metals
+Industrials	Railroads
+Industrials	Specialty Chemicals
+Industrials	Steel/Iron Ore
+Industrials	Telecommunications Equipment
+Industrials	Trucking Freight/Courier Services
+Industrials	Water Sewer Pipeline Comm & Power Line Construction
+Industrials	Wholesale Distributors
+Miscellaneous	Diversified Commercial Services
+Miscellaneous	Industrial Machinery/Components
+Miscellaneous	Miscellaneous
+Miscellaneous	Multi-Sector Companies
+Miscellaneous	Office Equipment/Supplies/Services
+Real Estate	Building operators
+Real Estate	Homebuilding
+Real Estate	Other Consumer Services
+Real Estate	Real Estate
+Real Estate	Real Estate Investment Trusts
+Technology	Computer Manufacturing
+Technology	Computer peripheral equipment
+Technology	Computer Software: Prepackaged Software
+Technology	Computer Software: Programming Data Processing
+Technology	Consumer Electronics/Appliances
+Technology	EDP Services
+Technology	Electrical Products
+Technology	Electronic Components
+Technology	Industrial Machinery/Components
+Technology	Office Equipment/Supplies/Services
+Technology	Radio And Television Broadcasting And Communications Equipment
+Technology	Retail: Computer Software & Peripheral Equipment
+Technology	Semiconductors
+Telecommunications	Cable & Other Pay Television Services
+Telecommunications	Computer Communications Equipment
+Telecommunications	Metal Fabrications
+Telecommunications	Telecommunications Equipment
+Utilities	Electric Utilities: Central
+Utilities	Environmental Services
+Utilities	Natural Gas Distribution
+Utilities	Oil & Gas Production
+Utilities	Oil/Gas Transmission
+Utilities	Power Generation
+Utilities	Telecommunications Equipment
+Utilities	Water Supply
