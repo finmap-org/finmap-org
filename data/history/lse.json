@@ -1,0 +1,280 @@
+{
+  "dates": [
+    "2025-02-07"
+  ],
+  "sectors": [
+    {
+      "sectorName": "Basic Materials",
+      "marketCap": [
+        352206248816
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0.4389034152694988
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        501
+      ]
+    },
+    {
+      "sectorName": "Consumer Discretionary",
+      "marketCap": [
+        358989356700
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -0.3214713522063879
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        903
+      ]
+    },
+    {
+      "sectorName": "Consumer Staples",
+      "marketCap": [
+        414079932633
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0.08671821365343445
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        330
+      ]
+    },
+    {
+      "sectorName": "ETFS",
+      "marketCap": [
+        50407150030
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -0.41262107543470816
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        2346
+      ]
+    },
+    {
+      "sectorName": "Energy",
+      "marketCap": [
+        248721272510
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0.18755857424278607
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        299
+      ]
+    },
+    {
+      "sectorName": "Finance",
+      "marketCap": [
+        815587842689
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -0.23494739769194303
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        1186
+      ]
+    },
+    {
+      "sectorName": "Health Care",
+      "marketCap": [
+        310161478105
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -1.5560368182783424
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        531
+      ]
+    },
+    {
+      "sectorName": "Industrials",
+      "marketCap": [
+        437417585609
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -0.9445341248228142
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        1091
+      ]
+    },
+    {
+      "sectorName": "Real Estate",
+      "marketCap": [
+        62804989158
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -1.4060389519128422
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        397
+      ]
+    },
+    {
+      "sectorName": "Technology",
+      "marketCap": [
+        47611772639
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        -0.7181307531877209
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        543
+      ]
+    },
+    {
+      "sectorName": "Telecommunications",
+      "marketCap": [
+        45302764070
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0.6265705225557231
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        146
+      ]
+    },
+    {
+      "sectorName": "Utilities",
+      "marketCap": [
+        107727617524
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0.05708176042135934
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        157
+      ]
+    },
+    {
+      "sectorName": "sectorGroup",
+      "marketCap": [
+        0
+      ],
+      "value": [
+        0
+      ],
+      "volume": [
+        0
+      ],
+      "priceChangePct": [
+        0
+      ],
+      "tradesNumber": [
+        0
+      ],
+      "itemsNumber": [
+        0
+      ]
+    }
+  ]
+}
