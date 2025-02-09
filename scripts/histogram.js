@@ -1,15 +1,16 @@
-async function refreshHistogram() {
+async function refreshHistogram(exchange, dataType) {
+  const chartData = [];
+  let dataJson;
   try {
     const response = await fetch(`data/history/${exchange}.json`);
     if (!response.ok) {
       alert("Oops! Nothing's here");
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const dataJson = await response.json();
+    dataJson = await response.json();
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-  const chartData = {};
   const x = dataJson.dates;
   
   dataJson.sectors.forEach((trace) => {
@@ -28,9 +29,8 @@ async function refreshHistogram() {
         y = trace.tradesNumber;
         break;
     }
-    const traceName = trace.sectorName;
-    chartData[traceName] = {
-      name: traceName,
+    chartData.push({
+      name: trace.sectorName,
       type: "scatter",
       mode: "lines",
       stackgroup: "one",
@@ -43,7 +43,7 @@ async function refreshHistogram() {
       // },
       x: x,
       y: y,
-    };
+    });
   });
 
   var layout = {
@@ -110,7 +110,7 @@ async function refreshHistogram() {
     },
     xaxis: {
       type: "date",
-      range: ["2011-12-19", null], // get starting date from the chartData
+      range: [x[0], null],
       fixedrange: false,
       // tickangle: -35,
       tickformatstops: [

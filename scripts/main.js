@@ -1,205 +1,195 @@
-// Prevent the default context menu from appearing on right-click
-const divChart = document.getElementById("chart");
-divChart.addEventListener("contextmenu", (event) => {
-  event.preventDefault();
-});
-
-// Read URL parameters
-const url = new URL(window.location.href);
-const urlDate = url.searchParams.get("date");
-const urlChartType = url.searchParams.get("chartType");
-const urlCurrency = url.searchParams.get("currency");
-const urlDataType = url.searchParams.get("dataType");
-const urlExchange = url.searchParams.get("exchange");
-const urlSearch = url.searchParams.get("search");
-const urlLang = url.searchParams.get("lang");
-
-// Language
-let currentLanguage = urlLang || "ENG";
-const linkLangToggle = document.getElementById("langToggle");
-linkLangToggle.textContent = currentLanguage;
-linkLangToggle.addEventListener("click", () => {
-  currentLanguage = currentLanguage === "ENG" ? "RUS" : "ENG";
-  linkLangToggle.textContent = currentLanguage;
-  url.searchParams.set("lang", currentLanguage);
-  history.replaceState(null, "", url);
-});
-
-const inputExchange = document.getElementById("inputExchange");
-let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
-
-let openHour;
-switch (inputExchange.value) {
-  case "moex":
-    openHour = 8;
-    break;
-  case "nasdaq":
-  case "nyse":
-  case "amex":
-  case "us-all":
-    openHour = 10;
-    break;
-}
-
-if (date.getUTCHours() < openHour) {
-  date.setDate(date.getUTCDate() - 1);
-}
-
-while (date.getDay() === 0 || date.getDay() === 6) {
-  date.setDate(date.getUTCDate() - 1);
-}
-var formattedDate = date.toISOString().split("T")[0];
-const inputDate = document.getElementById("inputDate");
-inputDate.value = formattedDate;
-inputDate.max = new Date().toISOString().split("T")[0];
-
-if (urlDate) {
-  inputDate.value = urlDate;
-}
-
-const inputChartType = document.getElementById("inputChartType");
-if (urlChartType && ["treemap", "history", "listings"].includes(urlChartType)) {
-  inputChartType.value = urlChartType;
-}
-
-// const inputCurrency = document.getElementById("inputCurrency");
-// if (urlCurrency && ["USD", "EUR", "CNY", "RUB"].includes(urlCurrency)) {
-//   inputCurrency.value = urlCurrency;
-// }
-
-const inputDataType = document.getElementById("inputDataType");
-if (urlDataType && ["marketcap", "value", "trades"].includes(urlDataType)) {
-  inputDataType.value = urlDataType;
-}
-
-inputChartType.addEventListener("change", refreshChart);
-// inputCurrency.addEventListener("change", refreshChart);
-inputDataType.addEventListener("change", refreshChart);
-inputDate.addEventListener("change", refreshChart);
-
-if (
-  urlExchange &&
-  ["nasdaq", "nyse", "amex", "us-all", "moex"].includes(urlExchange)
-) {
-  inputExchange.value = urlExchange;
-}
-inputExchange.addEventListener("change", refreshChart);
-
-//Searchbox
-const inputSearch = document.getElementById("inputSearch");
-inputSearch.addEventListener("keypress", handleEnterKey);
-
-// Apply filter.csv
-const inputFileLabel = document.getElementById("inputFileLabel");
-const chooseFileButton = document.getElementById("inputFile");
-chooseFileButton.addEventListener("change", function (event) {
-  saveCsvToLocalStorage(event);
-  chooseFileButton.value = null;
-});
-
-const linkEraseFilter = document.getElementById("linkEraseFilter");
-
-function toggleInput() {
-  url.searchParams.set("exchange", inputExchange.value);
-  // url.searchParams.set("currency", inputCurrency.value);
-  url.searchParams.set("chartType", inputChartType.value);
-  url.searchParams.set("dataType", inputDataType.value);
-  url.searchParams.set("date", inputDate.value);
-  switch (inputChartType.value) {
-    case "treemap":
-      inputSearch.removeAttribute("hidden");
-      // inputCurrency.removeAttribute("hidden");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.removeAttribute("hidden");
-      inputDate.removeAttribute("hidden");
-      break;
-    case "history":
-      // inputExchange.value = "moex";
-      inputSearch.setAttribute("hidden", "");
-      // inputCurrency.removeAttribute("hidden");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.removeAttribute("hidden");
-      inputDate.setAttribute("hidden", "");
-      // inputFileLabel.setAttribute("hidden", "");
-      // linkEraseFilter.setAttribute("hidden", "");
-      url.searchParams.delete("search");
-      url.searchParams.delete("date");
-      break;
-    case "listings":
-      // inputExchange.value = "moex";
-      inputSearch.setAttribute("hidden", "");
-      // inputCurrency.setAttribute("hidden", "");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.setAttribute("hidden", "");
-      inputDate.setAttribute("hidden", "");
-      // inputFileLabel.setAttribute("hidden", "");
-      // linkEraseFilter.setAttribute("hidden", "");
-      url.searchParams.delete("search");
-      url.searchParams.delete("currency");
-      url.searchParams.delete("dataType");
-      url.searchParams.delete("date");
-      break;
+async function refreshHistogram(exchange, dataType) {
+  let dataJson;
+  try {
+    const response = await fetch(`data/history/${exchange}.json`);
+    if (!response.ok) {
+      alert("Oops! Nothing's here");
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    dataJson = await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-  switch (inputExchange.value) {
-    case "nasdaq":
-    case "nyse":
-    case "amex":
-    case "us-all":
-      inputSearch.removeAttribute("hidden");
-      // inputCurrency.setAttribute("hidden", "");
-      inputChartType.value = "treemap";
-      url.searchParams.set("chartType", "treemap");
-      inputDataType.setAttribute("hidden", "");
-      inputDate.removeAttribute("hidden");
-      url.searchParams.delete("currency");
-      url.searchParams.delete("dataType");
-      break;
-    case "moex":
-      inputSearch.removeAttribute("hidden");
-      // inputCurrency.removeAttribute("hidden");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.removeAttribute("hidden");
-      inputDate.removeAttribute("hidden");
-      break;
-  }
-  history.replaceState(null, "", url);
-}
-
-let clickedTreemapItem;
-let hasPlotlyClickListener = false;
-let uniqSectors = [];
-async function refreshChart() {
-  toggleInput();
-
-  switch (inputChartType.value) {
-    case "treemap":
-      await refreshTreemap();
-      // if (urlSearch) {
-      //   await selectTreemapItemByLabel(urlSearch);
-      //   await addOverlayWidget();
-      // }
-      if (!hasPlotlyClickListener) {
-        hasPlotlyClickListener = true;
-        divChart.on("plotly_click", async (event) => {
-          clickedTreemapItem = event.points[0].customdata;
-          const clickedTreemapItemType = clickedTreemapItem[2];
-          if (clickedTreemapItemType !== "sector") await addOverlayWidget();
-        });
-      }
-      break;
-    case "history":
-      refreshHistogram();
-      break;
-    case "listings":
-      refreshListings();
-      break;
-  }
-}
-
-refreshChart();
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js");
+  const chartData = [];
+  const x = dataJson.dates;
+  
+  dataJson.sectors.forEach((trace) => {
+    if (trace.sectorName === "") {
+      return;
+    }
+    let y;
+    switch (dataType) {
+      case "marketcap":
+        y = trace.marketCap;
+        break;
+      case "value":
+        y = trace.value;
+        break;
+      case "trades":
+        y = trace.tradesNumber;
+        break;
+    }
+    chartData.push({
+      name: trace.sectorName,
+      type: "scatter",
+      mode: "lines",
+      stackgroup: "one",
+      connectgaps: true,
+      hoverinfo: "all",
+      hovertemplate:
+        "%{x|%x}<br>%{y:,.0f}<br>%{fullData.name}<extra></extra>",
+      // marker: {
+      //   color: traceColors[traceName],
+      // },
+      x: x,
+      y: y,
+    });
   });
+
+  var layout = {
+    showlegend: true,
+    legend: {
+      visible: true,
+      traceorder: "normal",
+      orientation: "h",
+      x: 0,
+      xanchor: "left",
+      y: 0.89,
+      yanchor: "top",
+      bgcolor: "rgba(65, 69, 84, 0)",
+      bordercolor: "rgba(65, 69, 84, 0)",
+      borderwidth: 0,
+    },
+    updatemenus: [
+      {
+        type: "buttons",
+        buttons: [
+          {
+            label: "Show/Hide Legend",
+            method: "relayout",
+            args: [{ showlegend: true }],
+            args2: [{ showlegend: false }],
+          },
+        ],
+        direction: "right",
+        showactive: true,
+        x: 0.02,
+        xanchor: "left",
+        y: 1.0,
+        yanchor: "top",
+        bgcolor: "rgba(65, 69, 84, 1)",
+        bordercolor: "rgba(65, 69, 84, 1)",
+        borderwidth: 0,
+        font: {
+          lineposition: "none",
+          color: "black",
+          size: 14,
+          variant: "all-small-caps",
+        },
+      },
+    ],
+    yaxis: {
+      visible: true,
+      fixedrange: true,
+      side: "right",
+      showgrid: true,
+    },
+    yaxis2: {
+      title: "Currency Rate",
+      overlaying: "y",
+      visible: false,
+      fixedrange: true,
+      side: "left",
+    },
+    yaxis3: {
+      title: "Oil prices",
+      overlaying: "y",
+      visible: false,
+      fixedrange: true,
+      side: "left",
+    },
+    xaxis: {
+      type: "date",
+      range: [x[0], null],
+      fixedrange: false,
+      // tickangle: -35,
+      tickformatstops: [
+        (enabled = false),
+        {
+          dtickrange: [null, "M1"],
+          value: "%e\n%b %Y",
+        },
+        {
+          dtickrange: ["M1", "M12"],
+          value: "%b\n%Y",
+        },
+        {
+          dtickrange: ["M12", null],
+          value: "%Y",
+        },
+      ],
+      rangeslider: {
+        visible: true,
+      },
+      rangeselector: {
+        visible: true,
+        activecolor: "#000000",
+        bgcolor: "rgb(38, 38, 39)",
+        buttons: [
+          {
+            step: "month",
+            stepmode: "backward",
+            count: 1,
+            label: "1m",
+          },
+          {
+            step: "month",
+            stepmode: "backward",
+            count: 6,
+            label: "6m",
+          },
+          {
+            step: "year",
+            stepmode: "todate",
+            count: 1,
+            label: "YTD",
+          },
+          {
+            step: "year",
+            stepmode: "backward",
+            count: 1,
+            label: "1y",
+          },
+          {
+            step: "all",
+          },
+        ],
+      },
+      showgrid: true,
+    },
+    autosize: true,
+    margin: {
+      l: 0,
+      r: 30,
+      t: 0,
+      b: 20,
+    },
+    plot_bgcolor: "rgb(66, 70, 83)",
+    paper_bgcolor: "rgb(65, 69, 85)",
+    font: {
+      family: "Arial",
+      size: 12,
+      color: "rgba(245, 246, 249, 1)",
+    },
+  };
+
+  var config = {
+    responsive: true,
+    displaylogo: false,
+    displayModeBar: true,
+    modeBarButtonsToRemove: ["toImage", "lasso2d", "select2d"],
+    scrollZoom: true,
+  };
+
+  Plotly.react("chart", chartData, layout, config);
 }
