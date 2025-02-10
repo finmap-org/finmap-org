@@ -8,7 +8,7 @@ divChart.addEventListener("contextmenu", (event) => {
 const url = new URL(window.location.href);
 const urlDate = url.searchParams.get("date");
 const urlChartType = url.searchParams.get("chartType");
-const urlCurrency = url.searchParams.get("currency");
+const urlConvertToUSD = url.searchParams.get("convertToUSD");
 const urlDataType = url.searchParams.get("dataType");
 const urlExchange = url.searchParams.get("exchange");
 const urlSearch = url.searchParams.get("search");
@@ -22,6 +22,18 @@ linkLangToggle.addEventListener("click", () => {
   currentLanguage = currentLanguage === "ENG" ? "RUS" : "ENG";
   linkLangToggle.textContent = currentLanguage;
   url.searchParams.set("lang", currentLanguage);
+  history.replaceState(null, "", url);
+});
+
+// Currency
+let convertToUSD = urlConvertToUSD || true;
+const currencyToggle = document.getElementById("currencyToggle");
+currencyToggle.textContent = "USD";
+currencyToggle.style.textDecoration = convertToUSD ? "none" : "line-through";
+currencyToggle.addEventListener("click", () => {
+  convertToUSD = convertToUSD === true ? false : true;
+  currencyToggle.style.textDecoration = convertToUSD ? "none" : "line-through";
+  url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 });
 
