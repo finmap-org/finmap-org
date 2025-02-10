@@ -1,5 +1,5 @@
 async function refreshHistogram(exchange, dataType) {
-  const chartData = [];
+  let chartData = [];
   let dataJson;
   try {
     const response = await fetch(`data/history/${exchange}.json`);
@@ -190,6 +190,11 @@ async function refreshHistogram(exchange, dataType) {
     modeBarButtonsToRemove: ["toImage", "lasso2d", "select2d"],
     scrollZoom: true,
   };
+
+  // Filter out traces where all values are 0 or null
+  chartData = chartData.filter((trace) => {
+    return trace.y.some((v) => v !== null && v !== 0 && !isNaN(v));
+  });
 
   Plotly.react("chart", chartData, layout, config);
 }
