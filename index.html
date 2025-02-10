@@ -30,13 +30,6 @@
   <body>
     <header>
       <img id="logo" src="" height="30px" />
-      <select id="inputExchange">
-        <option value="nasdaq" selected="selected">nasdaq</option>
-        <option value="nyse">nyse</option>
-        <option value="amex">amex</option>
-        <option value="us-all">us-all</option>
-        <option value="moex">moex</option>
-      </select>
       <input type="file" id="inputFile" accept=".csv,.txt" hidden />
       <label for="inputFile" id="inputFileLabel">
         <img
@@ -45,11 +38,7 @@
           style="height: 31px; margin-top: 5px"
         />
       </label>
-      <a
-        id="linkEraseFilter"
-        onclick="localStorage.removeItem('filterCsv'); refreshChart();"
-        hidden
-      >
+      <a id="linkEraseFilter" onclick="localStorage.removeItem('filterCsv'); refreshChart();" hidden>
         <img
           src="images/icons/erasefilter.png"
           title="Erase filter"
@@ -66,19 +55,16 @@
           />
         </div>
       </form>
-      <!--
-      <select id="inputCurrency">
-        <option value="USD" selected="selected">&nbsp; $ &nbsp;</option>
-        <option value="EUR">&nbsp; € &nbsp;</option>
-        <option value="CNY">&nbsp; ¥ &nbsp;</option>
-        <option value="RUB">&nbsp; ₽ &nbsp;</option>
-      </select>
-      -->
+
+      <input type="checkbox" id="convertToUsd" name="convertToUsd" checked />
+      <label for="convertToUsd">USD</label>
+     
       <select id="inputChartType">
         <option value="treemap" selected="selected">treemap</option>
         <option value="history">history</option>
         <option value="listings">listings</option>
       </select>
+
       <select id="inputDataType">
         <option value="marketcap" selected="selected">marketcap</option>
         <option value="value">value</option>
@@ -99,27 +85,33 @@
     <ul class="menu">
       <li>
         <a class="menuItem" target="_blank" rel="noopener" href="https://www.patreon.com/finmap">
-          <img src="images/icons/patreon.png" height="14px" />
+          <img src="images/icons/patreon.png"  />
         </a>
         <a class="menuItem" target="_blank" rel="noopener" href="https://boosty.to/finmap/donate">
-          <img src="images/icons/boosty.png" height="14px" />
+          <img src="images/icons/boosty.png"  />
         </a>
         <a class="menuItem" target="_blank" rel="noopener" href="https://x.com/finmaporg">
-          <img src="images/icons/x.png" height="14px" />
+          <img src="images/icons/x.png"  />
         </a>
         <a class="menuItem" target="_blank" rel="noopener" href="https://www.youtube.com/@finmaporg">
-          <img src="images/icons/youtube.png" height="14px" />
+          <img src="images/icons/youtube.png"  />
         </a>
         <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org">
-          <img src="images/icons/github.png" height="14px" />
+          <img src="images/icons/github.png"  />
         </a>
         <a class="menuItem" target="_blank" rel="noopener" href="#">
-          <img src="images/icons/discord.png" height="14px" />
+          <img src="images/icons/discord.png"  />
         </a>
       </li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=nasdaq&chartType=treemap">NASDAQ</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=nyse&chartType=treemap">NYSE</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=amex&chartType=treemap">AMERICAN EXCHANGE</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=us-all&chartType=treemap">NASDAQ + NYSE + AMEX</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=lse&chartType=treemap">LONDON STOCK EXCHANGE</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://finmap.org/?exchange=moex&chartType=treemap">MOSCOW EXCHANGE</a></li>
+      <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/wiki">F.A.Q.</a></li>
       <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/issues">SUPPORT</a></li>
       <li><a class="menuItem" target="_blank" rel="noopener" href="mailto:contact@finmap.org">CONTACT</a></li>
-      <!-- <li><a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/wiki">F.A.Q.</a></li> -->
     </ul>
     <button class="hamburger">
       <i class="menuIcon material-icons">menu</i>
@@ -132,7 +124,8 @@
       <a href="https://boosty.to/finmap/donate" target="_blank" rel="noopener">
         <img src="images/icons/boosty.png" height="14px" /> Boosty
       </a>
-      <a id="share">♡︎ Share</a>
+      <a id="share">
+        <img src="images/icons/share.png" height="14px" />♡︎ Share</a>
       <a id="install" hidden>✓ Install</a>
       <a id="langToggle">ENG</a>
     </footer>

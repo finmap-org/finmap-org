@@ -151,11 +151,15 @@ footer {
 }
 
 .menuItem {
-  display: block;
-  margin: 1rem 4rem;
+  display: inline-block;
+  margin: 1.5rem 0.7rem;
   font-size: 1.8rem;
   color: white;
   text-decoration: none;
+}
+
+.menuItem img {
+  height: 24px;
 }
 
 .menuItem:hover {
@@ -190,7 +194,7 @@ footer {
   background: rgba(65, 69, 84, 0.8);
   color: white;
   list-style: none;
-  padding-top: 0.5rem;
+  padding: 2.5rem;
 }
 
 .showMenu {
