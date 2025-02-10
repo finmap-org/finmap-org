@@ -152,8 +152,8 @@ footer {
 
 .menuItem {
   display: inline-block;
-  margin: 1.5rem 0.7rem;
-  font-size: 1.8rem;
+  margin: 0.5rem 0.7rem;
+  font-size: 1.2rem;
   color: white;
   text-decoration: none;
 }
@@ -194,7 +194,8 @@ footer {
   background: rgba(65, 69, 84, 0.8);
   color: white;
   list-style: none;
-  padding: 2.5rem;
+  padding: 1.8rem;
+  text-align: right
 }
 
 .showMenu {
