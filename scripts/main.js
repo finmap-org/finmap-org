@@ -26,6 +26,11 @@ linkLangToggle.addEventListener("click", () => {
 });
 
 const inputExchange = document.getElementById("inputExchange");
+inputExchange.addEventListener("change", refreshChart);
+if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex"].includes(urlExchange)) {
+  inputExchange.value = urlExchange;
+}
+
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
@@ -50,6 +55,7 @@ while (date.getDay() === 0 || date.getDay() === 6) {
 }
 var formattedDate = date.toISOString().split("T")[0];
 const inputDate = document.getElementById("inputDate");
+inputDate.addEventListener("change", refreshChart);
 inputDate.value = formattedDate;
 inputDate.max = new Date().toISOString().split("T")[0];
 
@@ -58,32 +64,22 @@ if (urlDate) {
 }
 
 const inputChartType = document.getElementById("inputChartType");
+inputChartType.addEventListener("change", refreshChart);
 if (urlChartType && ["treemap", "history", "listings"].includes(urlChartType)) {
   inputChartType.value = urlChartType;
 }
 
 // const inputCurrency = document.getElementById("inputCurrency");
+// inputCurrency.addEventListener("change", refreshChart);
 // if (urlCurrency && ["USD", "EUR", "CNY", "RUB"].includes(urlCurrency)) {
 //   inputCurrency.value = urlCurrency;
 // }
 
 const inputDataType = document.getElementById("inputDataType");
+inputDataType.addEventListener("change", refreshChart);
 if (urlDataType && ["marketcap", "value", "trades"].includes(urlDataType)) {
   inputDataType.value = urlDataType;
 }
-
-inputChartType.addEventListener("change", refreshChart);
-// inputCurrency.addEventListener("change", refreshChart);
-inputDataType.addEventListener("change", refreshChart);
-inputDate.addEventListener("change", refreshChart);
-
-if (
-  urlExchange &&
-  ["nasdaq", "nyse", "amex", "us-all", "moex"].includes(urlExchange)
-) {
-  inputExchange.value = urlExchange;
-}
-inputExchange.addEventListener("change", refreshChart);
 
 //Searchbox
 const inputSearch = document.getElementById("inputSearch");
@@ -112,83 +108,52 @@ function toggleInput() {
       inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.removeAttribute("hidden");
+      inputFileLabel.removeAttribute("hidden");
+      linkEraseFilter.removeAttribute("hidden");
       break;
     case "history":
-      // inputExchange.value = "moex";
       inputSearch.setAttribute("hidden", "");
       // inputCurrency.removeAttribute("hidden");
       inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.setAttribute("hidden", "");
-      // inputFileLabel.setAttribute("hidden", "");
-      // linkEraseFilter.setAttribute("hidden", "");
+      inputFileLabel.setAttribute("hidden", "");
+      linkEraseFilter.setAttribute("hidden", "");
       url.searchParams.delete("search");
       url.searchParams.delete("date");
       break;
     case "listings":
-      // inputExchange.value = "moex";
       inputSearch.setAttribute("hidden", "");
       // inputCurrency.setAttribute("hidden", "");
       inputChartType.removeAttribute("hidden");
       inputDataType.setAttribute("hidden", "");
       inputDate.setAttribute("hidden", "");
-      // inputFileLabel.setAttribute("hidden", "");
-      // linkEraseFilter.setAttribute("hidden", "");
+      inputFileLabel.setAttribute("hidden", "");
+      linkEraseFilter.setAttribute("hidden", "");
       url.searchParams.delete("search");
       url.searchParams.delete("currency");
       url.searchParams.delete("dataType");
       url.searchParams.delete("date");
-      break;
-  }
-  switch (inputExchange.value) {
-    case "nasdaq":
-    case "nyse":
-    case "amex":
-    case "us-all":
-      inputSearch.removeAttribute("hidden");
-      // inputCurrency.setAttribute("hidden", "");
-      inputChartType.value = "treemap";
-      url.searchParams.set("chartType", "treemap");
-      inputDataType.setAttribute("hidden", "");
-      inputDate.removeAttribute("hidden");
-      url.searchParams.delete("currency");
-      url.searchParams.delete("dataType");
-      break;
-    case "moex":
-      inputSearch.removeAttribute("hidden");
-      // inputCurrency.removeAttribute("hidden");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.removeAttribute("hidden");
-      inputDate.removeAttribute("hidden");
       break;
   }
   history.replaceState(null, "", url);
 }
 
 let clickedTreemapItem;
-let hasPlotlyClickListener = false;
 let uniqSectors = [];
 async function refreshChart() {
   toggleInput();
-
   switch (inputChartType.value) {
     case "treemap":
       await refreshTreemap();
-      // if (urlSearch) {
-      //   await selectTreemapItemByLabel(urlSearch);
-      //   await addOverlayWidget();
-      // }
-      if (!hasPlotlyClickListener) {
-        hasPlotlyClickListener = true;
-        divChart.on("plotly_click", async (event) => {
-          clickedTreemapItem = event.points[0].customdata;
-          const clickedTreemapItemType = clickedTreemapItem[2];
-          if (clickedTreemapItemType !== "sector") await addOverlayWidget();
-        });
-      }
+      divChart.on("plotly_click", async (event) => {
+        clickedTreemapItem = event.points[0].customdata;
+        const clickedTreemapItemType = clickedTreemapItem[2];
+        if (clickedTreemapItemType !== "sector") await addOverlayWidget();
+      });
       break;
     case "history":
-      refreshHistogram();
+      refreshHistogram(inputExchange.value, inputDataType.value);
       break;
     case "listings":
       refreshListings();
