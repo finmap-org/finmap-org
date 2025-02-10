@@ -25,16 +25,10 @@ linkLangToggle.addEventListener("click", () => {
   history.replaceState(null, "", url);
 });
 
-const inputExchange = document.getElementById("inputExchange");
-inputExchange.addEventListener("change", refreshChart);
-if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex"].includes(urlExchange)) {
-  inputExchange.value = urlExchange;
-}
-
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
-switch (inputExchange.value) {
+switch (exchange) {
   case "moex":
     openHour = 8;
     break;
@@ -69,12 +63,6 @@ if (urlChartType && ["treemap", "history", "listings"].includes(urlChartType)) {
   inputChartType.value = urlChartType;
 }
 
-// const inputCurrency = document.getElementById("inputCurrency");
-// inputCurrency.addEventListener("change", refreshChart);
-// if (urlCurrency && ["USD", "EUR", "CNY", "RUB"].includes(urlCurrency)) {
-//   inputCurrency.value = urlCurrency;
-// }
-
 const inputDataType = document.getElementById("inputDataType");
 inputDataType.addEventListener("change", refreshChart);
 if (urlDataType && ["marketcap", "value", "trades"].includes(urlDataType)) {
@@ -96,15 +84,12 @@ chooseFileButton.addEventListener("change", function (event) {
 const linkEraseFilter = document.getElementById("linkEraseFilter");
 
 function toggleInput() {
-  url.searchParams.set("exchange", inputExchange.value);
-  // url.searchParams.set("currency", inputCurrency.value);
   url.searchParams.set("chartType", inputChartType.value);
   url.searchParams.set("dataType", inputDataType.value);
   url.searchParams.set("date", inputDate.value);
   switch (inputChartType.value) {
     case "treemap":
       inputSearch.removeAttribute("hidden");
-      // inputCurrency.removeAttribute("hidden");
       inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.removeAttribute("hidden");
@@ -113,7 +98,6 @@ function toggleInput() {
       break;
     case "history":
       inputSearch.setAttribute("hidden", "");
-      // inputCurrency.removeAttribute("hidden");
       inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.setAttribute("hidden", "");
@@ -124,7 +108,6 @@ function toggleInput() {
       break;
     case "listings":
       inputSearch.setAttribute("hidden", "");
-      // inputCurrency.setAttribute("hidden", "");
       inputChartType.removeAttribute("hidden");
       inputDataType.setAttribute("hidden", "");
       inputDate.setAttribute("hidden", "");
@@ -139,21 +122,24 @@ function toggleInput() {
   history.replaceState(null, "", url);
 }
 
-let clickedTreemapItem;
-let uniqSectors = [];
 async function refreshChart() {
   toggleInput();
+  
+  if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "nyse"].includes(urlExchange)) {
+    const exchange = urlExchange;
+  }
+
   switch (inputChartType.value) {
     case "treemap":
       await refreshTreemap();
       divChart.on("plotly_click", async (event) => {
-        clickedTreemapItem = event.points[0].customdata;
+        const clickedTreemapItem = event.points[0].customdata;
         const clickedTreemapItemType = clickedTreemapItem[2];
-        if (clickedTreemapItemType !== "sector") await addOverlayWidget();
+        if (clickedTreemapItemType !== "sector") await addOverlayWidget(clickedTreemapItem);
       });
       break;
     case "history":
-      refreshHistogram(inputExchange.value, inputDataType.value);
+      refreshHistogram(exchange, inputDataType.value);
       break;
     case "listings":
       refreshListings();
