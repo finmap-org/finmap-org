@@ -37,6 +37,14 @@ currencyToggle.addEventListener("click", () => {
   history.replaceState(null, "", url);
 });
 
+let exchange;
+if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "nyse"].includes(urlExchange)) {
+  exchange = urlExchange;
+}
+else {
+  exchange = "nasdaq";
+}
+
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
@@ -136,10 +144,6 @@ function toggleInput() {
 
 async function refreshChart() {
   toggleInput();
-  
-  if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "nyse"].includes(urlExchange)) {
-    const exchange = urlExchange;
-  }
 
   switch (inputChartType.value) {
     case "treemap":
