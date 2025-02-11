@@ -150,7 +150,7 @@ async function renderTreemapChart(chartData) {
 let filterList;
 const highlightList = ["AAPL", "ASML", "WLY", "GCHE"];
 
-async function refreshTreemap(exchange, dataType, date) {
+async function refreshTreemap(dataType, date, currency) {
   const localFilterCsv = localStorage.getItem("filterCsv");
   if (localFilterCsv !== undefined && localFilterCsv !== null) {
     filterList = await applyFilter(localFilterCsv);
@@ -163,24 +163,7 @@ async function refreshTreemap(exchange, dataType, date) {
     inputFileLabel.removeAttribute("hidden");
     linkEraseFilter.setAttribute("hidden", "");
   }
-
-  let chartData;
-  let currencyExchangeRate = 1;
-  switch (exchange) {
-    case "nasdaq":
-    case "nyse":
-    case "amex":
-    case "us-all":
-      currencyExchangeRate = 1;
-      break;
-    case "moex":
-      currencyExchangeRate = 1; // await getCurrencyRateByDate(date, "USD2RUB");
-      break;
-    default:
-      currencyExchangeRate = 1;
-      break;
-  }
-  chartData = await prepTreemapData(dataType, date, exchange, currencyExchangeRate);
+  chartData = await prepTreemapData(dataType, date, currency);
   await renderTreemapChart(chartData);
 }
 
@@ -206,7 +189,7 @@ async function getMarketDataJson(date, exchange) {
 }
 
 
-async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
+async function prepTreemapData(dataType, date, currency) {
   const marketData = await getMarketDataJson(date, exchange);
   let filteredMarketData = marketData;
 
@@ -259,8 +242,9 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
-    chartData.marketCap[i] = chartData.marketCap[i] / currencyExchangeRate;
-    chartData.value[i] = chartData.value[i] / currencyExchangeRate;
+    const exchangeRate = getExchangeRateByDate(date, currency);
+    chartData.marketCap[i] = chartData.marketCap[i] / exchangeRate;
+    chartData.value[i] = chartData.value[i] / exchangeRate;
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);

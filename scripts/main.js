@@ -14,14 +14,6 @@ const urlExchange = url.searchParams.get("exchange");
 const urlSearch = url.searchParams.get("search");
 const urlLang = url.searchParams.get("lang");
 
-let exchange;
-if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
-  exchange = urlExchange;
-}
-else {
-  exchange = "nasdaq";
-}
-
 // Language
 let currentLanguage = urlLang || "ENG";
 const linkLangToggle = document.getElementById("langToggle");
@@ -33,14 +25,59 @@ linkLangToggle.addEventListener("click", () => {
   history.replaceState(null, "", url);
 });
 
+// Exchange
+let exchange;
+if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
+  exchange = urlExchange;
+}
+else {
+  exchange = "nasdaq";
+}
+
 // Currency
+let currency;
+let currencySign;
+let exchangeRates;
 let convertToUSD = urlConvertToUSD || true;
-const currencyToggle = document.getElementById("currencyToggle");
-currencyToggle.textContent = "USD";
-currencyToggle.style.textDecoration = convertToUSD ? "none" : "line-through";
-currencyToggle.addEventListener("click", () => {
-  convertToUSD = convertToUSD === true ? false : true;
-  currencyToggle.style.textDecoration = convertToUSD ? "none" : "line-through";
+const linkCurrencyToggle = document.getElementById("currencyToggle");
+linkCurrencyToggle.textContent = convertToUSD ? "USD" : currency;
+linkCurrencyToggle.addEventListener("click", currnecyToggle);
+
+async function currnecyToggle() {
+  if (!convertToUSD) {
+    convertToUSD = true;
+    currency = "USD";
+    currencySign = "$";
+    exchangeRates = await getExchangeRates(currency);
+  }
+  else {
+    convertToUSD = false;
+    switch (exchange) {
+      case "lse":
+        currency = "GBP";
+        currencySign = "£";
+        break;
+      case "bist":
+        currency = "TRY";
+        currencySign = "₺";
+        break;
+      case "moex":
+        currency = "RUB";
+        currencySign = "₽";
+        break;
+      case "nasdaq":
+      case "nyse":
+      case "amex":
+      case "us-all":
+        currency = "USD";
+        currencySign = "$";
+        break;
+      default:
+        currency = "USD";
+        currencySign = "$";
+        break;
+    }
+  }
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 });
@@ -49,6 +86,9 @@ let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
 switch (exchange) {
+  case "lse":
+    openHour = 5;
+    break;
   case "moex":
     openHour = 8;
     break;
@@ -71,6 +111,23 @@ var formattedDate = date.toISOString().split("T")[0];
 const inputDate = document.getElementById("inputDate");
 inputDate.addEventListener("change", refreshChart);
 inputDate.value = formattedDate;
+switch (exchange) {
+  case "lse":
+    inputDate.min = new Date(`2025-02-07T13:00:00`).toISOString().split("T")[0];
+    break;
+  case "moex":
+    inputDate.min = new Date(`2011-12-19T13:00:00`).toISOString().split("T")[0];
+    break;
+  case "nasdaq":
+  case "nyse":
+  case "amex":
+  case "us-all":
+    inputDate.min = new Date(`2024-12-09T13:00:00`).toISOString().split("T")[0];
+    break;
+  default:
+    inputDate.min = new Date(`2024-12-09T13:00:00`).toISOString().split("T")[0];
+    break;
+}
 inputDate.max = new Date().toISOString().split("T")[0];
 
 if (urlDate) {
@@ -151,7 +208,7 @@ async function refreshChart() {
 
   switch (chartType) {
     case "treemap":
-      await refreshTreemap(exchange, dataType, date);
+      await refreshTreemap(dataType, date, currency);
       divChart.on("plotly_click", async (event) => {
         const clickedTreemapItem = event.points[0].customdata;
         const clickedTreemapItemType = clickedTreemapItem[2];
