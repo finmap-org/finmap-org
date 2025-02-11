@@ -40,7 +40,7 @@ currencyToggle.addEventListener("click", () => {
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
-switch (exchange) {
+switch (urlExchange) {
   case "moex":
     openHour = 8;
     break;
