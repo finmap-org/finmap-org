@@ -80,7 +80,7 @@ async function currnecyToggle() {
   }
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
-});
+}
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
