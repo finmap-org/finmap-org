@@ -14,6 +14,14 @@ const urlExchange = url.searchParams.get("exchange");
 const urlSearch = url.searchParams.get("search");
 const urlLang = url.searchParams.get("lang");
 
+let exchange;
+if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
+  exchange = urlExchange;
+}
+else {
+  exchange = "nasdaq";
+}
+
 // Language
 let currentLanguage = urlLang || "ENG";
 const linkLangToggle = document.getElementById("langToggle");
@@ -40,7 +48,7 @@ currencyToggle.addEventListener("click", () => {
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
-switch (urlExchange) {
+switch (exchange) {
   case "moex":
     openHour = 8;
     break;
@@ -140,13 +148,6 @@ async function refreshChart() {
   const chartType = inputChartType.value;
   const dataType = inputDataType.value;
   const date = inputDate.value;
-  let exchange;
-  if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
-    exchange = urlExchange;
-  }
-  else {
-    exchange = "nasdaq";
-  }
 
   switch (chartType) {
     case "treemap":
