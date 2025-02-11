@@ -38,7 +38,7 @@ currencyToggle.addEventListener("click", () => {
 });
 
 let exchange;
-if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "nyse"].includes(urlExchange)) {
+if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
   exchange = urlExchange;
 }
 else {
@@ -147,7 +147,7 @@ async function refreshChart() {
 
   switch (inputChartType.value) {
     case "treemap":
-      await refreshTreemap();
+      await refreshTreemap(exchange, dataType, date);
       divChart.on("plotly_click", async (event) => {
         const clickedTreemapItem = event.points[0].customdata;
         const clickedTreemapItemType = clickedTreemapItem[2];
@@ -155,7 +155,7 @@ async function refreshChart() {
       });
       break;
     case "history":
-      refreshHistogram(exchange, inputDataType.value);
+      refreshHistogram(exchange, dataType);
       break;
     case "listings":
       refreshListings();
