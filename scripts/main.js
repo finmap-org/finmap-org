@@ -42,19 +42,9 @@ let exchangeRateByDate;
 let convertToUSD = urlConvertToUSD || true;
 const linkCurrencyToggle = document.getElementById("currencyToggle");
 linkCurrencyToggle.textContent = convertToUSD ? "USD" : currency;
-linkCurrencyToggle.addEventListener("click", currencyToggle);
+linkCurrencyToggle.addEventListener("click", currnecyToggle);
 
-async function currencyToggle() {
-  if (!convertToUSD) {
-    convertToUSD = true;
-    currency = "USD";
-    currencySign = "$";
-    exchangeRates = await getExchangeRates(currency);
-    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, currency);
-  }
-  else {
-    convertToUSD = false;
-    switch (exchange) {
+switch (exchange) {
       case "lse":
         currency = "GBP";
         currencySign = "£";
@@ -79,12 +69,22 @@ async function currencyToggle() {
         currencySign = "$";
         break;
     }
+
+async function currnecyToggle() {
+  if (!convertToUSD) {
+    convertToUSD = true;
+    currencySign = "$";
+    exchangeRates = await getExchangeRates(currency);
+    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, currency);
+  }
+  else {
+    convertToUSD = false;
     exchangeRateByDate = 1;
   }
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 }
-currencyToggle();
+currnecyToggle();
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
