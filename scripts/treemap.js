@@ -242,9 +242,8 @@ async function prepTreemapData(dataType, date, currency) {
     if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
-    const exchangeRate = getExchangeRateByDate(date, currency);
-    chartData.marketCap[i] = chartData.marketCap[i] / exchangeRate;
-    chartData.value[i] = chartData.value[i] / exchangeRate;
+    chartData.marketCap[i] = chartData.marketCap[i] / exchangeRateByDate;
+    chartData.value[i] = chartData.value[i] / exchangeRateByDate;
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);

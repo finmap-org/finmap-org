@@ -38,6 +38,7 @@ else {
 let currency;
 let currencySign;
 let exchangeRates;
+let exchangeRateByDate;
 let convertToUSD = urlConvertToUSD || true;
 const linkCurrencyToggle = document.getElementById("currencyToggle");
 linkCurrencyToggle.textContent = convertToUSD ? "USD" : currency;
@@ -49,6 +50,7 @@ async function currnecyToggle() {
     currency = "USD";
     currencySign = "$";
     exchangeRates = await getExchangeRates(currency);
+    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, currency);
   }
   else {
     convertToUSD = false;
@@ -77,6 +79,7 @@ async function currnecyToggle() {
         currencySign = "$";
         break;
     }
+    exchangeRateByDate = 1;
   }
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);

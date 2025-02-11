@@ -20,9 +20,7 @@ async function getExchangeRates(currency) {
   return exchangeRates;
 }
 
-async function getExchangeRateByDate(date, currency) {
-  const exchangeRates = await getExchangeRates(currency);
-
+async function getExchangeRateByDate(exchangeRates, date, currency) {
   let rate = exchangeRates[date];
   let d = new Date(date);
   let limit = 14;
