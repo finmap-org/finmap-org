@@ -58,7 +58,7 @@ async function selectTreemapItemByLabel(label) {
 
   var boxes = divChart.querySelectorAll("g.slice.cursor-pointer");
   let skipItems;
-  switch (inputExchange.value) {
+  switch (exchange) {
     case "nasdaq":
     case "nyse":
     case "amex":
@@ -150,7 +150,7 @@ async function renderTreemapChart(chartData) {
 let filterList;
 const highlightList = ["AAPL", "ASML", "WLY", "GCHE"];
 
-async function refreshTreemap() {
+async function refreshTreemap(exchange, dataType, date) {
   const localFilterCsv = localStorage.getItem("filterCsv");
   if (localFilterCsv !== undefined && localFilterCsv !== null) {
     filterList = await applyFilter(localFilterCsv);
@@ -166,9 +166,6 @@ async function refreshTreemap() {
 
   let chartData;
   let currencyExchangeRate = 1;
-  const dataType = inputDataType.value;
-  const date = inputDate.value;
-  const exchange = inputExchange.value;
   switch (exchange) {
     case "nasdaq":
     case "nyse":
