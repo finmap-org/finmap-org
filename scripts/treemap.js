@@ -174,7 +174,7 @@ async function refreshTreemap(exchange, dataType, date) {
       currencyExchangeRate = 1;
       break;
     case "moex":
-      currencyExchangeRate = await getCurrencyRateByDate(date, "USD2RUB");
+      currencyExchangeRate = 1; // await getCurrencyRateByDate(date, "USD2RUB");
       break;
     default:
       currencyExchangeRate = 1;
