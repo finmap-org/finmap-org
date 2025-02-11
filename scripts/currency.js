@@ -30,7 +30,7 @@ async function getExchangeRateByDate(date, currency) {
     limit = limit - 1;
     d.setDate(d.getUTCDate() - 1);
     let prevDate = d.toISOString().split("T")[0];
-    rate = currencyRates[prevDate];
+    rate = exchangeRate[prevDate];
   }
 
   if (typeof rate == "undefined") {
