@@ -33,7 +33,7 @@ async function getExchangeRateByDate(exchangeRates, date, currency) {
 
   if (typeof rate == "undefined") {
     rate = 1;
-    currnecyToggle();
+    currencyToggle();
   }
 
   return rate;

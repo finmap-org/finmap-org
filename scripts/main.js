@@ -42,9 +42,9 @@ let exchangeRateByDate;
 let convertToUSD = urlConvertToUSD || true;
 const linkCurrencyToggle = document.getElementById("currencyToggle");
 linkCurrencyToggle.textContent = convertToUSD ? "USD" : currency;
-linkCurrencyToggle.addEventListener("click", currnecyToggle);
+linkCurrencyToggle.addEventListener("click", currencyToggle);
 
-async function currnecyToggle() {
+async function currencyToggle() {
   if (!convertToUSD) {
     convertToUSD = true;
     currency = "USD";
@@ -84,7 +84,7 @@ async function currnecyToggle() {
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 }
-currnecyToggle();
+currencyToggle();
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
