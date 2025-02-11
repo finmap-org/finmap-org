@@ -217,8 +217,8 @@ async function addOverlayWidget(exchange, clickedTreemapItem, date) {
     }
   };
 
-  infoDiv.removeAttribute("hidden");
-  newsDiv.setAttribute("hidden", "");
+  newsDiv.removeAttribute("hidden");
+  infoDiv.setAttribute("hidden", "");
 
   showInfoBtn.addEventListener("click", function () {
     newsDiv.setAttribute("hidden", "");
