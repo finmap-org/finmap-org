@@ -21,9 +21,9 @@ async function getExchangeRates(currency) {
 }
 
 async function getExchangeRateByDate(date, currency) {
-  const exchangeRate = await getExchangeRates(currency);
+  const exchangeRates = await getExchangeRates(currency);
 
-  let rate = exchangeRate[date];
+  let rate = exchangeRates[date];
   let d = new Date(date);
   let limit = 14;
   while (typeof rate == "undefined" && limit >= 0) {
