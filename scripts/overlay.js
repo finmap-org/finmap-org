@@ -4,7 +4,7 @@ function parsePubDate(item) {
 }
 
 // Get Related News Feed
-async function getNews(clickedTreemapItem) {
+async function getNews(clickedTreemapItem, date) {
   // Format the date to a readable local time string
   const options = {
     month: "long", // Full month name (e.g., "January")
@@ -30,7 +30,6 @@ async function getNews(clickedTreemapItem) {
       companyName = clickedTreemapItem[7];
       break;
   }
-  let date = inputDate.value;
   const clickedLabel = clickedTreemapItem[6];
   const newsQuery = companyName.split(" ").slice(0, 2).join(" ");
   const url = `https://d3sk7vmzjz3uox.cloudfront.net/${currentLanguage}:${clickedLabel}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(":")[0]}`;
@@ -67,12 +66,12 @@ async function getNews(clickedTreemapItem) {
 }
 
 // Get Company Info
-async function getCompanyInfo(clickedTreemapItem) {
+async function getCompanyInfo(exchange, clickedTreemapItem) {
   let wikiPageId, url, response, json;
   let html = "";
   let description;
   let sourceLink;
-  switch (inputExchange.value) {
+  switch (exchange) {
     case "nasdaq":
     case "nyse":
     case "amex":
@@ -128,12 +127,8 @@ async function getCompanyInfo(clickedTreemapItem) {
 
 // Add Overlay widget
 let overlayDiv, newsDiv, infoDiv;
-async function addOverlayWidget(clickedTreemapItem) {
+async function addOverlayWidget(exchange, clickedTreemapItem, date) {
   const slices = document.querySelectorAll("g.slice.cursor-pointer");
-
-  if (inputChartType.value !== "treemap") {
-    return;
-  }
 
   if (slices.length === 1) {
     return;
@@ -144,8 +139,8 @@ async function addOverlayWidget(clickedTreemapItem) {
     overlayDiv.style.visibility = "visible";
     newsDiv.innerHTML = "";
     infoDiv.innerHTML = "";
-    newsDiv.innerHTML = await getNews(clickedTreemapItem);
-    infoDiv.innerHTML = await getCompanyInfo(clickedTreemapItem);
+    newsDiv.innerHTML = await getNews(clickedTreemapItem, date);
+    infoDiv.innerHTML = await getCompanyInfo(exchange, clickedTreemapItem);
     return;
   }
 
@@ -205,12 +200,12 @@ async function addOverlayWidget(clickedTreemapItem) {
 
   newsDiv = document.createElement("div");
   newsDiv.id = "news";
-  newsDiv.innerHTML = await getNews(clickedTreemapItem);
+  newsDiv.innerHTML = await getNews(clickedTreemapItem, date);
   overlayDiv.appendChild(newsDiv);
 
   infoDiv = document.createElement("div");
   infoDiv.id = "info";
-  infoDiv.innerHTML = await getCompanyInfo(clickedTreemapItem);
+  infoDiv.innerHTML = await getCompanyInfo(exchange, clickedTreemapItem);
   overlayDiv.appendChild(infoDiv);
 
   // Append the div to the body or a specific container

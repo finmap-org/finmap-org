@@ -37,14 +37,6 @@ currencyToggle.addEventListener("click", () => {
   history.replaceState(null, "", url);
 });
 
-let exchange;
-if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
-  exchange = urlExchange;
-}
-else {
-  exchange = "nasdaq";
-}
-
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
 let openHour;
@@ -145,13 +137,24 @@ function toggleInput() {
 async function refreshChart() {
   toggleInput();
 
-  switch (inputChartType.value) {
+  const chartType = inputChartType.value;
+  const dataType = inputDataType.value;
+  const date = inputDate.value;
+  let exchange;
+  if (urlExchange && ["nasdaq", "nyse", "amex", "us-all", "moex", "lse"].includes(urlExchange)) {
+    exchange = urlExchange;
+  }
+  else {
+    exchange = "nasdaq";
+  }
+
+  switch (chartType) {
     case "treemap":
       await refreshTreemap(exchange, dataType, date);
       divChart.on("plotly_click", async (event) => {
         const clickedTreemapItem = event.points[0].customdata;
         const clickedTreemapItemType = clickedTreemapItem[2];
-        if (clickedTreemapItemType !== "sector") await addOverlayWidget(clickedTreemapItem);
+        if (clickedTreemapItemType !== "sector") await addOverlayWidget(exchange, clickedTreemapItem, date);
       });
       break;
     case "history":
