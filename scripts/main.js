@@ -90,6 +90,7 @@ async function currencyToggle() {
   linkCurrencyToggle.textContent = currency;
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
+  refreshChart();
 }
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
@@ -218,7 +219,7 @@ async function refreshChart() {
 
   switch (chartType) {
     case "treemap":
-      await refreshTreemap(dataType, date, currency);
+      await refreshTreemap(dataType, date);
       divChart.on("plotly_click", async (event) => {
         const clickedTreemapItem = event.points[0].customdata;
         const clickedTreemapItemType = clickedTreemapItem[2];
