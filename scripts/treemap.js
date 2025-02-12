@@ -242,8 +242,8 @@ async function prepTreemapData(dataType, date) {
     if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
-    chartData.marketCap[i] = chartData.marketCap[i] / (1e9 * exchangeRateByDate);
-    chartData.value[i] = chartData.value[i] / (1e9 * exchangeRateByDate);
+    chartData.marketCap[i] = chartData.marketCap[i] / (1e6 * exchangeRateByDate);
+    chartData.value[i] = chartData.value[i] / (1e6 * exchangeRateByDate);
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);
@@ -318,15 +318,15 @@ if (isPortfolio) {
   chartData["texttemplate"] = `<b>%{label}</b><br>
 %{customdata[7]}<br>
 %{customdata[12]} (%{customdata[13]:.2f}%)<br>
-MarketCap: ${currencySign}%{customdata[17]:,.0f}B`;
+MarketCap: ${currencySign}%{customdata[17]:,.0f}M`;
 
   chartData["hovertemplate"] = `<b>%{customdata[6]}</b><br>
 %{customdata[7]}<br>
 Price: %{customdata[12]}<br>
 Price change: %{customdata[13]:.2f}%<br>
-MarketCap: ${currencySign}%{customdata[17]:,.0f}B<br>
+MarketCap: ${currencySign}%{customdata[17]:,.0f}M<br>
 Volume: %{customdata[14]:,.0f}<br>
-Value: ${currencySign}%{customdata[15]:,.0f}B<br>
+Value: ${currencySign}%{customdata[15]:,.0f}M<br>
 Trades: %{customdata[16]:,.0f}<br>
 Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
