@@ -1,7 +1,7 @@
 "use strict";
 
-const CACHE_NAME = "my-app-static-cache-v25.2.11.1";
-const DATA_CACHE_NAME = "my-app-data-cache-v25.2.11.1";
+const CACHE_NAME = "my-app-static-cache-v25.2.12";
+const DATA_CACHE_NAME = "my-app-data-cache-v25.2.12";
 
 const FILES_TO_CACHE = [
   "/",
