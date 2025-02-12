@@ -1,5 +1,3 @@
-// TODO: histogram for user's portfolio
-
 async function refreshHistogram(exchange, dataType) {
   let chartData = [];
   let dataJson;
@@ -15,6 +13,59 @@ async function refreshHistogram(exchange, dataType) {
   }
   const x = dataJson.dates;
   
+  // Plot exchange rates
+  let exchangeRates;
+  if (exchangeRates === undefined) {
+    exchangeRates = await getExchangeRates(nativeCurrency);
+  }
+  const filteredExchangeRates = Object.fromEntries(
+    Object.entries(exchangeRates)
+    .filter(([_, value]) => 
+      value !== undefined && 
+      !isNaN(value) && 
+      value !== 0
+    )
+  );
+  if (nativeCurrency !== "USD"){
+    chartData.push({
+      name: nativeCurrency,
+      type: "line",
+      mode: "lines",
+      yaxis: "y2",
+      connectgaps: true,
+      customdata: Object.values(filteredExchangeRates),
+      hoverinfo: "all",
+      hovertemplate:
+        `%{x|%x}<br>%{customdata:,.2f}<br>${nativeCurrency} per USD<extra></extra>`,
+      x: Object.keys(filteredExchangeRates),
+      y: Object.values(filteredExchangeRates).map(x => (1/x).toFixed(4)),
+    });
+  }
+
+  if (currency != nativeCurrency) {
+    dataJson = {
+      dates: dataJson.dates.filter(date => date in filteredExchangeRates),
+      sectors: dataJson.sectors.map(sector => {
+        // Create indexes array for valid dates
+        const validIndexes = dataJson.dates
+          .map((date, index) => ({ date, index }))
+          .filter(item => item.date in filteredExchangeRates)
+          .map(item => item.index);
+    
+        return {
+          sectorName: sector.sectorName,
+          marketCap: validIndexes.map(i => sector.marketCap[i] / filteredExchangeRates[dataJson.dates[i]]),
+          value: validIndexes.map(i => sector.value[i] / filteredExchangeRates[dataJson.dates[i]]),
+          volume: sector.volume,
+          priceChangePct: sector.priceChangePct,
+          tradesNumber: sector.tradesNumber,
+          itemsNumber: sector.itemsNumber
+        };
+      })
+    };
+  }
+
+  // Sectors
   dataJson.sectors.forEach((trace) => {
     if (trace.sectorName === "") {
       return;
@@ -40,9 +91,6 @@ async function refreshHistogram(exchange, dataType) {
       hoverinfo: "all",
       hovertemplate:
         "%{x|%x}<br>%{y:,.0f}<br>%{fullData.name}<extra></extra>",
-      // marker: {
-      //   color: traceColors[traceName],
-      // },
       x: x,
       y: y,
     });

@@ -87,7 +87,9 @@ async function currencyToggle() {
     exchangeRateByDate = 1;
   }
   linkCurrencyToggle.textContent = currency;
-  refreshChart();
+  if (nativeCurrency !== "USD") {
+    refreshChart();
+  }
 }
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
