@@ -329,7 +329,7 @@ Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
 Listed Since: %{customdata[18]}<br>
 Industry: %{customdata[4]}<br>
-Size: %{value:,.0f}<br>
+In Portfolio: ${currencySign}%{value:,.0f}<br>
 percentParent: %{percentParent:.2p}<br>
 percentRoot: %{percentRoot:.2p}<br>
 Nested Items Count: %{customdata[22]:,.0f}

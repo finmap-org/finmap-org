@@ -8,7 +8,6 @@ divChart.addEventListener("contextmenu", (event) => {
 const url = new URL(window.location.href);
 const urlDate = url.searchParams.get("date");
 const urlChartType = url.searchParams.get("chartType");
-const urlConvertToUSD = url.searchParams.get("convertToUSD");
 const urlDataType = url.searchParams.get("dataType");
 const urlExchange = url.searchParams.get("exchange");
 const urlSearch = url.searchParams.get("search");
@@ -35,12 +34,8 @@ else {
 }
 
 // Currency
-let currency;
-let currencySign;
 let nativeCurrency;
 let nativeCurrencySign;
-let exchangeRates;
-let exchangeRateByDate = 1;
 
 switch (exchange) {
   case "lse":
@@ -68,11 +63,15 @@ switch (exchange) {
     break;
 }
 
-let convertToUSD = urlConvertToUSD || "false";
+let convertToUSD = "false";
+let currency = nativeCurrency;
+let currencySign = nativeCurrencySign;
 const linkCurrencyToggle = document.getElementById("currencyToggle");
-linkCurrencyToggle.textContent = convertToUSD === "true" ? "USD" : nativeCurrency;
+linkCurrencyToggle.textContent = nativeCurrency;
 linkCurrencyToggle.addEventListener("click", currencyToggle);
 
+let exchangeRates;
+let exchangeRateByDate = 1;
 async function currencyToggle() {
   if (convertToUSD === "false") {
     convertToUSD = "true";
@@ -88,8 +87,6 @@ async function currencyToggle() {
     exchangeRateByDate = 1;
   }
   linkCurrencyToggle.textContent = currency;
-  url.searchParams.set("convertToUSD", convertToUSD);
-  history.replaceState(null, "", url);
   refreshChart();
 }
 
