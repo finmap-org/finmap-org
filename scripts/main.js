@@ -79,7 +79,7 @@ async function currencyToggle() {
     currency = "USD";
     currencySign = "$";
     exchangeRates = await getExchangeRates(nativeCurrency);
-    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, nativeCurrency);
+    exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
   }
   else {
     convertToUSD = "false";
@@ -87,6 +87,7 @@ async function currencyToggle() {
     currencySign = nativeCurrencySign;
     exchangeRateByDate = 1;
   }
+  linkCurrencyToggle.textContent = currency;
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 }
