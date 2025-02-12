@@ -37,55 +37,59 @@ else {
 // Currency
 let currency;
 let currencySign;
+let nativeCurrency;
+let nativeCurrencySign;
 let exchangeRates;
 let exchangeRateByDate;
 
 switch (exchange) {
-      case "lse":
-        currency = "GBP";
-        currencySign = "£";
-        break;
-      case "bist":
-        currency = "TRY";
-        currencySign = "₺";
-        break;
-      case "moex":
-        currency = "RUB";
-        currencySign = "₽";
-        break;
-      case "nasdaq":
-      case "nyse":
-      case "amex":
-      case "us-all":
-        currency = "USD";
-        currencySign = "$";
-        break;
-      default:
-        currency = "USD";
-        currencySign = "$";
-        break;
-    }
+  case "lse":
+    nativeCurrency = "GBP";
+    nativeCurrencySign = "£";
+    break;
+  case "bist":
+    nativeCurrency = "TRY";
+    nativeCurrencySign = "₺";
+    break;
+  case "moex":
+    nativeCurrency = "RUB";
+    nativeCurrencySign = "₽";
+    break;
+  case "nasdaq":
+  case "nyse":
+  case "amex":
+  case "us-all":
+    nativeCurrency = "USD";
+    nativeCurrencySign = "$";
+    break;
+  default:
+    nativeCurrency = "USD";
+    nativeCurrencySign = "$";
+    break;
+}
 
 let convertToUSD = urlConvertToUSD || "true";
 const linkCurrencyToggle = document.getElementById("currencyToggle");
-linkCurrencyToggle.textContent = convertToUSD === "true" ? "USD" : currency;
-linkCurrencyToggle.addEventListener("click", currnecyToggle);
+linkCurrencyToggle.textContent = convertToUSD === "true" ? "USD" : nativeCurrency;
+linkCurrencyToggle.addEventListener("click", currencyToggle);
 
-async function currnecyToggle() {
-  if (convertToUSD !== "true") {
+async function currencyToggle() {
+  if (convertToUSD === "false") {
     convertToUSD = "true";
+    currency = "USD";
     currencySign = "$";
-    exchangeRates = await getExchangeRates(currency);
-    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, currency);
+    exchangeRates = await getExchangeRates(nativeCurrency);
+    exchangeRateByDate = getExchangeRateByDate(exchangeRates, date, nativeCurrency);
   }
   else {
     convertToUSD = "false";
+    currency = nativeCurrency;
+    currencySign = nativeCurrencySign;
     exchangeRateByDate = 1;
   }
   url.searchParams.set("convertToUSD", convertToUSD);
   history.replaceState(null, "", url);
 }
-currnecyToggle();
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();
 
