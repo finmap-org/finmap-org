@@ -40,7 +40,7 @@ let currencySign;
 let nativeCurrency;
 let nativeCurrencySign;
 let exchangeRates;
-let exchangeRateByDate;
+let exchangeRateByDate = 1;
 
 switch (exchange) {
   case "lse":
@@ -68,7 +68,7 @@ switch (exchange) {
     break;
 }
 
-let convertToUSD = urlConvertToUSD || "true";
+let convertToUSD = urlConvertToUSD || "false";
 const linkCurrencyToggle = document.getElementById("currencyToggle");
 linkCurrencyToggle.textContent = convertToUSD === "true" ? "USD" : nativeCurrency;
 linkCurrencyToggle.addEventListener("click", currencyToggle);
