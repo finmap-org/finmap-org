@@ -295,6 +295,7 @@ async function prepTreemapData(dataType, date) {
     ]);
   });
 
+let portfolioValue = "<br>";
 if (isPortfolio) {
   const rootIndex = chartData.sector.findIndex(sector => sector === "");
   if (rootIndex === -1) return;
@@ -310,26 +311,28 @@ if (isPortfolio) {
       chartData.size[rootIndex] += itemSize;
     }
   });
+
+  portfolioValue = `In Portfolio: %{value:,.0f}<br>`;
 }
 
   chartData["texttemplate"] = `<b>%{label}</b><br>
 %{customdata[7]}<br>
 %{customdata[12]} (%{customdata[13]:.2f}%)<br>
-MarketCap: ${currencySign}%{customdata[17]:,.4f}B`;
+MarketCap: ${currencySign}%{customdata[17]:,.0f}B`;
 
   chartData["hovertemplate"] = `<b>%{customdata[6]}</b><br>
 %{customdata[7]}<br>
 Price: %{customdata[12]}<br>
 Price change: %{customdata[13]:.2f}%<br>
-MarketCap: ${currencySign}%{customdata[17]:,.4f}B<br>
+MarketCap: ${currencySign}%{customdata[17]:,.0f}B<br>
 Volume: %{customdata[14]:,.0f}<br>
-Value: ${currencySign}%{customdata[15]:,.4f}B<br>
+Value: ${currencySign}%{customdata[15]:,.0f}B<br>
 Trades: %{customdata[16]:,.0f}<br>
 Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
 Listed Since: %{customdata[18]}<br>
 Industry: %{customdata[4]}<br>
-In Portfolio: ${currencySign}%{value:,.0f}<br>
+${portfolioValue}
 percentParent: %{percentParent:.2p}<br>
 percentRoot: %{percentRoot:.2p}<br>
 Nested Items Count: %{customdata[22]:,.0f}
