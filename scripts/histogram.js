@@ -1,3 +1,5 @@
+// TODO: histogram for user's portfolio
+
 async function refreshHistogram(exchange, dataType) {
   let chartData = [];
   let dataJson;

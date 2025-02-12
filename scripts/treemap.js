@@ -150,7 +150,7 @@ async function renderTreemapChart(chartData) {
 let filterList;
 const highlightList = ["AAPL", "ASML", "WLY", "GCHE"];
 
-async function refreshTreemap(exchange, dataType, date) {
+async function refreshTreemap(dataType, date) {
   const localFilterCsv = localStorage.getItem("filterCsv");
   if (localFilterCsv !== undefined && localFilterCsv !== null) {
     filterList = await applyFilter(localFilterCsv);
@@ -163,24 +163,7 @@ async function refreshTreemap(exchange, dataType, date) {
     inputFileLabel.removeAttribute("hidden");
     linkEraseFilter.setAttribute("hidden", "");
   }
-
-  let chartData;
-  let currencyExchangeRate = 1;
-  switch (exchange) {
-    case "nasdaq":
-    case "nyse":
-    case "amex":
-    case "us-all":
-      currencyExchangeRate = 1;
-      break;
-    case "moex":
-      currencyExchangeRate = 1; // await getCurrencyRateByDate(date, "USD2RUB");
-      break;
-    default:
-      currencyExchangeRate = 1;
-      break;
-  }
-  chartData = await prepTreemapData(dataType, date, exchange, currencyExchangeRate);
+  chartData = await prepTreemapData(dataType, date);
   await renderTreemapChart(chartData);
 }
 
@@ -206,7 +189,7 @@ async function getMarketDataJson(date, exchange) {
 }
 
 
-async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
+async function prepTreemapData(dataType, date) {
   const marketData = await getMarketDataJson(date, exchange);
   let filteredMarketData = marketData;
 
@@ -259,8 +242,8 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     if (isPortfolio && (!filterList["ticker"].includes(ticker) && chartData["type"][i] !== "sector")) {
       return;
     }
-    chartData.marketCap[i] = chartData.marketCap[i] / currencyExchangeRate;
-    chartData.value[i] = chartData.value[i] / currencyExchangeRate;
+    chartData.marketCap[i] = chartData.marketCap[i] / (1e6 * exchangeRateByDate);
+    chartData.value[i] = chartData.value[i] / (1e6 * exchangeRateByDate);
     let size;
     if (isPortfolio) {
       const filterListIndex = filterList["ticker"].indexOf(ticker);
@@ -312,6 +295,7 @@ async function prepTreemapData(dataType, date, exchange, currencyExchangeRate) {
     ]);
   });
 
+let portfolioValue = "<br>";
 if (isPortfolio) {
   const rootIndex = chartData.sector.findIndex(sector => sector === "");
   if (rootIndex === -1) return;
@@ -327,26 +311,28 @@ if (isPortfolio) {
       chartData.size[rootIndex] += itemSize;
     }
   });
+
+  portfolioValue = `In Portfolio: %{value:,.0f}<br>`;
 }
 
   chartData["texttemplate"] = `<b>%{label}</b><br>
 %{customdata[7]}<br>
 %{customdata[12]} (%{customdata[13]:.2f}%)<br>
-MarketCap: %{customdata[17]:,.0f}`;
+MarketCap: ${currencySign}%{customdata[17]:,.0f}M`;
 
   chartData["hovertemplate"] = `<b>%{customdata[6]}</b><br>
 %{customdata[7]}<br>
 Price: %{customdata[12]}<br>
 Price change: %{customdata[13]:.2f}%<br>
-MarketCap: %{customdata[17]:,.0f}<br>
+MarketCap: ${currencySign}%{customdata[17]:,.0f}M<br>
 Volume: %{customdata[14]:,.0f}<br>
-Value: %{customdata[15]:,.0f}<br>
+Value: ${currencySign}%{customdata[15]:,.0f}M<br>
 Trades: %{customdata[16]:,.0f}<br>
 Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
 Listed Since: %{customdata[18]}<br>
 Industry: %{customdata[4]}<br>
-Size: %{value:,.0f}<br>
+${portfolioValue}
 percentParent: %{percentParent:.2p}<br>
 percentRoot: %{percentRoot:.2p}<br>
 Nested Items Count: %{customdata[22]:,.0f}

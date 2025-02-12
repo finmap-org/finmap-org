@@ -1,30 +1,39 @@
-async function getCurrencyRates(currency) {
-  const startDate = "2011-12-19";
-  const response = await fetch(
-    `data/currency/${currency}.csv?_=${new Date().toISOString().split("T")[0]}`,
-  );
-  const textResponse = await response.text();
-  const data = textResponse.split("\n").map((row) => row.split(","));
-
-  const currencyRates = {};
-  data.forEach((row) => {
-    const [Date, , , , Close] = row;
-    if (Date >= startDate) {
-      currencyRates[Date] = Number(Close);
+async function getExchangeRates(currency) {
+  let dataJson;
+  try {
+    const response = await fetch(
+      `data/currency/exchangeRates.json?_=${new Date().toISOString().split("T")[0]}`);
+    if (!response.ok) {
+      alert("Oops! Nothing's here");
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
-  return currencyRates;
+    dataJson = await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  const exchangeRates = Object.entries(dataJson.rates).reduce((acc, [date, currencies]) => {
+    acc[date] = currencies[currency];
+    return acc;
+  }, {});
+
+  return exchangeRates;
 }
 
-async function getCurrencyRateByDate(date, currency) {
-  const currencyRates = await getCurrencyRates(currency);
-
-  let rate = currencyRates[date];
+async function getExchangeRateByDate(exchangeRates, date, currency) {
+  let rate = exchangeRates[date];
   let d = new Date(date);
-  while (typeof rate == "undefined") {
+  let limit = 14;
+  while (typeof rate == "undefined" && limit >= 0) {
+    limit = limit - 1;
     d.setDate(d.getUTCDate() - 1);
     let prevDate = d.toISOString().split("T")[0];
-    rate = currencyRates[prevDate];
+    rate = exchangeRates[prevDate];
+  }
+
+  if (typeof rate == "undefined") {
+    rate = 1;
+    currencyToggle();
   }
 
   return rate;
