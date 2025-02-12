@@ -315,15 +315,15 @@ if (isPortfolio) {
   chartData["texttemplate"] = `<b>%{label}</b><br>
 %{customdata[7]}<br>
 %{customdata[12]} (%{customdata[13]:.2f}%)<br>
-MarketCap: ${currencySign}%{customdata[17]:,.0f}B`;
+MarketCap: ${currencySign}%{customdata[17]:,.4f}B`;
 
   chartData["hovertemplate"] = `<b>%{customdata[6]}</b><br>
 %{customdata[7]}<br>
 Price: %{customdata[12]}<br>
 Price change: %{customdata[13]:.2f}%<br>
-MarketCap: ${currencySign}%{customdata[17]:,.0f}B<br>
+MarketCap: ${currencySign}%{customdata[17]:,.4f}B<br>
 Volume: %{customdata[14]:,.0f}<br>
-Value: ${currencySign}%{customdata[15]:,.0f}B<br>
+Value: ${currencySign}%{customdata[15]:,.4f}B<br>
 Trades: %{customdata[16]:,.0f}<br>
 Exchange: %{customdata[0]}<br>
 Country: %{customdata[1]}<br>
