@@ -11,7 +11,6 @@ async function refreshHistogram(exchange, dataType) {
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-  const x = dataJson.dates;
   
   // Plot exchange rates
   let exchangeRates;
@@ -64,6 +63,8 @@ async function refreshHistogram(exchange, dataType) {
       })
     };
   }
+
+  const x = dataJson.dates;
 
   // Sectors
   dataJson.sectors.forEach((trace) => {
