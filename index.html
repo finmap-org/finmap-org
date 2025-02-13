@@ -55,17 +55,12 @@
           />
         </div>
       </form>
-     
-      <select id="inputChartType">
-        <option value="treemap" selected="selected">treemap</option>
-        <option value="history">history</option>
-        <option value="listings">listings</option>
-      </select>
 
       <select id="inputDataType">
         <option value="marketcap" selected="selected">marketcap</option>
         <option value="value">value</option>
         <option value="trades">trades</option>
+        <option value="nestedItems">nestedItems</option>
       </select>
       <input
         type="date"
@@ -100,12 +95,32 @@
           <img src="images/icons/discord.png"  />
         </a>
       </li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=nasdaq&chartType=treemap">NASDAQ</a></li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=nyse&chartType=treemap">NYSE</a></li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=amex&chartType=treemap">AMERICAN EXCHANGE</a></li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=us-all&chartType=treemap">NASDAQ + NYSE + AMEX</a></li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=lse&chartType=treemap">LONDON STOCK EXCHANGE</a></li>
-      <li><a class="menuItem" target="_self" rel="noopener" href="https://finmap.org/?exchange=moex&chartType=treemap">MOSCOW EXCHANGE</a></li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="chartType = 'treemap'; refreshChart(); return false;">TREEMAP</a>|
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="chartType = 'histogram'; refreshChart(); return false;">HISTOGRAM</a>
+      </li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'nasdaq'; refreshChart(); return false;">NASDAQ</a>|
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'nyse'; refreshChart(); return false;">NYSE</a>|
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'amex'; refreshChart(); return false;">AMEX</a>
+      </li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'us-all'; refreshChart(); return false;">US ALL</a>
+      </li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'lse'; refreshChart(); return false;">LONDON STOCK EXCHANGE</a>
+      </li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          onclick="exchange = 'moex'; refreshChart(); return false;">MOSCOW EXCHANGE</a>
+      </li>
       <li>
         <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/wiki">F.A.Q.</a>|
         <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/issues">SUPPORT</a>|

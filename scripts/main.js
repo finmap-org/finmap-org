@@ -144,10 +144,9 @@ if (urlDate) {
   inputDate.value = urlDate;
 }
 
-const inputChartType = document.getElementById("inputChartType");
-inputChartType.addEventListener("change", refreshChart);
-if (urlChartType && ["treemap", "history", "listings"].includes(urlChartType)) {
-  inputChartType.value = urlChartType;
+let chartType = "treemap";
+if (urlChartType && ["treemap", "histogram"].includes(urlChartType)) {
+  chartType = urlChartType;
 }
 
 const inputDataType = document.getElementById("inputDataType");
@@ -171,38 +170,25 @@ chooseFileButton.addEventListener("change", function (event) {
 const linkEraseFilter = document.getElementById("linkEraseFilter");
 
 function toggleInput() {
-  url.searchParams.set("chartType", inputChartType.value);
+  url.searchParams.set("chartType", chartType);
   url.searchParams.set("dataType", inputDataType.value);
   url.searchParams.set("date", inputDate.value);
-  switch (inputChartType.value) {
+  url.searchParams.set("exchange", exchange);
+  switch (chartType) {
     case "treemap":
       inputSearch.removeAttribute("hidden");
-      inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.removeAttribute("hidden");
       inputFileLabel.removeAttribute("hidden");
       linkEraseFilter.removeAttribute("hidden");
       break;
-    case "history":
+    case "histogram":
       inputSearch.setAttribute("hidden", "");
-      inputChartType.removeAttribute("hidden");
       inputDataType.removeAttribute("hidden");
       inputDate.setAttribute("hidden", "");
       inputFileLabel.setAttribute("hidden", "");
       linkEraseFilter.setAttribute("hidden", "");
       url.searchParams.delete("search");
-      url.searchParams.delete("date");
-      break;
-    case "listings":
-      inputSearch.setAttribute("hidden", "");
-      inputChartType.removeAttribute("hidden");
-      inputDataType.setAttribute("hidden", "");
-      inputDate.setAttribute("hidden", "");
-      inputFileLabel.setAttribute("hidden", "");
-      linkEraseFilter.setAttribute("hidden", "");
-      url.searchParams.delete("search");
-      url.searchParams.delete("currency");
-      url.searchParams.delete("dataType");
       url.searchParams.delete("date");
       break;
   }
@@ -212,7 +198,6 @@ function toggleInput() {
 async function refreshChart() {
   toggleInput();
 
-  const chartType = inputChartType.value;
   const dataType = inputDataType.value;
   const date = inputDate.value;
 
@@ -225,11 +210,8 @@ async function refreshChart() {
         if (clickedTreemapItemType !== "sector") await addOverlayWidget(exchange, clickedTreemapItem, date);
       });
       break;
-    case "history":
+    case "histogram":
       refreshHistogram(exchange, dataType);
-      break;
-    case "listings":
-      refreshListings();
       break;
   }
 }

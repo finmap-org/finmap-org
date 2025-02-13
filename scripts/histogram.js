@@ -82,6 +82,9 @@ async function refreshHistogram(exchange, dataType) {
       case "trades":
         y = trace.tradesNumber;
         break;
+      case "nestedItems":
+        y = trace.itemsNumber;
+        break;
     }
     chartData.push({
       name: trace.sectorName,
@@ -161,7 +164,7 @@ async function refreshHistogram(exchange, dataType) {
     },
     xaxis: {
       type: "date",
-      range: [chartData[1].x[0], "chartData[1].x[chartData[1].x.length - 1]"],
+      range: [chartData[2].x[0], "chartData[2].x[chartData[2].x.length - 1]"],
       fixedrange: false,
       // tickangle: -35,
       tickformatstops: [

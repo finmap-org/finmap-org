@@ -263,6 +263,9 @@ async function prepTreemapData(dataType, date) {
         case "trades":
           size = chartData.numTrades[i];
           break;
+        case "nestedItems":
+          size = chartData.nestedItemsCount[i];
+          break;
       }
     }
     
