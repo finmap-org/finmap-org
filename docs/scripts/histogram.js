@@ -164,7 +164,7 @@ async function refreshHistogram(exchange, dataType) {
     },
     xaxis: {
       type: "date",
-      range: [chartData[2].x[0], "chartData[2].x[chartData[2].x.length - 1]"],
+      range: [chartData[2].x[0], chartData[2].x[chartData[2].x.length - 1]],
       fixedrange: false,
       // tickangle: -35,
       tickformatstops: [
