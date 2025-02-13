@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>finmap.org | blog</title>
+    <base href="https://finmap.org/" />
+    <meta charset="UTF-8" />
+    <meta name="description"
+      content="Global stock market visualisation tool and your   personal RSS/news feed reader. Free and Open Source" />
+    <meta name="theme-color" content="#414554" />
+    <meta name="viewport" content="width=device-width,   initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style"   content="black" />
+    <meta name="apple-mobile-web-app-title" content="finmap.org" />
+  
+    <link rel="manifest" href="manifest.json" />
+    <!-- <link rel="stylesheet" type="text/css" href="styles/style.css" /> -->
+    <link rel="icon" href="images/icons/favicon.png" type="image/  png" />
+    <link rel="apple-touch-icon" href="images/icons/ios/152.png" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        background-color: rgb(59, 61, 62);
+        color: white;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+      }
+      a,
+      a:hover,
+      a:focus {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+      #logo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 45px;
+        height: 45px;
+        z-index: 1000;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        padding: 5px;
+      }
+      #articles {
+        max-width: 500px;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        background-color: rgb(36, 37, 38);
+      }
+      article {
+        padding: 20px 20px 20px 50px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <a href="https://finmap.org"><img id="logo" src="images/icons/ios/152.png"></a>
+    <div id="articles">
+    <article>
+      <h1>Навигация по глобальному фондовому рынку вместе с <a href="https://finmap.org">finmap.org</a></h1>
+      <p>Привет! Меня зовут Руслан Бай. Я разработчик проекта <a href="https://finmap.org">finmap.org</a>. Если коротко, Finmap - это инструмент для навигацией по глобальному фондовому рынку. Также я надеюсь, Finmap станет площадкой, где компании смогут привлечь международных инвесторов, а обычные пользователи с любым уровнем доходов найдут инструмент для ведения собственного инвестиционного портфеля либо получат рекомендации как этот портфель сформировать.</p>
+
+      <img src="images/article/1_treemap_and_histogram.png">
+
+      <div class="hidden">
+      <p>Данные торгов представлены в виде treemap и histogram. В карточке каждой компании отображается краткое описание и новостная лента. Карточки компаний-спонсоров проекта на treemap выделены золотой рамкой, а описание может быть кастомизировано. В будущем я планирую добавить ленту микроблогов, где компании смогут публиковать анонсы и другие новости.</p>
+      
+      <p>Для Московской биржи ценные бумаги можно сортировать по капитализации, объёму торгов и количеству сделок.</p>
+      <img src="images/article/2_treemap_cap_value_trades.png"><br />
+      <img src="images/article/3_histogram_cap_value_trades.png">
+
+      <p>Сортировка по объёму торгов и количеству сделок позволяет найти самые ликвидные/спекулятивные бумаги. На данный момент на Мосбирже такими бумагами являются инструменты денежного рынка.</p>
+      <img src="images/article/7_histogram_value.png">
+
+      <p>Доступна статистика по количеству компаний, представленных на бирже.</p>
+      <img src="images/article/4_listing.png">
+
+      <p>Можно перечислить акции в txt файле и использовать этот список как фильтр, например, для кастомизации новостной ленты. На картинке ниже фильтр для компаний из индекса S&P500.</p>
+      <img src="images/article/5_sp500.png">
+
+      <p>Ещё одна функция, которая пока находится в зачаточном состоянии - анализ персонального портфеля. Создайте CSV-файл, перечислите в нём тикеры и количество акций. Далее нажмите кнопку <b style="font-size: 20px">🛄</b> и выберете созданный CSV-файл. Treemap позволяет увидеть веса отдельных бумаг в портфеле, распределение по странам и секторам. Эта информация может быть использована для принятия решений о диверсификации. Данные обрабатываются на устройстве пользователя, на сервер эта информация не отправляется.</p>
+      <img src="images/article/6_portfolio.png"><br />
+
+      <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/4IX0mqFtHrE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  
+      <h2>Архитектура</h2>
+      <p>Несколько слов об архитектуре. На данный момент все затраты на инфраструктуру я покрываю из своего кармана, поэтому моя цель - максимально снизить расходы. В качестве хостинга используется Github Pages, фронтенд написан на javascript, для построения графиков используется библиотека Plotly.js. Применена "резиновая" вёрстка, а также технология Power Web Application, которая позволяет пользоваться веб-сайтом как полноценным приложением даже offline. Для обновления данных используется Github Actions, workflow написаны на bash и python.</p>
+
+      <p>Сервис обновления новостной ленты хостится в облаке AWS. Архитектура довольно стандартная, но так как Free Tier ограничен одним EC2 инстансом, я использую несколько бесплатных сервисов, которые разными методами реализуют одну и ту же функциональность. Сделано это для обеспечения отказоустойчивости.</p>
+      <pre><code>
+                User
+                 ⇓
+             Cloudfront
+                 ⇓
+              Firewall
+  (fallback) ⇙       ⇘   (primary)
+  API Gateway      Application Load Balancer
+       ⇓                      ⇓
+  Google News            Target Group
+                              ⇓
+                         EC2 Instance
+                              ⇓
+                         Google News
+      </code></pre>
+      
+      <p>Кэширование настроено везде, где это возможно: у клиента, в Cloudfront и на стороне backend-сервиса. Сделано это, опять же, с целью уменьшить нагрузку и стоимость инфраструктуры.</p>
+
+      <h2>Планы на будущее</h2>
+      <p>За прошедшие пять лет это моя третья попытка запустить проект. На данный момент он фактически всё ещё находится на стадии MVP, но я старался, чтобы внешне и функционально он был максимально приближен к готовому продукту таким, как я его вижу.</p>
+
+      <p>На данный момент можно посмотреть визуализацию для Московской биржи, NASDAQ, NYSE и AMEX. Этот список будет пополняться. Я планирую добавить нотификации, больше графиков и аналитики, но сначала нужно унифицировать код, данные и довести до паритета функциональность для всех рынков.</p>
+
+      <p>Ещё в планах добавить сервис, который основываясь на информации о доходах и расходах пользователя, даст объективную оценку финансового состояния и предложит конкретные шаги как это состояние улучшить.</p>
+
+      <h2>Как поддержать проект</h2>
+      <p>Исходники проекта опубликованы в <a href="https://github.com/finmap-org/finmap-org">Github</a>. Я надеюсь, здесь найдутся те, кто готов присоединиться к разработке. Workflow и код backend-сервисов будут опубликованы после code review.</p>
+
+      <p>Помощь нужна не только с кодом, но и с данными. Например, <a href="https://github.com/finmap-org/finmap-org/blob/main/data/securities-by-sector/moex.tsv">этот файл</a> я составлял вручную давно, он может содержать неточную или неактуальную информацию.</p>
+
+      <p>Поддержать проект рублём можно через <a href="https://boosty.to/finmap/donate">Boosty</a>, для других валют - <a href="https://patreon.com/finmap">Patreon</a>. Если ваша компания представлена на бирже, вы можете стать спонсором проекта. Взамен вы получите персональную более узнаваемую карточку компании и плюс к репутацию в глазах потенциальных инвесторов. Для подписчиков и спонсоров проекта я планирую организовать регулярную рассылку.</p>
+
+      <p>Я рассматриваю возможность интеграции с брокерами, через которых инвесторы могли бы приобрести бумаги. Буду рад сотрудничеству.</p>
+
+      <p>Пожалуйста, расскажите о проекте друзьям и знакомым. Я пытаюсь привлечь к проекту международную аудиторию и буду благодарен, если оставите лайк и комментарий в <a href="https://x.com/finmaporg">twitter</a>.</p>
+
+      <p>Успехов!</p>
+
+      <p>- <a href="https://github.com/finmap-org/finmap-org/issues">Github Issues</a> - сообщить о проблемах, багах
+        <br />- <a href="https://github.com/finmap-org/finmap-org/wiki">Github Wiki</a> - документация
+        <br />- Для брокеров: <a href="mailto:integration@finmap.org">integration@finmap.org</a>
+        <br />- Для спонсоров: <a href="mailto:sponsor@finmap.org">sponsor@finmap.org</a>
+        <br />- Для донатов: <a href="https://boosty.to/finmap/donate">Boosty</a>, <a href="https://patreon.com/finmap">Patreon</a></p>
+        <br />
+      </div>
+      <a href="#" class="show-more" onclick="toggleText(event)">Show more</a>
+    </article>
+    <article>
+      <h1>Navigating the global stock market with <a href="https://finmap.org">finmap.org</a></h1>
+      <p>My name is Ruslan Bay. Thank you for your interest in my project <a href="https://finmap.org">finmap.org</a></p>
+
+      <img src="images/article/1_treemap_and_histogram.png">
+
+      <div class="hidden">
+      <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/3bN3pfZmbaM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+      <p>I might be a little biased, but in my opinion Finmap is a great tool for navigating the global stock market. I hope that this tool will be useful for all kinds of people, no matter what their income level is, to manage their investment portfolio or get advice on how to build one.</p>
+      
+      <p>I started working on this project five years ago, and initially, I planned to visualize data only for the Russian stock market. Because of that, the functionality for other markets is a bit behind, but I'm working on it.</p>
+      <img src="images/article/2_treemap_cap_value_trades.png"><br />
+      <img src="images/article/3_histogram_cap_value_trades.png"><br />
+      <img src="images/article/7_histogram_value.png">
+
+      <p>On the treemap, each company has its own card with a brief description and a news feed. You can create a filter to display on the treemap only those companies whose news you follow, or you can display securities from your own portfolio!</p>
+
+      <img src="images/article/5_sp500.png"><br />
+
+      <img src="images/article/6_portfolio.png">
+  
+      <p>As I said earlier, I've been working on this project for five years now, and this is my third attempt at raising funds.</p>
+
+      <p>I want to share about my motivation, why I keep doing this and why it is important to me.</p>
+      
+      <p>I was born and raised in a small town in Bashkortostan in the middle of nowhere. I know how challenging it can be to find a job, an apartment, and to build up savings. That's why this project is very personal for me.</p>
+
+      <p>I want to create a free tool that will look at your income and expenses and give you an objective assessment of your financial situation.  It'll also suggest some actions you can take to improve it.</p>
+
+      <p>In order for users to be sure that the tool acts in their interests, it is crucial for the project to remain open and independent.</p>
+
+      <p>I'm the only one working on it right now. It is a work in progress, and I'm learning as I go. Source code is available on Github. If you're interested in helping out, I'd love to have you on board.</p>
+
+      <p>You can also support the project on <a href="https://patreon.com/finmap">Patreon</a>.</p>
+
+      <p>If you're interested in sponsoring the project, you absolutely can! Cards of sponsoring companies will be highlighted on the treemap, and  the company description can be personalised. In the future, sponsors will have their own microblog feed where they can share announcements and other news.</p>
+
+      <p>If you find the project usefull, please share it with your friends.</p>
+
+      <p>- <a href="https://github.com/finmap-org/finmap-org/issues">Github Issues</a> - issues and bug reports
+        <br />- <a href="https://github.com/finmap-org/finmap-org/wiki">Github Wiki</a> - documentation
+        <br />- Contact me: <a href="mailto:integration@finmap.org">integration@finmap.org</a>
+        <br />- Support the project: <a href="https://patreon.com/finmap">Patreon</a></p>
+        <br />
+      </div>
+      <a href="#" class="show-more" onclick="toggleText(event)">Show more</a>
+    </article>
+    </div>
+    <script>
+      function toggleText(event) {
+        event.preventDefault();
+        const article = event.target.closest("article");
+        const hiddenParagraph = article.getElementsByClassName("hidden");
+        if (hiddenParagraph[0].style.display === "none" || hiddenParagraph[0].style.display === "") {
+          hiddenParagraph[0].style.display = "block";
+          event.target.textContent = "Hide";
+        } else {
+          hiddenParagraph[0].style.display = "none"
+          event.target.textContent = "Show more";
+        }
+      }
+    </script>
+  </body>
+</html>

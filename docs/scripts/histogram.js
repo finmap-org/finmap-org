@@ -2,7 +2,7 @@ async function refreshHistogram(exchange, dataType) {
   let chartData = [];
   let dataJson;
   try {
-    const response = await fetch(`data/history/${exchange}.json`);
+    const response = await fetch(`https://raw.githubusercontent.com/finmap-org/finmap-org/refs/heads/main/data/history/${exchange}.json`);
     if (!response.ok) {
       alert("Oops! Nothing's here");
       throw new Error(`HTTP error! status: ${response.status}`);
