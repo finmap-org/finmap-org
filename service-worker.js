@@ -14,7 +14,6 @@ const FILES_TO_CACHE = [
   "/scripts/currency.js",
   "/scripts/histogram.js",
   "/scripts/install.js",
-  "/scripts/listings.js",
   "/scripts/main.js",
   "/scripts/menu.js",
   "/scripts/overlay.js",

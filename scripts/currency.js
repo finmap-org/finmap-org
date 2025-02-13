@@ -2,7 +2,7 @@ async function getExchangeRates(currency) {
   let dataJson;
   try {
     const response = await fetch(
-      `data/currency/exchangeRates.json?_=${new Date().toISOString().split("T")[0]}`);
+      `https://raw.githubusercontent.com/finmap-org/finmap-org/refs/heads/main/data/currency/exchangeRates.json?_=${new Date().toISOString().split("T")[0]}`);
     if (!response.ok) {
       alert("Oops! Nothing's here");
       throw new Error(`HTTP error! status: ${response.status}`);

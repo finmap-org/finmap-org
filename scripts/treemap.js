@@ -169,7 +169,7 @@ async function refreshTreemap(dataType, date) {
 
 
 async function getMarketDataJson(date, exchange) {
-  let url = `data/${date.replace(/-/g, "/")}/${exchange}.json`;
+  let url = `https://raw.githubusercontent.com/finmap-org/finmap-org/refs/heads/main/data/${date.replace(/-/g, "/")}/${exchange}.json`;
 
   if (date === new Date().toISOString().split("T")[0]) {
     url = url + `?_=${new Date().toISOString().split(":")[0]}`;

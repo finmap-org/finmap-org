@@ -78,7 +78,7 @@ async function getCompanyInfo(exchange, clickedTreemapItem) {
     case "us-all":
       const clickedExchange = clickedTreemapItem[0];
       const clickedLabel = clickedTreemapItem[6];
-      url = `data/securities/${clickedExchange}/${clickedLabel.slice(0, 1)}/${clickedLabel}.json`;
+      url = `https://raw.githubusercontent.com/finmap-org/finmap-org/refs/heads/main/data/securities/${clickedExchange}/${clickedLabel.slice(0, 1)}/${clickedLabel}.json`;
       response = await fetch(url);
 
       if (response.ok) {
