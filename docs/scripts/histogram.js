@@ -82,7 +82,7 @@ async function refreshHistogram(exchange, dataType) {
   }
 
   brentPriceJson = Object.fromEntries(
-    Object.entries(exchangeRates)
+    Object.entries(brentPriceJson)
     .filter(([key, _]) =>
       key >= dataJson.dates[0]
     )
