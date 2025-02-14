@@ -33,63 +33,70 @@ else {
   exchange = "nasdaq";
 }
 
+async function exchangeSwitcher(selectedExchange) {
+  exchange = selectedExchange;
+  convertToUSD = false;
+  await currencyToggle();
+  await refreshChart();
+  return;
+}
+
 // Currency
 let nativeCurrency;
 let nativeCurrencySign;
-
-switch (exchange) {
-  case "lse":
-    nativeCurrency = "GBP";
-    nativeCurrencySign = "£";
-    break;
-  case "bist":
-    nativeCurrency = "TRY";
-    nativeCurrencySign = "₺";
-    break;
-  case "moex":
-    nativeCurrency = "RUB";
-    nativeCurrencySign = "₽";
-    break;
-  case "nasdaq":
-  case "nyse":
-  case "amex":
-  case "us-all":
-    nativeCurrency = "USD";
-    nativeCurrencySign = "$";
-    break;
-  default:
-    nativeCurrency = "USD";
-    nativeCurrencySign = "$";
-    break;
-}
-
-let convertToUSD = "false";
-let currency = nativeCurrency;
-let currencySign = nativeCurrencySign;
+let convertToUSD = false;
+let currency = "USD";
+let currencySign = "$";
 const linkCurrencyToggle = document.getElementById("currencyToggle");
-linkCurrencyToggle.textContent = nativeCurrency;
-linkCurrencyToggle.addEventListener("click", currencyToggle);
+linkCurrencyToggle.textContent = "USD";
 
 let exchangeRates;
 let exchangeRateByDate = 1;
 async function currencyToggle() {
-  if (convertToUSD === "false") {
-    convertToUSD = "true";
+  switch (exchange) {
+    case "lse":
+      nativeCurrency = "GBP";
+      nativeCurrencySign = "£";
+      break;
+    case "bist":
+      nativeCurrency = "TRY";
+      nativeCurrencySign = "₺";
+      break;
+    case "moex":
+      nativeCurrency = "RUB";
+      nativeCurrencySign = "₽";
+      break;
+    case "nasdaq":
+    case "nyse":
+    case "amex":
+    case "us-all":
+      nativeCurrency = "USD";
+      nativeCurrencySign = "$";
+      break;
+    default:
+      nativeCurrency = "USD";
+      nativeCurrencySign = "$";
+      break;
+  }
+  if (convertToUSD) {
+    convertToUSD = false;
+    currency = nativeCurrency;
+    currencySign = nativeCurrencySign;
+    exchangeRateByDate = 1;
+  }
+  else {
+    convertToUSD = true;
     currency = "USD";
     currencySign = "$";
     exchangeRates = await getExchangeRates(nativeCurrency);
     exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
   }
-  else {
-    convertToUSD = "false";
-    currency = nativeCurrency;
-    currencySign = nativeCurrencySign;
-    exchangeRateByDate = 1;
-  }
   linkCurrencyToggle.textContent = currency;
-  if (nativeCurrency !== "USD") {
-    refreshChart();
-  }
+}
+
+if (nativeCurrency === undefined) {
+  convertToUSD = false;
+  currencyToggle();
 }
 
 let date = urlDate ? new Date(`${urlDate}T13:00:00`) : new Date();

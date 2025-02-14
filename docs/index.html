@@ -102,23 +102,23 @@
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'nasdaq'; refreshChart(); return false;">NASDAQ</a>|
+          onclick="exchangeSwitcher('nasdaq');">NASDAQ</a>|
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'nyse'; refreshChart(); return false;">NYSE</a>|
+          onclick="exchangeSwitcher('nyse');">NYSE</a>|
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'amex'; refreshChart(); return false;">AMEX</a>
+          onclick="exchangeSwitcher('amex');">AMEX</a>
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'us-all'; refreshChart(); return false;">US ALL</a>
+          onclick="exchangeSwitcher('us-all');">US ALL</a>
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'lse'; refreshChart(); return false;">LONDON STOCK EXCHANGE</a>
+          onclick="exchangeSwitcher('lse');">LONDON STOCK EXCHANGE</a>
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
-          onclick="exchange = 'moex'; refreshChart(); return false;">MOSCOW EXCHANGE</a>
+          onclick="exchangeSwitcher('moex');">MOSCOW EXCHANGE</a>
       </li>
       <li>
         <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org/wiki">F.A.Q.</a>|
@@ -140,7 +140,7 @@
       <a id="share">
         <img src="images/icons/share.png" height="14px" /> Share</a>
       <a id="install" hidden>✓ Install</a>
-      <a id="currencyToggle">USD</a> 
+      <a id="currencyToggle" onclick="currencyToggle(); if (nativeCurrency !== 'USD') refreshChart(); return false;">USD</a>
       <a id="langToggle">ENG</a>
     </footer>
 
