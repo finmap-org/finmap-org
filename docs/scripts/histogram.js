@@ -35,7 +35,7 @@ async function refreshHistogram(exchange, dataType) {
       customdata: Object.values(filteredExchangeRates),
       hoverinfo: "all",
       hovertemplate:
-        `%{x|%x}<br>%{customdata:,.2f}<br>${nativeCurrency} per USD<extra></extra>`,
+        `%{x|%x}<br>%{customdata:,.2f}<br>${nativeCurrency} per USD<br>%{fullData.name}<extra></extra>`,
       x: Object.keys(filteredExchangeRates),
       y: Object.values(filteredExchangeRates).map(x => (1/x).toFixed(4)),
     });
@@ -65,6 +65,35 @@ async function refreshHistogram(exchange, dataType) {
   }
 
   const x = dataJson.dates;
+
+
+  // Oil prices
+  let brentPriceJson;
+  try {
+    const response = await fetch(`https://raw.githubusercontent.com/finmap-org/finmap-org/refs/heads/main/data/commodity/brent.json`);
+    if (!response.ok) {
+      alert("Oops! Nothing's here");
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    brentPriceJson = await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  chartData.push({
+    name: "Brent",
+    type: "line",
+    mode: "lines",
+    yaxis: "y3",
+    connectgaps: true,
+    customdata: Object.values(brentPriceJson),
+    hoverinfo: "all",
+    hovertemplate:
+      `%{x|%x}<br>%{customdata:,.2f} USD<br>%{fullData.name}<extra></extra>`,
+    x: Object.keys(brentPriceJson),
+    y: Object.values(brentPriceJson),
+  });
+
 
   // Sectors
   dataJson.sectors.forEach((trace) => {

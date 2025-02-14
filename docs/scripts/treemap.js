@@ -338,7 +338,7 @@ Industry: %{customdata[4]}<br>
 ${portfolioValue}
 percentParent: %{percentParent:.2p}<br>
 percentRoot: %{percentRoot:.2p}<br>
-Nested Items Count: %{customdata[22]:,.0f}
+Nested Items: %{customdata[22]:,.0f}
 <extra></extra>`;
 
   return chartData;
