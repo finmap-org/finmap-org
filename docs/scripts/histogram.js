@@ -19,10 +19,11 @@ async function refreshHistogram(exchange, dataType) {
   }
   const filteredExchangeRates = Object.fromEntries(
     Object.entries(exchangeRates)
-    .filter(([_, value]) => 
+    .filter(([key, value]) => 
       value !== undefined && 
       !isNaN(value) && 
-      value !== 0
+      value !== 0 &&
+      key >= dataJson.dates[0]
     )
   );
   if (nativeCurrency !== "USD"){
@@ -79,6 +80,13 @@ async function refreshHistogram(exchange, dataType) {
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+
+  brentPriceJson = Object.fromEntries(
+    Object.entries(exchangeRates)
+    .filter(([key, _]) =>
+      key >= dataJson.dates[0]
+    )
+  );
 
   chartData.push({
     name: "Brent",
