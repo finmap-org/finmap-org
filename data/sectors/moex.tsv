@@ -9403,3 +9403,7 @@ exchange_bond	RU000A10AV98	MTS 001P-28	МТС 1P-28	Мобильные Теле�
 exchange_bond	RU000A10AV72	Promsvyazbank 003P-11	ПСБ 3P-11	Промсвязьбанк 003P-11	2025-02-14				
 exchange_bond	RU000A10ACT4	VEB.RF PBO-002P-K580	ВЭБ2Р-К580	ВЭБ.РФ ПБО-002Р-К580	2025-02-14				
 exchange_bond	RU000A10ACM9	VEB.RF PBO-002P-K574	ВЭБ2Р-К574	ВЭБ.РФ ПБО-002Р-К574	2025-02-14				
+corporate_bond	RU000A10A1W5	Bank VTB C-1-1343	ВТБС1-1343	Банк ВТБ (ПАО) С-1-1343	2025-02-17				
+corporate_bond	RU000A109H78	Sber CIB-CO-EQ-001S-14	СбКИБ1P14	Сбер CIB-CO-EQ-001S-14	2025-02-17				
+Miscellaneous	RAGR	RUSAGRO GROUP	Русагро	Группа Русагро	2025-02-17				
+exchange_ppif	SMCF	SMCF ETF Cash flow	SMCF ETF	БПИФ СОЛИД Денежный поток	2025-02-17				
