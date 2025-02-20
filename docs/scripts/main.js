@@ -83,14 +83,15 @@ async function currencyToggle() {
     currency = nativeCurrency;
     currencySign = nativeCurrencySign;
     exchangeRateByDate = 1;
+    linkCurrencyToggle.textContent = currency;
+    return;
   }
-  else {
-    convertToUSD = true;
-    currency = "USD";
-    currencySign = "$";
-    exchangeRates = await getExchangeRates(nativeCurrency);
-    exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
-  }
+  
+  convertToUSD = true;
+  currency = "USD";
+  currencySign = "$";
+  exchangeRates = await getExchangeRates(nativeCurrency);
+  exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
   linkCurrencyToggle.textContent = currency;
 }
 
@@ -206,7 +207,7 @@ async function refreshChart() {
   toggleInput();
 
   const dataType = inputDataType.value;
-  const date = inputDate.value;
+  date = inputDate.value;
 
   switch (chartType) {
     case "treemap":
