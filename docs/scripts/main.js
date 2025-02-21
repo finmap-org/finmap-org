@@ -83,15 +83,14 @@ async function currencyToggle() {
     currency = nativeCurrency;
     currencySign = nativeCurrencySign;
     exchangeRateByDate = 1;
-    linkCurrencyToggle.textContent = currency;
-    return;
   }
-  
-  convertToUSD = true;
-  currency = "USD";
-  currencySign = "$";
-  exchangeRates = await getExchangeRates(nativeCurrency);
-  exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
+  else {  
+    convertToUSD = true;
+    currency = "USD";
+    currencySign = "$";
+    exchangeRates = await getExchangeRates(nativeCurrency);
+    exchangeRateByDate = await getExchangeRateByDate(exchangeRates, date, nativeCurrency);
+  }
   linkCurrencyToggle.textContent = currency;
 }
 
