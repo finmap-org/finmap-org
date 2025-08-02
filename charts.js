@@ -1,18 +1,35 @@
 import { getConfig } from './config.js';
-import { formatPercent, getColorForChange } from './utils.js';
+import { formatNumber } from './utils.js';
 export class D3TreemapRenderer {
     container = null;
     canvas = null;
     context = null;
     currentData = [];
+    treemapLayout = null;
+    hierarchyRoot = null;
     tooltip = null;
+    colorScale = null;
     render(data, container) {
         this.container = container;
         this.currentData = data;
         this.setupCanvas();
+        this.setupColorScale();
         this.setupTooltip();
-        this.renderTreemap();
+        this.prepareData();
+        this.renderCanvas();
         this.setupInteractions();
+    }
+    destroy() {
+        if (this.canvas && this.container && this.container.contains(this.canvas)) {
+            this.container.removeChild(this.canvas);
+        }
+        if (this.tooltip && this.tooltip.parentNode && this.tooltip.parentNode.contains(this.tooltip)) {
+            this.tooltip.parentNode.removeChild(this.tooltip);
+        }
+        this.canvas = null;
+        this.context = null;
+        this.container = null;
+        this.tooltip = null;
     }
     setupCanvas() {
         if (!this.container)
@@ -31,6 +48,12 @@ export class D3TreemapRenderer {
         }
         this.container.appendChild(this.canvas);
     }
+    setupColorScale() {
+        this.colorScale = d3.scaleLinear()
+            .domain([-3, 0, 3])
+            .range(['rgb(236, 48, 51)', 'rgb(64, 68, 82)', 'rgb(42, 202, 85)'])
+            .clamp(true);
+    }
     setupTooltip() {
         this.tooltip = document.createElement('div');
         this.tooltip.style.position = 'absolute';
@@ -40,217 +63,262 @@ export class D3TreemapRenderer {
         this.tooltip.style.borderRadius = '4px';
         this.tooltip.style.fontSize = '12px';
         this.tooltip.style.pointerEvents = 'none';
-        this.tooltip.style.opacity = '0';
-        this.tooltip.style.transition = 'opacity 0.2s';
+        this.tooltip.style.visibility = 'hidden';
         this.tooltip.style.zIndex = '1000';
         document.body.appendChild(this.tooltip);
     }
-    renderTreemap() {
-        if (!this.canvas || !this.context || !this.container)
-            return;
+    prepareData() {
+        const securities = this.currentData.filter(item => item.type === 'stock' || item.type === 'etf');
         const config = getConfig();
-        const filteredData = this.filterData();
-        const hierarchyData = this.prepareHierarchyData(filteredData);
-        const rect = this.container.getBoundingClientRect();
-        const root = d3.hierarchy(hierarchyData)
-            .sum((d) => this.getValueForDataType(d))
+        const chartData = {
+            labels: [],
+            parents: [],
+            values: [],
+            colors: [],
+            items: []
+        };
+        const sectors = new Set();
+        securities.forEach(item => {
+            if (item.sector)
+                sectors.add(item.sector);
+        });
+        chartData.labels.push('Market');
+        chartData.parents.push('');
+        chartData.values.push(0);
+        chartData.colors.push(0);
+        chartData.items.push(null);
+        sectors.forEach(sector => {
+            chartData.labels.push(sector);
+            chartData.parents.push('Market');
+            chartData.values.push(0);
+            chartData.colors.push(0);
+            chartData.items.push(null);
+        });
+        securities.forEach(item => {
+            let value = 0;
+            switch (config.dataType) {
+                case 'marketcap':
+                    value = item.marketCap / 1e6;
+                    break;
+                case 'value':
+                    value = item.value / 1e6;
+                    break;
+                case 'trades':
+                    value = item.numTrades;
+                    break;
+                case 'nestedItems':
+                    value = item.nestedItemsCount;
+                    break;
+            }
+            chartData.labels.push(item.ticker);
+            chartData.parents.push(item.sector || 'Other');
+            chartData.values.push(value);
+            chartData.colors.push(item.priceChangePct || 0);
+            chartData.items.push(item);
+        });
+        const stratify = d3.stratify()
+            .id((d, i) => chartData.labels[i])
+            .parentId((d, i) => chartData.parents[i]);
+        const dataWithIndex = chartData.labels.map((_, i) => i);
+        this.hierarchyRoot = stratify(dataWithIndex)
+            .sum((d, i) => chartData.values[i])
             .sort((a, b) => (b.value || 0) - (a.value || 0));
-        const treemap = d3.treemap()
+        this.hierarchyRoot.leaves().forEach((leaf) => {
+            const dataIndex = leaf.id;
+            leaf.color = chartData.colors[dataIndex];
+            leaf.item = chartData.items[dataIndex];
+        });
+        const rect = this.container.getBoundingClientRect();
+        this.treemapLayout = d3.treemap()
             .size([rect.width, rect.height])
-            .padding(1);
-        treemap(root);
+            .padding(2)
+            .round(true);
+        this.treemapLayout(this.hierarchyRoot);
+    }
+    renderCanvas() {
+        if (!this.context || !this.hierarchyRoot)
+            return;
+        const rect = this.container.getBoundingClientRect();
         this.context.clearRect(0, 0, rect.width, rect.height);
-        root.leaves().forEach((node) => {
-            if (node.x1 && node.y1 && node.x0 !== undefined && node.y0 !== undefined) {
-                const width = node.x1 - node.x0;
-                const height = node.y1 - node.y0;
-                if (width > 2 && height > 2) {
-                    const change = node.data.change || 0;
-                    this.context.fillStyle = getColorForChange(change);
-                    this.context.fillRect(node.x0, node.y0, width, height);
-                    if (width > 40 && height > 20) {
-                        this.context.fillStyle = '#fff';
-                        this.context.font = `${Math.min(width / 8, height / 4, 14)}px sans-serif`;
-                        this.context.textAlign = 'center';
-                        this.context.textBaseline = 'middle';
-                        const centerX = node.x0 + width / 2;
-                        const centerY = node.y0 + height / 2;
-                        this.context.fillText(node.data.ticker, centerX, centerY - 5);
-                        this.context.fillText(formatPercent(change), centerX, centerY + 8);
-                    }
+        this.hierarchyRoot.leaves().forEach((leaf) => {
+            const x = leaf.x0;
+            const y = leaf.y0;
+            const width = leaf.x1 - leaf.x0;
+            const height = leaf.y1 - leaf.y0;
+            if (width < 1 || height < 1)
+                return;
+            const color = this.colorScale(Math.max(-3, Math.min(3, leaf.color || 0)));
+            this.context.fillStyle = color;
+            this.context.fillRect(x, y, width, height);
+            this.context.strokeStyle = 'rgb(63,67,81)';
+            this.context.lineWidth = 2;
+            this.context.strokeRect(x, y, width, height);
+            if (width > 30 && height > 20 && leaf.item) {
+                this.context.fillStyle = 'white';
+                this.context.font = 'bold 12px Arial';
+                this.context.textAlign = 'center';
+                this.context.textBaseline = 'middle';
+                const centerX = x + width / 2;
+                const centerY = y + height / 2;
+                this.context.fillText(leaf.item.ticker, centerX, centerY - 8);
+                this.context.font = '10px Arial';
+                const displayName = leaf.item.nameEngShort || leaf.item.nameEng;
+                if (displayName && displayName.length > 0) {
+                    const maxWidth = width - 4;
+                    const truncatedName = displayName.length > 15 ?
+                        displayName.substring(0, 15) + '...' : displayName;
+                    this.context.fillText(truncatedName, centerX, centerY + 8);
                 }
             }
         });
-    }
-    filterData() {
-        return this.currentData;
-    }
-    prepareHierarchyData(data) {
-        const securities = data.filter(item => item.type === 'stock' || item.type === 'etf');
-        const sectors = d3.group(securities, (d) => d.sector || 'Other');
-        const children = [];
-        sectors.forEach((sectorSecurities, sectorName) => {
-            const sectorChildren = sectorSecurities.map((security) => ({
-                ticker: security.ticker,
-                name: security.nameEng,
-                value: this.getValueForDataType(security),
-                change: security.priceChangePct || 0,
-                color: getColorForChange(security.priceChangePct || 0),
-                data: security,
-            }));
-            children.push({
-                ticker: sectorName,
-                name: sectorName,
-                value: 0,
-                change: d3.mean(sectorChildren, (d) => d.change) || 0,
-                color: '#666',
-                children: sectorChildren,
-            });
-        });
-        return {
-            ticker: 'root',
-            name: 'Market',
-            value: 0,
-            change: 0,
-            color: '#666',
-            children,
-        };
-    }
-    getValueForDataType(item) {
-        const config = getConfig();
-        if ('marketCap' in item) {
-            switch (config.dataType) {
-                case 'marketcap': return item.marketCap;
-                case 'value': return item.value;
-                case 'trades': return item.numTrades;
-                case 'nestedItems': return item.nestedItemsCount;
-                default: return item.marketCap;
-            }
-        }
-        return item.value;
     }
     setupInteractions() {
         if (!this.canvas)
             return;
         this.canvas.addEventListener('mousemove', (event) => {
-            this.handleMouseMove(event);
+            const rect = this.canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const leaf = this.findLeafAtPosition(x, y);
+            if (leaf && leaf.item) {
+                this.showTooltip(event, leaf.item);
+            }
+            else {
+                this.hideTooltip();
+            }
         });
         this.canvas.addEventListener('mouseleave', () => {
             this.hideTooltip();
         });
         this.canvas.addEventListener('click', (event) => {
-            this.handleClick(event);
+            const rect = this.canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const leaf = this.findLeafAtPosition(x, y);
+            if (leaf && leaf.item) {
+                this.handleClick(leaf.item);
+            }
         });
     }
-    handleMouseMove(event) {
-        if (!this.tooltip || !this.canvas)
-            return;
-        const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        this.tooltip.style.left = `${event.clientX + 10}px`;
-        this.tooltip.style.top = `${event.clientY - 10}px`;
-        this.tooltip.style.opacity = '1';
-        this.tooltip.innerHTML = `
-      <div>Position: ${Math.round(x)}, ${Math.round(y)}</div>
-      <div>Click to drill down</div>
-    `;
+    findLeafAtPosition(x, y) {
+        if (!this.hierarchyRoot)
+            return null;
+        return this.hierarchyRoot.leaves().find((leaf) => {
+            return x >= leaf.x0 && x <= leaf.x1 && y >= leaf.y0 && y <= leaf.y1;
+        });
     }
-    handleClick(event) {
+    showTooltip(event, item) {
+        if (!this.tooltip)
+            return;
+        const config = getConfig();
+        const currencySign = config.currency === 'USD' ? '$' : config.currency;
+        this.tooltip.innerHTML = `
+      <b>${item.ticker}</b><br>
+      ${item.nameEng}<br>
+      Price: ${item.priceLastSale}<br>
+      Price change: ${(item.priceChangePct || 0).toFixed(2)}%<br>
+      MarketCap: ${currencySign}${formatNumber(item.marketCap / 1e6)}M<br>
+      Volume: ${formatNumber(item.volume)}<br>
+      Value: ${currencySign}${formatNumber(item.value / 1e6)}M<br>
+      Trades: ${formatNumber(item.numTrades)}<br>
+      Exchange: ${item.exchange}<br>
+      Country: ${item.country}<br>
+      Listed Since: ${item.listedFrom}<br>
+      Industry: ${item.industry}
+    `;
+        this.tooltip.style.left = event.pageX + 10 + 'px';
+        this.tooltip.style.top = event.pageY + 10 + 'px';
+        this.tooltip.style.visibility = 'visible';
     }
     hideTooltip() {
         if (this.tooltip) {
-            this.tooltip.style.opacity = '0';
+            this.tooltip.style.visibility = 'hidden';
         }
     }
-    destroy() {
-        if (this.tooltip) {
-            document.body.removeChild(this.tooltip);
-            this.tooltip = null;
-        }
-        if (this.container) {
-            this.container.innerHTML = '';
-        }
+    handleClick(item) {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set('search', item.ticker);
+        window.history.replaceState(null, '', `${window.location.pathname}?${searchParams}`);
     }
 }
 export class D3HistogramRenderer {
     container = null;
-    svg = null;
-    currentData = [];
+    canvas = null;
+    context = null;
     render(data, container) {
         this.container = container;
-        this.currentData = data;
-        this.setupSVG();
-        this.renderHistogram();
+        this.setupCanvas();
+        this.renderHistogram(data);
     }
-    setupSVG() {
+    destroy() {
+        if (this.canvas && this.container && this.container.contains(this.canvas)) {
+            this.container.removeChild(this.canvas);
+        }
+        this.canvas = null;
+        this.context = null;
+        this.container = null;
+    }
+    setupCanvas() {
         if (!this.container)
             return;
         this.container.innerHTML = '';
+        this.canvas = document.createElement('canvas');
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = 'calc(100vh - 70px)';
+        this.canvas.style.display = 'block';
         const rect = this.container.getBoundingClientRect();
-        this.svg = d3.select(this.container)
-            .append('svg')
-            .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('viewBox', `0 0 ${rect.width} ${rect.height}`);
-    }
-    renderHistogram() {
-        if (!this.svg || !this.container)
-            return;
-        const histogramData = this.prepareHistogramData();
-        const rect = this.container.getBoundingClientRect();
-        const margin = { top: 20, right: 20, bottom: 40, left: 60 };
-        const width = rect.width - margin.left - margin.right;
-        const height = rect.height - margin.top - margin.bottom;
-        const xScale = d3.scaleBand()
-            .domain(histogramData.map(d => d.sector))
-            .range([0, width])
-            .padding(0.1);
-        const yScale = d3.scaleLinear()
-            .domain([0, d3.max(histogramData, (d) => d.value) || 0])
-            .range([height, 0]);
-        const g = this.svg.append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`);
-        g.selectAll('.bar')
-            .data(histogramData)
-            .enter().append('rect')
-            .attr('class', 'bar')
-            .attr('x', (d) => xScale(d.sector) || 0)
-            .attr('width', xScale.bandwidth())
-            .attr('y', (d) => yScale(d.value))
-            .attr('height', (d) => height - yScale(d.value))
-            .attr('fill', (d) => getColorForChange(d.value));
-        g.append('g')
-            .attr('transform', `translate(0,${height})`)
-            .call(d3.axisBottom(xScale));
-        g.append('g')
-            .call(d3.axisLeft(yScale));
-    }
-    prepareHistogramData() {
-        const config = getConfig();
-        const sectors = d3.group(this.currentData, (d) => d.sector || 'Other');
-        const result = [];
-        sectors.forEach((securities, sector) => {
-            const value = d3.sum(securities, (d) => {
-                switch (config.dataType) {
-                    case 'marketcap': return d.marketCap;
-                    case 'value': return d.value;
-                    case 'trades': return d.numTrades;
-                    case 'nestedItems': return d.nestedItemsCount;
-                    default: return d.marketCap;
-                }
-            });
-            result.push({
-                date: config.date,
-                value,
-                sector,
-            });
-        });
-        return result.sort((a, b) => b.value - a.value);
-    }
-    destroy() {
-        if (this.container) {
-            this.container.innerHTML = '';
+        this.canvas.width = rect.width * window.devicePixelRatio;
+        this.canvas.height = rect.height * window.devicePixelRatio;
+        this.context = this.canvas.getContext('2d');
+        if (this.context) {
+            this.context.scale(window.devicePixelRatio, window.devicePixelRatio);
         }
+        this.container.appendChild(this.canvas);
+    }
+    renderHistogram(data) {
+        if (!this.context)
+            return;
+        const rect = this.container.getBoundingClientRect();
+        this.context.clearRect(0, 0, rect.width, rect.height);
+        const config = getConfig();
+        let values = [];
+        switch (config.dataType) {
+            case 'marketcap':
+                values = data.map(d => d.marketCap / 1e6);
+                break;
+            case 'value':
+                values = data.map(d => d.value / 1e6);
+                break;
+            case 'trades':
+                values = data.map(d => d.numTrades);
+                break;
+            case 'nestedItems':
+                values = data.map(d => d.nestedItemsCount);
+                break;
+        }
+        const bins = d3.bin().thresholds(50)(values);
+        const xScale = d3.scaleLinear()
+            .domain(d3.extent(values))
+            .range([50, rect.width - 50]);
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(bins, (d) => d.length)])
+            .range([rect.height - 50, 50]);
+        this.context.fillStyle = 'rgb(42, 202, 85)';
+        bins.forEach((bin) => {
+            const x = xScale(bin.x0);
+            const y = yScale(bin.length);
+            const width = xScale(bin.x1) - xScale(bin.x0) - 1;
+            const height = rect.height - 50 - y;
+            if (width > 0 && height > 0) {
+                this.context.fillRect(x, y, width, height);
+            }
+        });
+        this.context.strokeStyle = 'white';
+        this.context.lineWidth = 1;
+        this.context.beginPath();
+        this.context.moveTo(50, 50);
+        this.context.lineTo(50, rect.height - 50);
+        this.context.lineTo(rect.width - 50, rect.height - 50);
+        this.context.stroke();
     }
 }

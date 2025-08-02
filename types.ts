@@ -85,7 +85,7 @@ export interface TreemapNode {
   change: number;
   color: string;
   children?: TreemapNode[];
-  data?: MarketData; // Store original market data for tooltips
+  data?: MarketData;
 }
 
 export interface HistogramDataPoint {
