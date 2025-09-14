@@ -8,7 +8,7 @@ function handleShareClick(event) {
     navigator
       .share({
         title: thisTitle,
-        url: url,
+        url: window.location.href,
       })
       .catch(console.error);
   } else {
