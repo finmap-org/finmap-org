@@ -67,6 +67,7 @@
       
       html,
       body {
+        font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
         overflow: hidden;
         width: 100%;
         height: 100%;
@@ -278,8 +279,12 @@
         height: 24px;
       }
       
-      .menuItem:hover {
-        text-decoration: underline;
+      .menu > li {
+        padding-bottom: 0.45rem;
+      }
+      
+      .menuItem {
+        vertical-align: middle;
       }
       
       .hamburger {
@@ -287,15 +292,23 @@
         z-index: 100;
         top: 10px;
         right: 8px;
-        padding: 0px;
-        border: black solid 0px;
+        padding: 0;
+        border: none;
         color: white;
-        background: rgba(0,0,0,0);
+        background: transparent;
         cursor: pointer;
       }
       
       .closeIcon {
         display: none;
+      }
+      
+      .hamburger.active .menuIcon {
+        display: none;
+      }
+      
+      .hamburger.active .closeIcon {
+        display: block;
       }
       
       .menu {
@@ -308,16 +321,26 @@
         bottom: 25px;
         z-index: 99;
         background: rgba(65, 69, 84, 0.8);
+        backdrop-filter: blur(10px);
         color: white;
         list-style: none;
-        margin: 0;
-        padding: 1.8rem;
+        padding: 2.3rem;
         padding-top: 0.4rem;
         text-align: right;
       }
       
       .showMenu {
         transform: translateY(0);
+      }
+      
+      @media (hover: hover) {
+        .menuItem:hover {
+          text-decoration: underline;
+        }
+        
+        button:hover {
+          opacity: 0.8;
+        }
       }
     </style>
   </head>
@@ -377,7 +400,11 @@
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
-          href="https://finmap.org/?exchange=bist&chartType=treemap&dataType=value&date=2025-02-28">TURKISH STOCK MARKET</a>
+          href="https://finmap.org/?exchange=hkex">HONG KONG EXCHANGE</a>
+      </li>
+      <li>
+        <a class="menuItem" target="_self" rel="noopener"
+          href="https://finmap.org/?exchange=bist&date=2025-02-28">TURKISH STOCK MARKET</a>
       </li>
       <li>
         <a class="menuItem" target="_self" rel="noopener"
@@ -386,10 +413,6 @@
       <li>
         <a class="menuItem" target="_self" rel="noopener"
           href="https://finmap.org/tcg">COLLECTIBLE CARDS</a>
-      </li>
-      <li>
-        <a class="menuItem" target="_self" rel="noopener"
-          href="https://finmap.org/?exchange=hkex">HONG KONG EXCHANGE</a>
       </li>
     </ul>
     <button class="hamburger">
