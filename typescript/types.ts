@@ -7,7 +7,8 @@ export type Exchange =
   | "us-all"
   | "moex"
   | "lse"
-  | "bist";
+  | "bist"
+  | "hkex";
 export type ChartType = "treemap" | "histogram";
 export type DataType = "marketcap" | "value" | "trades" | "nestedItems";
 export type Language = "en" | "ru" | "tr";

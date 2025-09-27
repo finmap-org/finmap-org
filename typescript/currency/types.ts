@@ -1,4 +1,4 @@
-export type Currency = "USD" | "RUB" | "EUR" | "GBP" | "TRY";
+export type Currency = "USD" | "RUB" | "EUR" | "GBP" | "TRY" | "HKD";
 
 export interface CurrencyInfo {
   code: Currency;

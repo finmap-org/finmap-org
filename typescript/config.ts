@@ -71,6 +71,16 @@ export const EXCHANGE_INFO = {
     region: "turkey",
     language: "tr",
   },
+  hkex: {
+    nativeCurrency: "HKD" as const,
+    dataRepo: "data-hongkong",
+    minDate: "2025-09-26",
+    maxDate: null,
+    marketOpenHour: 1,
+    updateFrequencyMinutes: 15,
+    region: "hongkong",
+    language: "en",
+  },
 } as const;
 
 export function getExchangeInfo(exchange: keyof typeof EXCHANGE_INFO) {

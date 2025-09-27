@@ -68,6 +68,18 @@
       ]
     },
     {
+      "name": "Hong Kong Exchange",
+      "short_name": "HKEX",
+      "description": "Hong Kong Stock Exchange",
+      "url": "/?exchange=hkex",
+      "icons": [
+        {
+          "src": "/images/icons/ios/192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
       "name": "Moscow Exchange",
       "short_name": "MOEX",
       "description": "Moscow Exchange, Russian Stock Market",
