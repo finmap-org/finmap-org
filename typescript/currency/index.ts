@@ -6,6 +6,12 @@ const CURRENCY_INFO: Record<Currency, CurrencyInfo> = {
   EUR: { symbol: "€", name: "Euro", code: "EUR", position: "before" },
   GBP: { symbol: "£", name: "British Pound", code: "GBP", position: "before" },
   TRY: { symbol: "₺", name: "Turkish Lira", code: "TRY", position: "after" },
+  HKD: {
+    symbol: "HK$",
+    name: "Hong Kong dollar",
+    code: "HKD",
+    position: "before",
+  },
 };
 
 const ratesCache = new Map<
