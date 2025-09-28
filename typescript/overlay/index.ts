@@ -1,4 +1,4 @@
-import type { OverlayTab, NewsItem, CompanyInfo } from "./types.js";
+import type { OverlayTab } from "./types.js";
 import type { MarketData } from "../treemap/types.js";
 import { fetchNews, fetchCompanyInfo } from "./data.js";
 import { getConfig, EXCHANGE_INFO } from "../config.js";

@@ -21,6 +21,14 @@ export async function fetchNews(
       newsLang = "hl=ru&gl=RU&ceid=RU:ru";
       displayName = companyName;
       break;
+    case "tr":
+      newsLang = "hl=tr-TR&gl=TR&ceid=TR:tr";
+      displayName = companyName;
+      break;
+    case "cn":
+      newsLang = "hl=zh-HK&gl=HK&ceid=HK:zh-Hant";
+      displayName = companyName;
+      break;
     default:
       newsLang = "hl=en-US&gl=US&ceid=US:en";
       displayName = companyName;
@@ -128,6 +136,8 @@ export async function fetchCompanyInfo(
           wikiPageIdOriginal,
           config.language,
         );
+      case "hkex":
+        return await fetchHKCompanyInfo(ticker, config.language);
       default:
         return null;
     }
@@ -159,6 +169,33 @@ async function fetchUSCompanyInfo(
     };
   } catch (error) {
     console.warn(`Failed to fetch US company info for ${ticker}:`, error);
+    return null;
+  }
+}
+
+async function fetchHKCompanyInfo(
+  ticker: string,
+  language: string,
+): Promise<CompanyInfo | null> {
+  const lang = language === "cn" ? "chi" : "eng";
+  const url = `https://raw.githubusercontent.com/finmap-org/data-hongkong/refs/heads/main/securities/hkex/${lang}/${ticker[0]}/${ticker}.json`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+
+    const json = await response.json();
+    const description = json.data?.quote?.summary || "";
+    const sourceLink = ""; // No URL available in the data
+
+    if (!description && !sourceLink) return null;
+
+    return {
+      description: description.trim(),
+      sourceLink: sourceLink.trim(),
+    };
+  } catch (error) {
+    console.warn(`Failed to fetch HK company info for ${ticker}:`, error);
     return null;
   }
 }
