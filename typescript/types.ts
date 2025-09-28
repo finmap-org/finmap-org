@@ -11,7 +11,7 @@ export type Exchange =
   | "hkex";
 export type ChartType = "treemap" | "histogram";
 export type DataType = "marketcap" | "value" | "trades" | "nestedItems";
-export type Language = "en" | "ru" | "tr";
+export type Language = "en" | "ru" | "tr" | "cn";
 
 export interface AppConfig {
   exchange: Exchange;

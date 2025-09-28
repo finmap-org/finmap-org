@@ -79,7 +79,7 @@ export const EXCHANGE_INFO = {
     marketOpenHour: 1,
     updateFrequencyMinutes: 15,
     region: "hongkong",
-    language: "en",
+    language: "cn",
   },
 } as const;
 
