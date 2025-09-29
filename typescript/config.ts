@@ -74,7 +74,7 @@ export const EXCHANGE_INFO = {
   hkex: {
     nativeCurrency: "HKD" as const,
     dataRepo: "data-hongkong",
-    minDate: "2025-09-26",
+    minDate: "2025-09-29",
     maxDate: null,
     marketOpenHour: 2,
     updateFrequencyMinutes: 30,
