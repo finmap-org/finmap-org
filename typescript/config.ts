@@ -96,11 +96,21 @@ function calculateLatestAvailableDate(
     return exchangeInfo.maxDate;
   }
 
-  let date = new Date();
-
-  // If current time is before market open, use previous day
-  if (date.getUTCHours() < exchangeInfo.marketOpenHour) {
-    date.setUTCDate(date.getUTCDate() - 1);
+  let date: Date;
+  switch (exchange) {
+    case "nasdaq":
+    case "nyse":
+    case "amex":
+    case "us-all":
+      date = new Date(new Date().setDate(new Date().getDate() - 1));
+      break;
+    default:
+      date = new Date();
+      // If current time is before market open, use previous day
+      if (date.getUTCHours() < exchangeInfo.marketOpenHour) {
+        date.setUTCDate(date.getUTCDate() - 1);
+      }
+      break;
   }
 
   // Skip weekends
