@@ -1,6 +1,7 @@
 import { COLOR_SCALE, COLORS, LAYOUT, FONT, TRANSITIONS } from "./constants.js";
 import { isLeafNode } from "./types.js";
 import type { MarketData } from "./types.js";
+import { formatCurrency } from "../utils.js";
 import { getDisplayName } from "./types.js";
 import { getConfig, EXCHANGE_INFO } from "../config.js";
 import { getCurrencyInfo } from "../currency/index.js";
@@ -181,13 +182,14 @@ export class TooltipComponent {
       : data.nameEng || data.ticker;
 
     const formatNumber = (num: number) => d3.format(",.0f")(num);
-    const formatCurrency = (num: number) =>
-      `${currencySign}${formatNumber(num / 1e6)}M`;
     const formatPercent = (num: number) => d3.format(".2f")(num);
 
     const ticker = this.element.querySelector(".tooltip-ticker") as HTMLElement;
     const name = this.element.querySelector(".tooltip-name") as HTMLElement;
     const price = this.element.querySelector(".tooltip-price") as HTMLElement;
+    const position = this.element.querySelector(
+      ".tooltip-position",
+    ) as HTMLElement;
     const marketcap = this.element.querySelector(
       ".tooltip-marketcap",
     ) as HTMLElement;
@@ -210,11 +212,18 @@ export class TooltipComponent {
 
     if (ticker) ticker.textContent = data.ticker;
     if (name) name.textContent = displayName;
-    if (price)
+    if (price) {
       price.textContent = `${formatPercent(data.priceLastSale || 0)} (${d3.format("+.2f")(data.priceChangePct || 0)}%)`;
-    if (marketcap)
-      marketcap.textContent = `MarketCap: ${formatCurrency(data.marketCap || 0)}`;
-    if (value) value.textContent = `Value: ${formatCurrency(data.value || 0)}`;
+    }
+    if (position) {
+      position.textContent = `Position: ${formatCurrency(data.positionValue || 0, currencySign)}`;
+    }
+    if (marketcap) {
+      marketcap.textContent = `MarketCap: ${formatCurrency(data.marketCap || 0, currencySign)}`;
+    }
+    if (value) {
+      value.textContent = `Value: ${formatCurrency(data.value || 0, currencySign)}`;
+    }
     if (volume)
       volume.textContent = `Volume: ${formatNumber(data.volume || 0)}`;
     if (trades)

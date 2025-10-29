@@ -53,6 +53,10 @@ export function buildHierarchy(data: MarketData[]): HierarchyNode {
 export function getValueForDataType(item: MarketData): number {
   if (!item) return 0;
 
+  if (item.positionValue !== undefined) {
+    return item.positionValue;
+  }
+
   const config = getConfig();
   switch (config.dataType) {
     case "marketcap":

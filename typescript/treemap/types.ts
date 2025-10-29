@@ -31,6 +31,8 @@ export interface MarketData {
   wikiPageIdEng: string;
   wikiPageIdOriginal: string;
   nestedItemsCount: number;
+  positionValue?: number;
+  isPortfolio?: boolean;
 }
 
 export interface DataParsingService {

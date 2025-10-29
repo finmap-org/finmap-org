@@ -1,4 +1,5 @@
 import { COLOR_SCALE, COLORS, LAYOUT, FONT } from "./constants.js";
+import { formatCurrency } from "../utils.js";
 import {
   isLeafNode,
   getNodeData,
@@ -134,8 +135,11 @@ export class CanvasRenderer {
 
       if (height > baseFontSize * 8) {
         context.font = `${baseFontSize * 0.8}px ${FONT.FAMILY}`;
-        const capText = `Cap: ${currencySign}${d3.format(",.0f")((marketCap || 0) / 1e6)}M`;
-        this.drawText(capText, textX, currentY, maxWidth, context);
+        const value =
+          data.positionValue !== undefined ? data.positionValue : marketCap;
+        const label = data.positionValue !== undefined ? "Position: " : "Cap: ";
+        const text = label + formatCurrency(value, currencySign);
+        this.drawText(text, textX, currentY, maxWidth, context);
       }
     } else {
       const config = getConfig();

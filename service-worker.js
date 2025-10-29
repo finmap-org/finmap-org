@@ -1,6 +1,6 @@
-const CACHE_NAME = 'finmap-v2.2.1';
-const STATIC_CACHE = 'finmap-static-v2.2.1';
-const DATA_CACHE = 'finmap-data-v2.2.1';
+const CACHE_NAME = 'finmap-v2.3.1';
+const STATIC_CACHE = 'finmap-static-v2.3.1';
+const DATA_CACHE = 'finmap-data-v2.3.1';
 
 const STATIC_FILES = [
   '/',

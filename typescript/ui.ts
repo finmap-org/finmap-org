@@ -317,8 +317,8 @@ function applyFilters(data: MarketData[]): MarketData[] {
       if (portfolioItem) {
         return {
           ...item,
-          value: item.priceLastSale * portfolioItem.amount,
-          marketCap: item.priceLastSale * portfolioItem.amount,
+          positionValue: item.priceLastSale * portfolioItem.amount,
+          isPortfolio: true,
         };
       }
 
