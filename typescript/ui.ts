@@ -310,6 +310,9 @@ function cleanupOnConfigChange(): void {
 }
 
 function applyFilters(data: MarketData[]): MarketData[] {
+  const config = getConfig();
+  const exchangeInfo = EXCHANGE_INFO[config.exchange];
+
   const csvData = localStorage.getItem("filterCsv");
   if (!csvData) return data;
 
@@ -338,9 +341,6 @@ function applyFilters(data: MarketData[]): MarketData[] {
       );
 
       if (portfolioItem) {
-        const config = getConfig();
-        const exchangeInfo = EXCHANGE_INFO[config.exchange];
-
         let positionValue: number = item.priceLastSale * portfolioItem.amount;
         if (config.currency !== exchangeInfo.nativeCurrency) {
           positionValue = positionValue / config.currencyExchangeRate;
