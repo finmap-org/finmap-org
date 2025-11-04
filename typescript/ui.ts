@@ -170,6 +170,15 @@ function setupEventListeners(): void {
         toggleCurrency();
         const newConfig = getConfig();
         target.textContent = newConfig.currency;
+
+        getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
+          (currencyExchangeRate: number) => {
+            updateConfig({
+              currencyExchangeRate: currencyExchangeRate,
+            });
+          },
+        );
+        
         saveConfigToURL();
         renderChart();
       }
