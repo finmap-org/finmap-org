@@ -308,7 +308,11 @@ function applyFilters(data: MarketData[]): MarketData[] {
     );
 
     return filteredData.map((item) => {
-      if (item.type === "sector") return item;
+      if (item.type === "sector")
+        return {
+          ...item,
+          isPortfolio: true,
+        };
 
       const portfolioItem = portfolioData.find(
         (p) => p.ticker.toUpperCase() === item.ticker.toUpperCase(),
