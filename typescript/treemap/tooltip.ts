@@ -138,33 +138,33 @@ export class TooltipComponent {
     currencySign: string,
   ): void {
     if (!this.element) return;
-
+  
     const change = data?.priceChangePct || 0;
     const nodeColor = COLOR_SCALE(change);
-
+  
     let percentParent = 100;
     let percentRoot = 100;
-
+  
     if (node) {
       const nodeValue = node.value || 0;
-
+  
       if (node.parent && node.parent.value) {
         percentParent = (nodeValue / node.parent.value) * 100;
       }
-
+  
       let root = node;
       while (root.parent) root = root.parent;
-
+  
       if (root.value) {
         percentRoot = (nodeValue / root.value) * 100;
       }
     }
-
+  
     this.element.style.background = nodeColor;
     this.element.style.color = COLORS.TEXT_WHITE;
     this.element.style.border = "2px solid white";
-
-    this.populateTooltipData(data, currencySign, percentParent, percentRoot);
+  
+    this.populateTooltipData(data, currencySign, percentParent, percentRoot, node);
   }
 
   private populateTooltipData(
@@ -172,6 +172,7 @@ export class TooltipComponent {
     currencySign: string,
     percentParent: number,
     percentRoot: number,
+    node?: any,
   ): void {
     if (!this.element) return;
 
@@ -216,7 +217,10 @@ export class TooltipComponent {
       price.textContent = `${formatPercent(data.priceLastSale || 0)} (${d3.format("+.2f")(data.priceChangePct || 0)}%)`;
     }
     if (position) {
-      position.textContent = `Position: ${formatCurrency(data.positionValue || 0, currencySign)}`;
+      const positionValue = (node?.value !== undefined && data.isPortfolio) 
+        ? node.value 
+        : (data.positionValue || 0);
+      position.textContent = `Position: ${formatCurrency(positionValue, currencySign)}`;
     }
     if (marketcap) {
       marketcap.textContent = `MarketCap: ${formatCurrency(data.marketCap || 0, currencySign)}`;
