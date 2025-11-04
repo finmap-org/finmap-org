@@ -19,5 +19,6 @@ export interface AppConfig {
   dataType: DataType;
   date: string;
   currency: Currency;
+  currencyExchangeRate: number;
   language: Language;
 }

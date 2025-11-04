@@ -12,6 +12,7 @@ import {
 } from "./config.js";
 import { toggleCurrency } from "./currency/data.js";
 import { OverlayComponent } from "./overlay/index.js";
+import { getExchangeRate } from "./currency/index.js";
 
 let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
@@ -41,6 +42,9 @@ function setupEventListeners(): void {
   const searchInput = document.getElementById("search") as HTMLInputElement;
   const fileInput = document.getElementById("inputFile") as HTMLInputElement;
 
+  const config = getConfig();
+  const exchangeInfo = EXCHANGE_INFO[config.exchange];
+
   if (dataTypeSelect) {
     dataTypeSelect.addEventListener("change", () => {
       updateConfig({ dataType: dataTypeSelect.value as any });
@@ -60,6 +64,15 @@ function setupEventListeners(): void {
       ) {
         const formattedDate = `${dateParts[0]}/${dateParts[1].padStart(2, "0")}/${dateParts[2].padStart(2, "0")}`;
         updateConfig({ date: formattedDate });
+
+        getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
+          (currencyExchangeRate: number) => {
+            updateConfig({
+              currencyExchangeRate: currencyExchangeRate,
+            });
+          },
+        );
+
         saveConfigToURL();
         renderChart();
       }
@@ -130,6 +143,15 @@ function setupEventListeners(): void {
       event.preventDefault();
       cleanupOnConfigChange();
       updateConfig({ exchange: target.dataset.exchange as any });
+
+      getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
+        (currencyExchangeRate: number) => {
+          updateConfig({
+            currencyExchangeRate: currencyExchangeRate,
+          });
+        },
+      );
+
       saveConfigToURL();
       updateDateInputLimits();
       renderChart();
@@ -142,9 +164,6 @@ function setupEventListeners(): void {
       if (target.hasAttribute("currency-toggle-disabled")) {
         return;
       }
-
-      const config = getConfig();
-      const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
       if (exchangeInfo && exchangeInfo.nativeCurrency !== "USD") {
         cleanupOnConfigChange();
@@ -319,9 +338,16 @@ function applyFilters(data: MarketData[]): MarketData[] {
       );
 
       if (portfolioItem) {
+        const config = getConfig();
+        const exchangeInfo = EXCHANGE_INFO[config.exchange];
+
+        let positionValue: number = item.priceLastSale * portfolioItem.amount;
+        if (config.currency !== exchangeInfo.nativeCurrency) {
+          positionValue = positionValue / config.currencyExchangeRate;
+        }
         return {
           ...item,
-          positionValue: item.priceLastSale * portfolioItem.amount,
+          positionValue: positionValue,
           isPortfolio: true,
         };
       }

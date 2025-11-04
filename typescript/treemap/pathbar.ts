@@ -37,24 +37,24 @@ export class PathbarComponent {
     },
   ): void {
     if (!this.element) return;
-  
+
     const pathbarSelection = d3.select(this.element);
     pathbarSelection.selectAll("*").remove();
-  
+
     const sectionsContainer = pathbarSelection
       .append("div")
       .style("display", "flex")
       .style("width", "100%")
       .style("height", "100%");
-  
+
     const sectionWidth = `${100 / path.length}%`;
-  
+
     path.forEach((item: any, index: number) => {
       const isLast = index === path.length - 1;
       const sectorData = getNodeData(item.node);
       const sectorChange = sectorData?.priceChangePct || 0;
       const sectorColor = COLOR_SCALE(sectorChange);
-  
+
       const section = sectionsContainer
         .append("div")
         .style("width", sectionWidth)
@@ -70,7 +70,7 @@ export class PathbarComponent {
         )
         .style("transition", "background-color 0.2s ease")
         .style("position", "relative");
-  
+
       section
         .append("span")
         .style("color", COLORS.TEXT_WHITE)
@@ -84,7 +84,7 @@ export class PathbarComponent {
         .style("padding", "0 5px")
         .style("pointer-events", "none")
         .text(sectorData?.nameEng || item.name);
-  
+
       if (!isLast) {
         section
           .on("click", () => callbacks.onDrill(item.node))
@@ -101,7 +101,7 @@ export class PathbarComponent {
             );
           });
       }
-  
+
       if (sectorData) {
         section
           .on("mouseenter.tooltip", (event: MouseEvent) => {

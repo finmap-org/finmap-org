@@ -138,6 +138,7 @@ export const defaultConfig: AppConfig = {
   dataType: "marketcap",
   date: calculateLatestAvailableDate("nasdaq").replace(/-/g, "/"),
   currency: "USD",
+  currencyExchangeRate: 1.0,
   language: "en",
 };
 

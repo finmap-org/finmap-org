@@ -315,7 +315,8 @@ export class TreemapChart implements ChartRenderer {
   private updatePathbar(): void {
     this.pathbar.update(this.getPathToRoot(this.currentRoot), {
       onDrill: (node) => this.drillTo(node),
-      onShowTooltip: (data, event, node) => this.tooltip.show(data, event, node),
+      onShowTooltip: (data, event, node) =>
+        this.tooltip.show(data, event, node),
       onHideTooltip: () => this.tooltip.hide(),
     });
   }
