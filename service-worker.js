@@ -1,6 +1,6 @@
-const CACHE_NAME = 'finmap-v2.3.2';
-const STATIC_CACHE = 'finmap-static-v2.3.2';
-const DATA_CACHE = 'finmap-data-v2.3.2';
+const CACHE_NAME = 'finmap-v2.3.3';
+const STATIC_CACHE = 'finmap-static-v2.3.3';
+const DATA_CACHE = 'finmap-data-v2.3.3';
 
 const STATIC_FILES = [
   '/',
@@ -16,7 +16,7 @@ const STATIC_FILES = [
   '/images/icons/favicon.png',
   '/images/icons/ios/180.png',
   '/js/d3.v7.min.js',
-  '/js/plotly-3.1.0.min.js',
+  '/js/plotly-3.3.1.min.js',
 ];
 
 const DATA_URLS = [
