@@ -6,7 +6,7 @@ export const EXCHANGE_INFO = {
     dataRepo: "data-us",
     minDate: "2024-12-09",
     maxDate: null,
-    marketOpenHour: 10,
+    marketOpenHour: 5,
     updateFrequencyMinutes: 60,
     region: "us",
     language: "en",
@@ -16,7 +16,7 @@ export const EXCHANGE_INFO = {
     dataRepo: "data-us",
     minDate: "2024-12-09",
     maxDate: null,
-    marketOpenHour: 10,
+    marketOpenHour: 5,
     updateFrequencyMinutes: 60,
     region: "us",
     language: "en",
@@ -26,7 +26,7 @@ export const EXCHANGE_INFO = {
     dataRepo: "data-us",
     minDate: "2024-12-09",
     maxDate: null,
-    marketOpenHour: 10,
+    marketOpenHour: 5,
     updateFrequencyMinutes: 60,
     region: "us",
     language: "en",
@@ -36,7 +36,7 @@ export const EXCHANGE_INFO = {
     dataRepo: "data-us",
     minDate: "2024-12-09",
     maxDate: null,
-    marketOpenHour: 10,
+    marketOpenHour: 5,
     updateFrequencyMinutes: 60,
     region: "us",
     language: "en",
@@ -96,20 +96,18 @@ function calculateLatestAvailableDate(
     return exchangeInfo.maxDate;
   }
 
-  let date: Date;
+  let date = new Date();
+  if (date.getUTCHours() < exchangeInfo.marketOpenHour) {
+    date.setUTCDate(date.getUTCDate() - 1);
+  }
   switch (exchange) {
     case "nasdaq":
     case "nyse":
     case "amex":
     case "us-all":
-      date = new Date(new Date().setDate(new Date().getDate() - 1));
+      date.setUTCDate(date.getUTCDate() - 1);
       break;
     default:
-      date = new Date();
-      // If current time is before market open, use previous day
-      if (date.getUTCHours() < exchangeInfo.marketOpenHour) {
-        date.setUTCDate(date.getUTCDate() - 1);
-      }
       break;
   }
 
