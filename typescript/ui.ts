@@ -16,6 +16,7 @@ import { getExchangeRate } from "./currency/index.js";
 
 let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
+let currentFetchController: AbortController | null = null;
 
 function loadFiltersFromStorage(): string[] {
   const stored = localStorage.getItem("finmap-filters");
@@ -294,9 +295,14 @@ export async function renderChart(): Promise<void> {
     const container = document.getElementById("chart");
     if (!container) return;
 
+    if (currentFetchController) {
+      currentFetchController.abort();
+    }
+    currentFetchController = new AbortController();
+
     showLoadingState(container);
 
-    currentData = await fetchMarketData();
+    currentData = await fetchMarketData(currentFetchController.signal);
 
     if (currentRenderer) {
       currentRenderer.destroy();
@@ -322,12 +328,19 @@ export async function renderChart(): Promise<void> {
 
     updateUIState();
     hideLoadingState(container);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === "AbortError") {
+      return;
+    }
     showErrorState(error as Error);
   }
 }
 
 function cleanupOnConfigChange(): void {
+  if (currentFetchController) {
+    currentFetchController.abort();
+    currentFetchController = null;
+  }
   OverlayComponent.destroyInstance();
   currentData.length = 0;
 

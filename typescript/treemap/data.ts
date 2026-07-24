@@ -72,7 +72,9 @@ export function getValueForDataType(item: MarketData): number {
   }
 }
 
-export async function fetchMarketData(): Promise<MarketData[]> {
+export async function fetchMarketData(
+  signal?: AbortSignal,
+): Promise<MarketData[]> {
   const config = getConfig();
   const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
@@ -83,7 +85,7 @@ export async function fetchMarketData(): Promise<MarketData[]> {
   const url = `https://raw.githubusercontent.com/finmap-org/${exchangeInfo.dataRepo}/refs/heads/main/marketdata/${config.date}/${config.exchange}.json`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, signal ? { signal } : undefined);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const data: MarketDataResponse = await response.json();
@@ -99,7 +101,10 @@ export async function fetchMarketData(): Promise<MarketData[]> {
     }
 
     return marketData;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === "AbortError") {
+      throw error;
+    }
     throw new Error(`Failed to fetch market data: ${error}`);
   }
 }
