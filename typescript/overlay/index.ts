@@ -1,6 +1,6 @@
 import type { OverlayTab } from './types.js';
 import { getDisplayName, type MarketData } from '../treemap/types.js';
-import { fetchNews, fetchCompanyInfo } from './data.js';
+import { fetchNews, fetchCompanyInfo, escapeHtml } from './data.js';
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { getCurrencyInfo } from '../currency/index.js';
 
@@ -11,6 +11,7 @@ export class OverlayComponent {
   private overlay: HTMLElement | null = null;
   private currentTab: OverlayTab = 'news';
   private currentData: MarketData | null = null;
+  private fetchController: AbortController | null = null;
   private eventListeners: Map<
     string,
     { element: EventTarget; listener: EventListener; eventType: string }
@@ -31,10 +32,18 @@ export class OverlayComponent {
   show(data: MarketData): void {
     if (!this.overlay) return;
 
+    this.abortFetch();
     this.currentData = data;
     this.currentTab = 'news';
     this.populate(data);
     this.showOverlay();
+  }
+
+  private abortFetch(): void {
+    if (this.fetchController) {
+      this.fetchController.abort();
+      this.fetchController = null;
+    }
   }
 
   private setupEventListeners(): void {
@@ -123,6 +132,7 @@ export class OverlayComponent {
   private switchTab(tab: OverlayTab): void {
     if (!this.overlay) return;
 
+    this.abortFetch();
     this.currentTab = tab;
 
     const tabs = this.overlay.querySelectorAll('.overlay-tab');
@@ -158,12 +168,15 @@ export class OverlayComponent {
   private async loadNewsContent(data: MarketData, container: HTMLElement): Promise<void> {
     container.innerHTML = '<div class="loading-message">Loading news...</div>';
 
+    this.fetchController = new AbortController();
+    const signal = this.fetchController.signal;
+
     try {
       const config = getConfig();
       const exchangeInfo = data.exchange ? EXCHANGE_INFO[data.exchange] : null;
       const companyName = getDisplayName(data, config.language, exchangeInfo?.language || null);
 
-      const newsItems = await fetchNews(data.ticker, companyName, config.date);
+      const newsItems = await fetchNews(data.ticker, companyName, config.date, signal);
 
       if (newsItems.length === 0) {
         container.innerHTML =
@@ -176,14 +189,14 @@ export class OverlayComponent {
           item => `
         <article class="news-article">
           <h4 class="news-title">
-            <a href="${item.link}" target="_blank" rel="noopener noreferrer">
-              ${item.title}
+            <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">
+              ${escapeHtml(item.title)}
             </a>
           </h4>
           <div class="news-meta">
-            <a href="${item.sourceUrl}" target="_blank" rel="noopener">
-              ${item.source}
-            </a>, ${item.pubDate}
+            <a href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener">
+              ${escapeHtml(item.source)}
+            </a>, ${escapeHtml(item.pubDate)}
           </div>
         </article>
       `,
@@ -191,7 +204,10 @@ export class OverlayComponent {
         .join('');
 
       container.innerHTML = newsHtml;
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        return;
+      }
       container.innerHTML = '<div class="error-message">Try checking back later for updates</div>';
     }
   }
@@ -199,12 +215,16 @@ export class OverlayComponent {
   private async loadInfoContent(data: MarketData, container: HTMLElement): Promise<void> {
     container.innerHTML = '<div class="loading-message">Loading company info...</div>';
 
+    this.fetchController = new AbortController();
+    const signal = this.fetchController.signal;
+
     try {
       const companyInfo = await fetchCompanyInfo(
         data.exchange,
         data.ticker,
         data.wikiPageIdEng,
         data.wikiPageIdOriginal,
+        signal,
       );
 
       if (!companyInfo || !companyInfo.description) {
@@ -212,13 +232,19 @@ export class OverlayComponent {
         return;
       }
 
+      const safeDescription = escapeHtml(companyInfo.description);
+      const safeLink = escapeHtml(companyInfo.sourceLink);
+
       container.innerHTML = `
         <div class="company-info">
-          <p>${companyInfo.description}</p>
-          <p><strong>Link: <a href="${companyInfo.sourceLink}" target="_blank" rel="noopener">${companyInfo.sourceLink}</a></strong></p>
+          <p>${safeDescription}</p>
+          <p><strong>Link: <a href="${safeLink}" target="_blank" rel="noopener">${safeLink}</a></strong></p>
         </div>
       `;
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        return;
+      }
       container.innerHTML =
         '<div class="error-message">Company details are not available for this security.</div>';
     }
@@ -244,11 +270,13 @@ export class OverlayComponent {
   private hide(): void {
     if (!this.overlay) return;
 
+    this.abortFetch();
     this.overlay.style.display = 'none';
     document.body.style.overflow = 'auto';
   }
 
   destroy(): void {
+    this.abortFetch();
     this.eventListeners.forEach((entry, key) => {
       this.removeEventListener(key);
     });
