@@ -1,5 +1,5 @@
 export function formatCurrency(value: number, currencySign: string): string {
-  if (!value || value === 0) return `${currencySign}0`;
+  if (!value || value === 0 || !isFinite(value)) return `${currencySign}0`;
 
   const absValue = Math.abs(value);
   if (absValue >= 1e9) {

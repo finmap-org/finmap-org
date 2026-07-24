@@ -178,12 +178,35 @@ export function loadConfigFromURL(): void {
   const params = new URLSearchParams(window.location.search);
   const urlConfig: Partial<AppConfig> = {};
 
-  if (params.has('exchange')) urlConfig.exchange = params.get('exchange') as any;
-  if (params.has('chart')) urlConfig.chartType = params.get('chart') as any;
-  if (params.has('data')) urlConfig.dataType = params.get('data') as any;
-  if (params.has('date')) urlConfig.date = params.get('date')!;
-  if (params.has('currency')) urlConfig.currency = params.get('currency') as any;
-  if (params.has('lang')) urlConfig.language = params.get('lang') as any;
+  const exchange = params.get('exchange');
+  if (exchange && exchange in EXCHANGE_INFO) {
+    urlConfig.exchange = exchange as any;
+  }
+
+  const chart = params.get('chart');
+  if (chart && ['treemap', 'histogram'].includes(chart)) {
+    urlConfig.chartType = chart as any;
+  }
+
+  const data = params.get('data');
+  if (data && ['marketcap', 'value', 'trades', 'nestedItems'].includes(data)) {
+    urlConfig.dataType = data as any;
+  }
+
+  const date = params.get('date');
+  if (date) {
+    urlConfig.date = date;
+  }
+
+  const currency = params.get('currency');
+  if (currency && ['USD', 'RUB', 'GBP', 'TRY', 'HKD', 'EUR', 'CNY'].includes(currency)) {
+    urlConfig.currency = currency as any;
+  }
+
+  const lang = params.get('lang');
+  if (lang && ['en', 'ru', 'tr', 'cn'].includes(lang)) {
+    urlConfig.language = lang as any;
+  }
 
   updateConfig(urlConfig);
 }
