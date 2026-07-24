@@ -33,10 +33,25 @@ header input {
   vertical-align: middle;
 }
 
-#inputFileLabel img,
-#linkEraseFilter img {
-  height: 31px;
-  margin-top: 0;
+#inputFileLabel,
+#linkEraseFilter {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 4px;
+  white-space: nowrap;
+  user-select: none;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+#inputFileLabel:hover,
+#linkEraseFilter:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 header form,
@@ -45,7 +60,7 @@ header #search {
   flex: 0 0 auto;
 }
 
-header input[type="file"] {
+header input[type='file'] {
   display: none !important;
 }
 
