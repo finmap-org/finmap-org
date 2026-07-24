@@ -38,6 +38,7 @@ export class TreemapChart implements ChartRenderer {
   private resizeObserver: ResizeObserver | null = null;
   private isTransitioning: boolean = false;
   private pathToRestore: string[] = [];
+  private drillTimeout: number | null = null;
 
   private readonly pathbar: PathbarComponent;
   private readonly tooltip: TooltipComponent;
@@ -73,6 +74,10 @@ export class TreemapChart implements ChartRenderer {
   }
 
   private cleanup(): void {
+    if (this.drillTimeout !== null) {
+      clearTimeout(this.drillTimeout);
+      this.drillTimeout = null;
+    }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
@@ -370,7 +375,11 @@ export class TreemapChart implements ChartRenderer {
         });
     }
 
-    setTimeout(() => {
+    if (this.drillTimeout !== null) {
+      clearTimeout(this.drillTimeout);
+    }
+    this.drillTimeout = window.setTimeout(() => {
+      this.drillTimeout = null;
       this.renderTreemap();
     }, TRANSITIONS.DRILL);
   }
@@ -437,6 +446,10 @@ export class TreemapChart implements ChartRenderer {
   }
 
   destroy(): void {
+    if (this.drillTimeout !== null) {
+      clearTimeout(this.drillTimeout);
+      this.drillTimeout = null;
+    }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;

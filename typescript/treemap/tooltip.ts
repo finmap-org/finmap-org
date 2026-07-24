@@ -17,6 +17,7 @@ export class TooltipComponent {
   private rafId: number | null = null;
   private pendingMouseEvent: MouseEvent | null = null;
   private container: HTMLElement | null = null;
+  private hideTimeout: number | null = null;
 
   init(container?: HTMLElement): void {
     this.destroy();
@@ -287,7 +288,11 @@ export class TooltipComponent {
 
     this.element.style.opacity = "0";
 
-    setTimeout(() => {
+    if (this.hideTimeout !== null) {
+      clearTimeout(this.hideTimeout);
+    }
+    this.hideTimeout = window.setTimeout(() => {
+      this.hideTimeout = null;
       if (this.element) {
         this.element.style.background = "white";
         this.element.style.color = "rgb(68, 68, 68)";
@@ -297,6 +302,10 @@ export class TooltipComponent {
   }
 
   destroy(): void {
+    if (this.hideTimeout !== null) {
+      clearTimeout(this.hideTimeout);
+      this.hideTimeout = null;
+    }
     this.stopFollowing();
 
     if (this.container) {
