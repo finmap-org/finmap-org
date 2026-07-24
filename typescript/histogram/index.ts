@@ -4,16 +4,16 @@ import type {
   ExchangeRateData,
   CommodityData,
   PlotlyTrace,
-} from "./types.js";
+} from './types.js';
 import {
   fetchHistoricalData,
   fetchExchangeRates,
   fetchCommodityData,
   convertCurrency,
   calculateTotalValues,
-} from "./data.js";
-import { getConfig, EXCHANGE_INFO } from "../config.js";
-import { getCurrencyInfo } from "../currency/index.js";
+} from './data.js';
+import { getConfig, EXCHANGE_INFO } from '../config.js';
+import { getCurrencyInfo } from '../currency/index.js';
 
 declare const Plotly: any;
 
@@ -34,7 +34,7 @@ export class HistogramChart implements ChartRenderer {
       Plotly.purge(this.plotElement);
     }
     if (this.container) {
-      this.container.innerHTML = "";
+      this.container.innerHTML = '';
     }
     this.chartData.length = 0;
     this.plotElement = null;
@@ -46,7 +46,7 @@ export class HistogramChart implements ChartRenderer {
     if (!this.container) return;
     this.container.innerHTML =
       '<div id="histogram-chart" style="width: 100%; height: 100%;"></div>';
-    this.plotElement = this.container.querySelector("#histogram-chart");
+    this.plotElement = this.container.querySelector('#histogram-chart');
   }
 
   private async loadAndRenderChart(): Promise<void> {
@@ -66,34 +66,24 @@ export class HistogramChart implements ChartRenderer {
 
       let processedData = historicalData;
 
-      if (config.currency === "USD" && exchangeInfo.nativeCurrency !== "USD") {
-        const startDate = historicalData.dates[0] || "";
+      if (config.currency === 'USD' && exchangeInfo.nativeCurrency !== 'USD') {
+        const startDate = historicalData.dates[0] || '';
         for (const [key, value] of Object.entries(exchangeRates)) {
-          if (
-            value === undefined ||
-            isNaN(value) ||
-            value === 0 ||
-            key < startDate
-          ) {
+          if (value === undefined || isNaN(value) || value === 0 || key < startDate) {
             delete exchangeRates[key];
           }
         }
         processedData = convertCurrency(historicalData, exchangeRates);
       }
 
-      const startDate = processedData.dates[0] || "";
+      const startDate = processedData.dates[0] || '';
       for (const key of Object.keys(commodityData)) {
         if (key < startDate) {
           delete commodityData[key];
         }
       }
 
-      this.renderChart(
-        processedData,
-        exchangeRates,
-        commodityData,
-        exchangeInfo.nativeCurrency,
-      );
+      this.renderChart(processedData, exchangeRates, commodityData, exchangeInfo.nativeCurrency);
     } catch (error) {
       this.showError(error as Error);
     }
@@ -121,45 +111,45 @@ export class HistogramChart implements ChartRenderer {
 
     if (Object.keys(exchangeRates).length > 0) {
       const filteredExchangeKeys = Object.keys(exchangeRates).filter(
-        (date) => date >= dataStartDate && date <= dataEndDate,
+        date => date >= dataStartDate && date <= dataEndDate,
       );
       const filteredExchangeValues = filteredExchangeKeys
-        .map((date) => exchangeRates[date])
+        .map(date => exchangeRates[date])
         .filter((x): x is number => x !== undefined);
 
       if (filteredExchangeKeys.length > 0) {
         this.chartData.push({
           name: nativeCurrency,
-          type: "scatter",
-          mode: "lines",
-          yaxis: "y2",
+          type: 'scatter',
+          mode: 'lines',
+          yaxis: 'y2',
           connectgaps: true,
           customdata: filteredExchangeValues,
-          hoverinfo: "all",
+          hoverinfo: 'all',
           hovertemplate: `%{x|%x}<br>%{customdata:,.2f}<br>${nativeCurrency} per USD<br>%{fullData.name}<extra></extra>`,
           x: filteredExchangeKeys.slice(0, filteredExchangeValues.length),
-          y: filteredExchangeValues.map((x) => Number((1 / x).toFixed(4))),
+          y: filteredExchangeValues.map(x => Number((1 / x).toFixed(4))),
         });
       }
     }
 
     if (Object.keys(commodityData).length > 0) {
       const filteredCommodityKeys = Object.keys(commodityData).filter(
-        (date) => date >= dataStartDate && date <= dataEndDate,
+        date => date >= dataStartDate && date <= dataEndDate,
       );
       const filteredCommodityValues = filteredCommodityKeys
-        .map((date) => commodityData[date])
+        .map(date => commodityData[date])
         .filter((x): x is number => x !== undefined);
 
       if (filteredCommodityKeys.length > 0) {
         this.chartData.push({
-          name: "Brent",
-          type: "scatter",
-          mode: "lines",
-          yaxis: "y3",
+          name: 'Brent',
+          type: 'scatter',
+          mode: 'lines',
+          yaxis: 'y3',
           connectgaps: true,
           customdata: filteredCommodityValues,
-          hoverinfo: "all",
+          hoverinfo: 'all',
           hovertemplate: `%{x|%x}<br>%{customdata:,.2f} USD<br>%{fullData.name}<extra></extra>`,
           x: filteredCommodityKeys.slice(0, filteredCommodityValues.length),
           y: filteredCommodityValues,
@@ -167,33 +157,33 @@ export class HistogramChart implements ChartRenderer {
       }
     }
 
-    data.sectors.forEach((sector) => {
-      if (sector.sectorName === "") return;
+    data.sectors.forEach(sector => {
+      if (sector.sectorName === '') return;
 
       let y: number[];
       switch (config.dataType) {
-        case "marketcap":
+        case 'marketcap':
           y = sector.marketCap;
           break;
-        case "value":
+        case 'value':
           y = sector.value;
           break;
-        case "trades":
+        case 'trades':
           y = sector.tradesNumber;
           break;
         default:
           y = sector.marketCap;
       }
 
-      if (!y.some((v) => v && v > 0)) return;
+      if (!y.some(v => v && v > 0)) return;
 
       this.chartData.push({
         name: sector.sectorName,
-        type: "scatter",
-        mode: "lines",
-        stackgroup: "one",
+        type: 'scatter',
+        mode: 'lines',
+        stackgroup: 'one',
         connectgaps: true,
-        hoverinfo: "all",
+        hoverinfo: 'all',
         hovertemplate: `%{x|%x}<br>${currencySign}%{y:,.0f}<br>%{fullData.name}<extra></extra>`,
         x: data.dates,
         y: y,
@@ -202,16 +192,16 @@ export class HistogramChart implements ChartRenderer {
 
     const totalValues = calculateTotalValues(data, config.dataType);
     this.chartData.push({
-      name: "TOTAL",
-      fill: "tozeroy",
-      type: "scatter",
-      mode: "lines",
-      line: { width: 3, dash: "line", color: "rgba(212, 64, 64, 0.7)" },
-      fillcolor: "rgba(0, 0, 0, 0.7)",
+      name: 'TOTAL',
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      line: { width: 3, dash: 'line', color: 'rgba(212, 64, 64, 0.7)' },
+      fillcolor: 'rgba(0, 0, 0, 0.7)',
       x: data.dates,
       y: totalValues,
       hovertemplate: `%{x|%x}<br>${currencySign}%{y:,.0f}<br>%{fullData.name}<extra></extra>`,
-      hoverinfo: "all",
+      hoverinfo: 'all',
       visible: false,
       showlegend: false,
     });
@@ -220,104 +210,104 @@ export class HistogramChart implements ChartRenderer {
       showlegend: true,
       legend: {
         visible: true,
-        traceorder: "normal",
-        orientation: "h",
+        traceorder: 'normal',
+        orientation: 'h',
         x: 0,
-        xanchor: "left",
+        xanchor: 'left',
         y: 0.89,
-        yanchor: "top",
-        bgcolor: "rgba(65, 69, 84, 0)",
-        bordercolor: "rgba(65, 69, 84, 0)",
+        yanchor: 'top',
+        bgcolor: 'rgba(65, 69, 84, 0)',
+        bordercolor: 'rgba(65, 69, 84, 0)',
         borderwidth: 0,
       },
       updatemenus: [
         {
-          type: "buttons",
+          type: 'buttons',
           buttons: [
             {
-              label: "Show Legend",
-              method: "relayout",
+              label: 'Show Legend',
+              method: 'relayout',
               args: [{ showlegend: true }],
               args2: [{ showlegend: false }],
             },
           ],
-          direction: "right",
+          direction: 'right',
           showactive: true,
           x: 0.02,
-          xanchor: "left",
+          xanchor: 'left',
           y: 1.0,
-          yanchor: "top",
-          bgcolor: "rgba(65, 69, 84, 1)",
+          yanchor: 'top',
+          bgcolor: 'rgba(65, 69, 84, 1)',
           borderwidth: 0,
           font: {
-            lineposition: "none",
-            color: "black",
+            lineposition: 'none',
+            color: 'black',
             size: 14,
-            variant: "all-small-caps",
+            variant: 'all-small-caps',
           },
         },
         {
-          type: "buttons",
+          type: 'buttons',
           buttons: [
             {
-              label: "Show Totals",
-              method: "restyle",
+              label: 'Show Totals',
+              method: 'restyle',
               args: [{ visible: false }, [this.chartData.length - 1]],
               args2: [{ visible: true }, [this.chartData.length - 1]],
             },
           ],
-          direction: "right",
+          direction: 'right',
           showactive: false,
           x: 0.2,
-          xanchor: "left",
+          xanchor: 'left',
           y: 1.0,
-          yanchor: "top",
-          bgcolor: "rgba(255, 255, 84, 1)",
+          yanchor: 'top',
+          bgcolor: 'rgba(255, 255, 84, 1)',
           borderwidth: 0,
           font: {
-            lineposition: "none",
-            color: "black",
+            lineposition: 'none',
+            color: 'black',
             size: 14,
-            variant: "all-small-caps",
+            variant: 'all-small-caps',
           },
         },
       ],
       yaxis: {
         visible: true,
         fixedrange: true,
-        side: "right",
+        side: 'right',
         showgrid: true,
       },
       yaxis2: {
-        title: "Currency Rate",
-        overlaying: "y",
+        title: 'Currency Rate',
+        overlaying: 'y',
         visible: false,
         fixedrange: true,
-        side: "left",
+        side: 'left',
       },
       yaxis3: {
-        title: "Oil prices",
-        overlaying: "y",
+        title: 'Oil prices',
+        overlaying: 'y',
         visible: false,
         fixedrange: true,
-        side: "left",
+        side: 'left',
       },
       xaxis: {
-        type: "date",
+        type: 'date',
         range: [data.dates[0], data.dates[data.dates.length - 1]],
         fixedrange: false,
         tickformatstops: [
           {
-            dtickrange: [null, "M1"],
-            value: "%e\n%b %Y",
+            dtickrange: [null, 'M1'],
+            value: '%e\n%b %Y',
           },
           {
-            dtickrange: ["M1", "M12"],
-            value: "%b\n%Y",
+            dtickrange: ['M1', 'M12'],
+            value: '%b\n%Y',
           },
           {
-            dtickrange: ["M12", null],
-            value: "%Y",
+            dtickrange: ['M12', null],
+            value: '%Y',
           },
         ],
         rangeslider: {
@@ -326,37 +316,37 @@ export class HistogramChart implements ChartRenderer {
         },
         rangeselector: {
           visible: true,
-          activecolor: "#000000",
-          bgcolor: "rgb(38, 38, 39)",
+          activecolor: '#000000',
+          bgcolor: 'rgb(38, 38, 39)',
           buttons: [
             {
-              step: "month",
-              stepmode: "backward",
+              step: 'month',
+              stepmode: 'backward',
               count: 1,
-              label: "1m",
+              label: '1m',
             },
             {
-              step: "month",
-              stepmode: "backward",
+              step: 'month',
+              stepmode: 'backward',
               count: 6,
-              label: "6m",
+              label: '6m',
             },
             {
-              step: "year",
-              stepmode: "todate",
+              step: 'year',
+              stepmode: 'todate',
               count: 1,
-              label: "YTD",
+              label: 'YTD',
             },
             {
-              step: "year",
-              stepmode: "backward",
+              step: 'year',
+              stepmode: 'backward',
               count: 1,
-              label: "1y",
+              label: '1y',
             },
             {
-              step: "all",
+              step: 'all',
               count: 1,
-              label: "all",
+              label: 'all',
             },
           ],
         },
@@ -369,12 +359,12 @@ export class HistogramChart implements ChartRenderer {
         t: 0,
         b: 20,
       },
-      plot_bgcolor: "rgb(66, 70, 83)",
-      paper_bgcolor: "rgb(65, 69, 85)",
+      plot_bgcolor: 'rgb(66, 70, 83)',
+      paper_bgcolor: 'rgb(65, 69, 85)',
       font: {
-        family: "Arial",
+        family: 'Arial',
         size: 12,
-        color: "rgba(245, 246, 249, 1)",
+        color: 'rgba(245, 246, 249, 1)',
       },
     };
 
@@ -382,7 +372,7 @@ export class HistogramChart implements ChartRenderer {
       responsive: true,
       displaylogo: false,
       displayModeBar: true,
-      modeBarButtonsToRemove: ["toImage", "lasso2d", "select2d"],
+      modeBarButtonsToRemove: ['toImage', 'lasso2d', 'select2d'],
       scrollZoom: true,
     };
 

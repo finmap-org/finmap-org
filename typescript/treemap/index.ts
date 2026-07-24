@@ -1,19 +1,18 @@
-import type { MarketData, ChartRenderer, HierarchyNode } from "./types.js";
-import { buildHierarchy, getValueForDataType } from "./data.js";
-import { isLeafNode, getNodeData } from "./types.js";
-import { LAYOUT, TRANSITIONS, RECURSION } from "./constants.js";
-import { PathbarComponent } from "./pathbar.js";
-import { TooltipComponent } from "./tooltip.js";
-import { OverlayComponent } from "../overlay/index.js";
-import { CanvasRenderer } from "./renderer.js";
-import { InteractionHandler } from "./interactions.js";
+import type { MarketData, ChartRenderer, HierarchyNode } from './types.js';
+import { buildHierarchy, getValueForDataType } from './data.js';
+import { isLeafNode, getNodeData } from './types.js';
+import { LAYOUT, TRANSITIONS, RECURSION } from './constants.js';
+import { PathbarComponent } from './pathbar.js';
+import { TooltipComponent } from './tooltip.js';
+import { OverlayComponent } from '../overlay/index.js';
+import { CanvasRenderer } from './renderer.js';
+import { InteractionHandler } from './interactions.js';
 
 declare const d3: any;
 
 const getCanvasSize = (container: DOMRect) => {
   const devicePixelRatio = window.devicePixelRatio || 1;
-  const availableHeight =
-    container.height - LAYOUT.PATHBAR_HEIGHT - LAYOUT.FOOTER_HEIGHT;
+  const availableHeight = container.height - LAYOUT.PATHBAR_HEIGHT - LAYOUT.FOOTER_HEIGHT;
 
   return {
     width: container.width * devicePixelRatio,
@@ -88,10 +87,7 @@ export class TreemapChart implements ChartRenderer {
 
   private restorePreviousPath(): void {
     if (this.pathToRestore.length > 0 && this.hierarchy) {
-      const restoredNode = this.findNodeByIdentifiers(
-        this.hierarchy,
-        this.pathToRestore,
-      );
+      const restoredNode = this.findNodeByIdentifiers(this.hierarchy, this.pathToRestore);
       if (restoredNode) {
         this.currentRoot = restoredNode;
       }
@@ -99,10 +95,7 @@ export class TreemapChart implements ChartRenderer {
     }
   }
 
-  private getPathIdentifiers(
-    node: any,
-    maxDepth = RECURSION.MAX_DEPTH,
-  ): string[] {
+  private getPathIdentifiers(node: any, maxDepth = RECURSION.MAX_DEPTH): string[] {
     const path: string[] = [];
     let current = node;
     let depth = 0;
@@ -159,11 +152,9 @@ export class TreemapChart implements ChartRenderer {
   private setupContainer(): void {
     if (!this.container) return;
 
-    d3.select(this.container).selectAll("*").remove();
+    d3.select(this.container).selectAll('*').remove();
 
-    d3.select(this.container)
-      .style("display", "flex")
-      .style("flex-direction", "column");
+    d3.select(this.container).style('display', 'flex').style('flex-direction', 'column');
   }
 
   private setupCanvas(): void {
@@ -173,12 +164,12 @@ export class TreemapChart implements ChartRenderer {
 
     this.canvas = d3
       .select(this.container)
-      .append("canvas")
-      .style("width", "100%")
-      .style("height", "100%")
-      .style("display", "block")
-      .style("cursor", "pointer")
-      .style("flex-grow", "1")
+      .append('canvas')
+      .style('width', '100%')
+      .style('height', '100%')
+      .style('display', 'block')
+      .style('cursor', 'pointer')
+      .style('flex-grow', '1')
       .node();
 
     this.updateCanvasSize();
@@ -194,7 +185,7 @@ export class TreemapChart implements ChartRenderer {
     this.canvas.width = width;
     this.canvas.height = height;
 
-    this.context = this.canvas.getContext("2d");
+    this.context = this.canvas.getContext('2d');
     if (this.context) {
       this.context.scale(devicePixelRatio, devicePixelRatio);
     }
@@ -213,12 +204,11 @@ export class TreemapChart implements ChartRenderer {
 
     if (this.canvas) {
       this.interactions.init(this.canvas, {
-        onDrill: (node) => this.drillTo(node),
-        onShowCompany: (data) => this.overlay.show(data),
-        onShowTooltip: (data, event, node) =>
-          this.tooltip.show(data, event, node),
+        onDrill: node => this.drillTo(node),
+        onShowCompany: data => this.overlay.show(data),
+        onShowTooltip: (data, event, node) => this.tooltip.show(data, event, node),
         onHideTooltip: () => this.tooltip.hide(),
-        onNodeAtPosition: (event) => this.getNodeAtPosition(event),
+        onNodeAtPosition: event => this.getNodeAtPosition(event),
         isTransitioning: () => this.isTransitioning,
       });
     }
@@ -237,8 +227,7 @@ export class TreemapChart implements ChartRenderer {
   }
 
   private renderTreemap(): void {
-    if (!this.canvas || !this.context || !this.container || !this.hierarchy)
-      return;
+    if (!this.canvas || !this.context || !this.container || !this.hierarchy) return;
 
     const rect = this.container.getBoundingClientRect();
     const { width, height } = getViewportSize(rect);
@@ -256,12 +245,9 @@ export class TreemapChart implements ChartRenderer {
     this.renderer.render(this.nodes, this.context);
   }
 
-  private createSubHierarchy(
-    rootNode: any,
-    maxDepth = RECURSION.MAX_DEPTH - 1,
-  ): any {
+  private createSubHierarchy(rootNode: any, maxDepth = RECURSION.MAX_DEPTH - 1): any {
     if (maxDepth <= 0 || !rootNode?.data?.data) {
-      return d3.hierarchy({ data: { nameEng: "Empty", value: 0 } });
+      return d3.hierarchy({ data: { nameEng: 'Empty', value: 0 } });
     }
 
     const nodeData = rootNode.data.data;
@@ -295,17 +281,11 @@ export class TreemapChart implements ChartRenderer {
       .sort((a: any, b: any) => (b.value || 0) - (a.value || 0));
   }
 
-  private applyTreemapLayout(
-    hierarchy: any,
-    width: number,
-    height: number,
-  ): void {
+  private applyTreemapLayout(hierarchy: any, width: number, height: number): void {
     const treemap = d3
       .treemap()
       .size([width, height])
-      .paddingTop((d: any) =>
-        d.children ? LAYOUT.SECTOR_HEADER_HEIGHT : LAYOUT.PADDING.TOP,
-      )
+      .paddingTop((d: any) => (d.children ? LAYOUT.SECTOR_HEADER_HEIGHT : LAYOUT.PADDING.TOP))
       .paddingInner(LAYOUT.PADDING.INNER)
       .paddingOuter(LAYOUT.PADDING.OUTER)
       .paddingRight(LAYOUT.PADDING.RIGHT)
@@ -319,9 +299,8 @@ export class TreemapChart implements ChartRenderer {
 
   private updatePathbar(): void {
     this.pathbar.update(this.getPathToRoot(this.currentRoot), {
-      onDrill: (node) => this.drillTo(node),
-      onShowTooltip: (data, event, node) =>
-        this.tooltip.show(data, event, node),
+      onDrill: node => this.drillTo(node),
+      onShowTooltip: (data, event, node) => this.tooltip.show(data, event, node),
       onHideTooltip: () => this.tooltip.hide(),
     });
   }
@@ -338,8 +317,7 @@ export class TreemapChart implements ChartRenderer {
             const isLeafChild = !child.children || child.children.length === 0;
             if (isLeafChild) {
               const childHeight = child.y1 - child.y0;
-              const newChildHeight =
-                (childHeight / sectorHeight) * availableHeight;
+              const newChildHeight = (childHeight / sectorHeight) * availableHeight;
 
               child.y0 =
                 sectorTop +
@@ -363,14 +341,14 @@ export class TreemapChart implements ChartRenderer {
 
     if (this.canvas) {
       d3.select(this.canvas)
-        .style("opacity", 1)
+        .style('opacity', 1)
         .transition()
         .duration(TRANSITIONS.DRILL)
-        .style("opacity", 0.3)
+        .style('opacity', 0.3)
         .transition()
         .duration(TRANSITIONS.DRILL)
-        .style("opacity", 1)
-        .on("end", () => {
+        .style('opacity', 1)
+        .on('end', () => {
           this.isTransitioning = false;
         });
     }
@@ -390,7 +368,7 @@ export class TreemapChart implements ChartRenderer {
 
     while (current) {
       path.unshift({
-        name: current.data?.nameEng || current.data.data?.nameEng || "Market",
+        name: current.data?.nameEng || current.data.data?.nameEng || 'Market',
         node: current,
       });
       current = current.parent || null;
@@ -405,12 +383,8 @@ export class TreemapChart implements ChartRenderer {
     const rect = this.canvas.getBoundingClientRect();
     const devicePixelRatio = window.devicePixelRatio || 1;
 
-    const x =
-      ((event.clientX - rect.left) * (this.canvas.width / rect.width)) /
-      devicePixelRatio;
-    const y =
-      ((event.clientY - rect.top) * (this.canvas.height / rect.height)) /
-      devicePixelRatio;
+    const x = ((event.clientX - rect.left) * (this.canvas.width / rect.width)) / devicePixelRatio;
+    const y = ((event.clientY - rect.top) * (this.canvas.height / rect.height)) / devicePixelRatio;
 
     for (let i = this.nodes.length - 1; i >= 0; i--) {
       const node = this.nodes[i];
@@ -426,7 +400,7 @@ export class TreemapChart implements ChartRenderer {
     if (!this.nodes || !query.trim()) return;
 
     const searchQuery = query.toLowerCase();
-    const matchingNode = this.nodes.find((node) => {
+    const matchingNode = this.nodes.find(node => {
       if (!isLeafNode(node)) return false;
 
       const data = getNodeData(node);
@@ -468,7 +442,7 @@ export class TreemapChart implements ChartRenderer {
     this.currentData.length = 0;
     this.pathToRestore.length = 0;
     if (this.container) {
-      d3.select(this.container).selectAll("*").remove();
+      d3.select(this.container).selectAll('*').remove();
     }
 
     this.canvas = null;

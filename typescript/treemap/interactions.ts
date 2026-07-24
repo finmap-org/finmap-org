@@ -1,6 +1,6 @@
-import { TRANSITIONS } from "./constants.js";
-import { isLeafNode, getNodeData } from "./types.js";
-import type { MarketData } from "./types.js";
+import { TRANSITIONS } from './constants.js';
+import { isLeafNode, getNodeData } from './types.js';
+import type { MarketData } from './types.js';
 
 declare const d3: any;
 
@@ -36,10 +36,10 @@ export class InteractionHandler {
     const mouseEnterHandler = this.createMouseEnterHandler(canvasSelection);
     const mouseLeaveHandler = this.createMouseLeaveHandler(canvasSelection);
 
-    this.registerListener("click", clickHandler);
-    this.registerListener("mousemove", mouseMoveHandler);
-    this.registerListener("mouseenter", mouseEnterHandler);
-    this.registerListener("mouseleave", mouseLeaveHandler);
+    this.registerListener('click', clickHandler);
+    this.registerListener('mousemove', mouseMoveHandler);
+    this.registerListener('mouseenter', mouseEnterHandler);
+    this.registerListener('mouseleave', mouseLeaveHandler);
   }
 
   private createClickHandler() {
@@ -76,13 +76,13 @@ export class InteractionHandler {
 
       if (!node) {
         this.callbacks.onHideTooltip();
-        canvasSelection.style("cursor", "default");
+        canvasSelection.style('cursor', 'default');
         return;
       }
 
       const data = getNodeData(node);
       this.callbacks.onShowTooltip(data, mouseEvent, node);
-      canvasSelection.style("cursor", "pointer");
+      canvasSelection.style('cursor', 'pointer');
     };
   }
 
@@ -92,7 +92,7 @@ export class InteractionHandler {
         canvasSelection
           .transition()
           .duration(TRANSITIONS.HOVER)
-          .style("filter", "brightness(1.05)");
+          .style('filter', 'brightness(1.05)');
       }
     };
   }
@@ -103,8 +103,8 @@ export class InteractionHandler {
       canvasSelection
         .transition()
         .duration(TRANSITIONS.HOVER)
-        .style("filter", "brightness(1)")
-        .style("cursor", "default");
+        .style('filter', 'brightness(1)')
+        .style('cursor', 'default');
       if (this.callbacks) {
         this.callbacks.onHideTooltip();
       }

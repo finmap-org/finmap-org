@@ -26,7 +26,7 @@ export interface PlotlyTrace {
   x: string[];
   y: number[];
   customdata?: number[];
-  type: "scatter" | "line";
+  type: 'scatter' | 'line';
   fill?: string;
   fillcolor?: string;
   mode?: string;
@@ -35,7 +35,7 @@ export interface PlotlyTrace {
   hoverinfo?: string;
   hovertemplate?: string;
   yaxis?: string;
-  visible?: boolean | "legendonly";
+  visible?: boolean | 'legendonly';
   showlegend?: boolean;
   line?: {
     dash?: string;

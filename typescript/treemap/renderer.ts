@@ -1,14 +1,14 @@
-import { COLOR_SCALE, COLORS, LAYOUT, FONT } from "./constants.js";
-import { formatCurrency } from "../utils.js";
+import { COLOR_SCALE, COLORS, LAYOUT, FONT } from './constants.js';
+import { formatCurrency } from '../utils.js';
 import {
   isLeafNode,
   getNodeData,
   getNodeChange,
   getDisplayName,
   type MarketData,
-} from "./types.js";
-import { getConfig, EXCHANGE_INFO } from "../config.js";
-import { getCurrencyInfo } from "../currency/index.js";
+} from './types.js';
+import { getConfig, EXCHANGE_INFO } from '../config.js';
+import { getCurrencyInfo } from '../currency/index.js';
 
 declare const d3: any;
 
@@ -25,13 +25,7 @@ export class CanvasRenderer {
 
       if (nodeWidth < 2 || nodeHeight < 2) return;
 
-      this.renderNode(
-        node,
-        nodeWidth,
-        nodeHeight,
-        context,
-        currencyInfo.symbol,
-      );
+      this.renderNode(node, nodeWidth, nodeHeight, context, currencyInfo.symbol);
     });
   }
 
@@ -54,15 +48,7 @@ export class CanvasRenderer {
     context.strokeRect(node.x0, node.y0, width, height);
 
     if (width > 30 && height > 20) {
-      this.renderNodeText(
-        node,
-        width,
-        height,
-        isLeaf,
-        data,
-        context,
-        currencySign,
-      );
+      this.renderNodeText(node, width, height, isLeaf, data, context, currencySign);
     }
   }
 
@@ -77,8 +63,8 @@ export class CanvasRenderer {
   ): void {
     context.save();
     context.fillStyle = COLORS.TEXT_WHITE;
-    context.textAlign = "left";
-    context.textBaseline = "top";
+    context.textAlign = 'left';
+    context.textBaseline = 'top';
 
     const padding = LAYOUT.PADDING.TEXT;
     const textX = node.x0 + padding;
@@ -92,7 +78,7 @@ export class CanvasRenderer {
 
       const config = getConfig();
       const exchangeInfo = data.exchange ? EXCHANGE_INFO[data.exchange] : null;
-      const ticker = data?.ticker || "";
+      const ticker = data?.ticker || '';
       const name = exchangeInfo
         ? getDisplayName(data, config.language, exchangeInfo.language)
         : data?.nameEng || ticker;
@@ -122,9 +108,9 @@ export class CanvasRenderer {
 
       if (height > baseFontSize * 6) {
         context.font = `${baseFontSize * 0.8}px ${FONT.FAMILY}`;
-        const changeText = `${changeValue >= 0 ? "+" : ""}${changeValue.toFixed(2)}%`;
+        const changeText = `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
         this.drawText(
-          `${d3.format(".2f")(price)} (${changeText})`,
+          `${d3.format('.2f')(price)} (${changeText})`,
           textX,
           currentY,
           maxWidth,
@@ -135,9 +121,8 @@ export class CanvasRenderer {
 
       if (height > baseFontSize * 8) {
         context.font = `${baseFontSize * 0.8}px ${FONT.FAMILY}`;
-        const value =
-          data.positionValue !== undefined ? data.positionValue : marketCap;
-        const label = data.positionValue !== undefined ? "Position: " : "Cap: ";
+        const value = data.positionValue !== undefined ? data.positionValue : marketCap;
+        const label = data.positionValue !== undefined ? 'Position: ' : 'Cap: ';
         const text = label + formatCurrency(value, currencySign);
         this.drawText(text, textX, currentY, maxWidth, context);
       }
@@ -146,7 +131,7 @@ export class CanvasRenderer {
       const exchangeInfo = data.exchange ? EXCHANGE_INFO[data.exchange] : null;
       const sectorName = exchangeInfo
         ? getDisplayName(data, config.language, exchangeInfo.language)
-        : data?.nameEng || data?.ticker || "";
+        : data?.nameEng || data?.ticker || '';
 
       context.font = `bold 12px ${FONT.FAMILY}`;
       context.fillStyle = COLORS.TEXT_WHITE;
@@ -157,7 +142,7 @@ export class CanvasRenderer {
 
       this.drawText(sectorName, textX, textY, maxWidth, context);
 
-      context.shadowColor = "transparent";
+      context.shadowColor = 'transparent';
       context.shadowBlur = 0;
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 0;
@@ -179,13 +164,10 @@ export class CanvasRenderer {
     } else {
       // Truncate with ellipsis
       let truncated = text;
-      while (
-        truncated.length > 1 &&
-        context.measureText(truncated + "...").width > maxWidth
-      ) {
+      while (truncated.length > 1 && context.measureText(truncated + '...').width > maxWidth) {
         truncated = truncated.slice(0, -1);
       }
-      context.fillText(truncated + "...", x, y);
+      context.fillText(truncated + '...', x, y);
     }
   }
 
@@ -198,20 +180,20 @@ export class CanvasRenderer {
     maxLines: number,
     context: CanvasRenderingContext2D,
   ): number {
-    const words = text.split(" ");
-    let line = "";
+    const words = text.split(' ');
+    let line = '';
     let lineCount = 0;
     let currentY = y;
 
     for (let i = 0; i < words.length && lineCount < maxLines; i++) {
-      const testLine = line + words[i] + " ";
+      const testLine = line + words[i] + ' ';
       const metrics = context.measureText(testLine);
 
-      if (metrics.width > maxWidth && line !== "") {
+      if (metrics.width > maxWidth && line !== '') {
         context.fillText(line.trim(), x, currentY);
         lineCount++;
         currentY += lineHeight;
-        line = words[i] + " ";
+        line = words[i] + ' ';
       } else {
         line = testLine;
       }

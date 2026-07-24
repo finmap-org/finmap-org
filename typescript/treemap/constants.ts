@@ -21,14 +21,14 @@ export const RECURSION = {
 } as const;
 
 export const COLORS = {
-  PATHBAR_BG: "#414554",
-  PATHBAR_BORDER: "#555",
-  SECTOR_STROKE: "#2C3E50",
-  TEXT_WHITE: "#ffffff",
-  TEXT_SHADOW: "rgba(0, 0, 0, 0.7)",
-  TOOLTIP_SHADOW: "0 2px 8px rgba(0,0,0,0.15)",
-  OVERLAY_BG: "rgba(0, 0, 0, 0.8)",
-  OVERLAY_CONTENT: "#2C3E50",
+  PATHBAR_BG: '#414554',
+  PATHBAR_BORDER: '#555',
+  SECTOR_STROKE: '#2C3E50',
+  TEXT_WHITE: '#ffffff',
+  TEXT_SHADOW: 'rgba(0, 0, 0, 0.7)',
+  TOOLTIP_SHADOW: '0 2px 8px rgba(0,0,0,0.15)',
+  OVERLAY_BG: 'rgba(0, 0, 0, 0.8)',
+  OVERLAY_CONTENT: '#2C3E50',
 } as const;
 
 export const TRANSITIONS = {
@@ -42,16 +42,16 @@ export const TRANSITIONS = {
 export const FONT = {
   FAMILY: '"Open Sans", verdana, arial, sans-serif',
   SIZE: {
-    PATHBAR: "14px",
-    TOOLTIP: "12px",
-    SECTOR: "12px",
-    OVERLAY: "24px",
+    PATHBAR: '14px',
+    TOOLTIP: '12px',
+    SECTOR: '12px',
+    OVERLAY: '24px',
   },
 } as const;
 
 export const COLOR_SCALE = d3
   .scaleLinear()
   .domain([-3, 0, 3])
-  .range(["rgb(236, 48, 51)", "rgb(64, 68, 82)", "rgb(42, 202, 85)"])
+  .range(['rgb(236, 48, 51)', 'rgb(64, 68, 82)', 'rgb(42, 202, 85)'])
   .clamp(true)
   .interpolate(d3.interpolateRgb);

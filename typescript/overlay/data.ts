@@ -1,6 +1,6 @@
-import type { NewsItem, CompanyInfo } from "./types.js";
-import type { Language } from "../types.js";
-import { getConfig } from "../config.js";
+import type { NewsItem, CompanyInfo } from './types.js';
+import type { Language } from '../types.js';
+import { getConfig } from '../config.js';
 
 export async function fetchNews(
   ticker: string,
@@ -13,32 +13,30 @@ export async function fetchNews(
   let displayName: string;
 
   switch (config.language) {
-    case "en":
-      newsLang = "hl=en-US&gl=US&ceid=US:en";
+    case 'en':
+      newsLang = 'hl=en-US&gl=US&ceid=US:en';
       displayName = companyName;
       break;
-    case "ru":
-      newsLang = "hl=ru&gl=RU&ceid=RU:ru";
+    case 'ru':
+      newsLang = 'hl=ru&gl=RU&ceid=RU:ru';
       displayName = companyName;
       break;
-    case "tr":
-      newsLang = "hl=tr-TR&gl=TR&ceid=TR:tr";
+    case 'tr':
+      newsLang = 'hl=tr-TR&gl=TR&ceid=TR:tr';
       displayName = companyName;
       break;
-    case "cn":
-      newsLang = "hl=zh-HK&gl=HK&ceid=HK:zh-Hant";
+    case 'cn':
+      newsLang = 'hl=zh-HK&gl=HK&ceid=HK:zh-Hant';
       displayName = companyName;
       break;
     default:
-      newsLang = "hl=en-US&gl=US&ceid=US:en";
+      newsLang = 'hl=en-US&gl=US&ceid=US:en';
       displayName = companyName;
       break;
   }
 
-  const newsQuery = encodeURIComponent(
-    displayName.split(" ").slice(0, 2).join(" "),
-  );
-  const url = `https://news.finmap.org/${config.language}:${ticker}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(":")[0]}`;
+  const newsQuery = encodeURIComponent(displayName.split(' ').slice(0, 2).join(' '));
+  const url = `https://news.finmap.org/${config.language}:${ticker}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(':')[0]}`;
 
   try {
     const response = await fetch(url);
@@ -46,26 +44,23 @@ export async function fetchNews(
 
     const xmlText = await response.text();
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+    const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
     // Check for parsing errors
-    const parserError = xmlDoc.querySelector("parsererror");
+    const parserError = xmlDoc.querySelector('parsererror');
     if (parserError) {
-      throw new Error("XML parsing failed");
+      throw new Error('XML parsing failed');
     }
 
-    const items = Array.from(xmlDoc.getElementsByTagName("item"));
+    const items = Array.from(xmlDoc.getElementsByTagName('item'));
 
     const newsItems = items
-      .map((item) => {
-        const title = item.getElementsByTagName("title")[0]?.textContent || "";
-        const link = item.getElementsByTagName("link")[0]?.textContent || "";
-        const pubDate =
-          item.getElementsByTagName("pubDate")[0]?.textContent || "";
-        const source =
-          item.getElementsByTagName("source")[0]?.textContent || "";
-        const sourceUrl =
-          item.getElementsByTagName("source")[0]?.getAttribute("url") || "";
+      .map(item => {
+        const title = item.getElementsByTagName('title')[0]?.textContent || '';
+        const link = item.getElementsByTagName('link')[0]?.textContent || '';
+        const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
+        const source = item.getElementsByTagName('source')[0]?.textContent || '';
+        const sourceUrl = item.getElementsByTagName('source')[0]?.getAttribute('url') || '';
 
         return {
           title: title.trim(),
@@ -76,39 +71,37 @@ export async function fetchNews(
           originalPubDate: pubDate,
         };
       })
-      .filter((item) => item.title && item.link);
+      .filter(item => item.title && item.link);
 
     // Sort by original date (newest first)
     newsItems.sort(
-      (a, b) =>
-        new Date(b.originalPubDate).getTime() -
-        new Date(a.originalPubDate).getTime(),
+      (a, b) => new Date(b.originalPubDate).getTime() - new Date(a.originalPubDate).getTime(),
     );
 
     // Remove the temporary originalPubDate field
     return newsItems.map(({ originalPubDate, ...item }) => item);
   } catch (error) {
-    console.warn("Failed to fetch news:", error);
+    console.warn('Failed to fetch news:', error);
     return [];
   }
 }
 
 function formatNewsDate(pubDateStr: string): string {
-  if (!pubDateStr) return "";
+  if (!pubDateStr) return '';
 
   try {
     const date = new Date(pubDateStr);
     if (isNaN(date.getTime())) return pubDateStr;
 
     const options: Intl.DateTimeFormatOptions = {
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
       hour12: false,
     };
 
-    return date.toLocaleDateString("en-US", options);
+    return date.toLocaleDateString('en-US', options);
   } catch {
     return pubDateStr;
   }
@@ -124,32 +117,25 @@ export async function fetchCompanyInfo(
 
   try {
     switch (exchange) {
-      case "nasdaq":
-      case "nyse":
-      case "amex":
-      case "us-all":
+      case 'nasdaq':
+      case 'nyse':
+      case 'amex':
+      case 'us-all':
         return await fetchUSCompanyInfo(exchange, ticker);
-      case "moex":
-        return await fetchWikiInfo(
-          wikiPageIdEng,
-          wikiPageIdOriginal,
-          config.language,
-        );
-      case "hkex":
+      case 'moex':
+        return await fetchWikiInfo(wikiPageIdEng, wikiPageIdOriginal, config.language);
+      case 'hkex':
         return await fetchHKCompanyInfo(ticker, config.language);
       default:
         return null;
     }
   } catch (error) {
-    console.warn("Failed to fetch company info:", error);
+    console.warn('Failed to fetch company info:', error);
     return null;
   }
 }
 
-async function fetchUSCompanyInfo(
-  exchange: string,
-  ticker: string,
-): Promise<CompanyInfo | null> {
+async function fetchUSCompanyInfo(exchange: string, ticker: string): Promise<CompanyInfo | null> {
   const url = `https://raw.githubusercontent.com/finmap-org/data-us/refs/heads/main/securities/${exchange}/${ticker[0]}/${ticker}.json`;
 
   try {
@@ -157,8 +143,8 @@ async function fetchUSCompanyInfo(
     if (!response.ok) return null;
 
     const json = await response.json();
-    const description = json.data?.CompanyDescription?.value || "";
-    const sourceLink = json.data?.CompanyUrl?.value || "";
+    const description = json.data?.CompanyDescription?.value || '';
+    const sourceLink = json.data?.CompanyUrl?.value || '';
 
     if (!description && !sourceLink) return null;
 
@@ -172,11 +158,8 @@ async function fetchUSCompanyInfo(
   }
 }
 
-async function fetchHKCompanyInfo(
-  ticker: string,
-  language: string,
-): Promise<CompanyInfo | null> {
-  const lang = language === "cn" ? "chi" : "eng";
+async function fetchHKCompanyInfo(ticker: string, language: string): Promise<CompanyInfo | null> {
+  const lang = language === 'cn' ? 'chi' : 'eng';
   const url = `https://raw.githubusercontent.com/finmap-org/data-hongkong/refs/heads/main/securities/hkex/${lang}/${ticker[0]}/${ticker}.json`;
 
   try {
@@ -184,8 +167,8 @@ async function fetchHKCompanyInfo(
     if (!response.ok) return null;
 
     const json = await response.json();
-    const description = json.data?.quote?.summary || "";
-    const sourceLink = ""; // No URL available in the data
+    const description = json.data?.quote?.summary || '';
+    const sourceLink = ''; // No URL available in the data
 
     if (!description && !sourceLink) return null;
 
@@ -209,7 +192,7 @@ async function fetchWikiInfo(
   const config = getConfig();
   const lang: Language = config.language;
 
-  if (language === "ru" && wikiPageIdOriginal) {
+  if (language === 'ru' && wikiPageIdOriginal) {
     wikiPageId = wikiPageIdOriginal;
   } else if (wikiPageIdEng) {
     wikiPageId = wikiPageIdEng;

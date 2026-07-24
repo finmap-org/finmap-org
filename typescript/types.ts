@@ -1,17 +1,9 @@
-import type { Currency } from "./currency/types.js";
+import type { Currency } from './currency/types.js';
 
-export type Exchange =
-  | "nasdaq"
-  | "nyse"
-  | "amex"
-  | "us-all"
-  | "moex"
-  | "lse"
-  | "bist"
-  | "hkex";
-export type ChartType = "treemap" | "histogram";
-export type DataType = "marketcap" | "value" | "trades" | "nestedItems";
-export type Language = "en" | "ru" | "tr" | "cn";
+export type Exchange = 'nasdaq' | 'nyse' | 'amex' | 'us-all' | 'moex' | 'lse' | 'bist' | 'hkex';
+export type ChartType = 'treemap' | 'histogram';
+export type DataType = 'marketcap' | 'value' | 'trades' | 'nestedItems';
+export type Language = 'en' | 'ru' | 'tr' | 'cn';
 
 export interface AppConfig {
   exchange: Exchange;

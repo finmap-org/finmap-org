@@ -1,4 +1,4 @@
-import type { Exchange } from "../types.js";
+import type { Exchange } from '../types.js';
 
 export interface MarketDataResponse {
   securities: {
@@ -92,41 +92,36 @@ export const dataParser: DataParser = {
       data[col] = row[index];
     });
 
-    const exchangeValue = data.exchange || "";
+    const exchangeValue = data.exchange || '';
     return {
-      exchange: exchangeValue
-        ? (exchangeValue.toLowerCase() as Exchange)
-        : ("" as any),
-      country: data.country || "",
-      type: data.type || "",
-      sector: data.sector || "",
-      industry: data.industry || "",
-      currencyId: data.currencyId || "",
-      ticker: data.ticker || "",
-      nameEng: data.nameEng || "",
-      nameEngShort: data.nameEngShort || "",
-      nameOriginal: data.nameOriginal || "",
-      nameOriginalShort: data.nameOriginalShort || "",
+      exchange: exchangeValue ? (exchangeValue.toLowerCase() as Exchange) : ('' as any),
+      country: data.country || '',
+      type: data.type || '',
+      sector: data.sector || '',
+      industry: data.industry || '',
+      currencyId: data.currencyId || '',
+      ticker: data.ticker || '',
+      nameEng: data.nameEng || '',
+      nameEngShort: data.nameEngShort || '',
+      nameOriginal: data.nameOriginal || '',
+      nameOriginalShort: data.nameOriginalShort || '',
       priceOpen: Number(data.priceOpen) || 0,
       priceLastSale: Number(data.priceLastSale) || 0,
-      priceChangePct:
-        data.priceChangePct === null ? null : Number(data.priceChangePct) || 0,
+      priceChangePct: data.priceChangePct === null ? null : Number(data.priceChangePct) || 0,
       volume: Number(data.volume) || 0,
       value: Number(data.value) || 0,
       numTrades: Number(data.numTrades) || 0,
       marketCap: Number(data.marketCap) || 0,
-      listedFrom: data.listedFrom || "",
-      listedTill: data.listedTill || "",
-      wikiPageIdEng: data.wikiPageIdEng || "",
-      wikiPageIdOriginal: data.wikiPageIdOriginal || "",
+      listedFrom: data.listedFrom || '',
+      listedTill: data.listedTill || '',
+      wikiPageIdEng: data.wikiPageIdEng || '',
+      wikiPageIdOriginal: data.wikiPageIdOriginal || '',
       nestedItemsCount: Number(data.nestedItemsCount) || 0,
     };
   },
 
   validateDataIntegrity(data: MarketDataResponse): boolean {
-    return !!(
-      data?.securities?.columns?.length && data?.securities?.data?.length
-    );
+    return !!(data?.securities?.columns?.length && data?.securities?.data?.length);
   },
 };
 
@@ -135,7 +130,7 @@ export function parseMarketData(response: MarketDataResponse): MarketData[] {
     return [];
   }
 
-  return response.securities.data.map((row) =>
+  return response.securities.data.map(row =>
     dataParser.parseSecurityRow(response.securities.columns, row),
   );
 }
@@ -147,7 +142,7 @@ export function getDisplayName(
 ): string {
   if (
     exchangeLanguage &&
-    language !== "en" &&
+    language !== 'en' &&
     language === exchangeLanguage &&
     data.nameOriginalShort
   ) {

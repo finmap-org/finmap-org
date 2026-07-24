@@ -11,4 +11,4 @@ export interface CompanyInfo {
   sourceLink: string;
 }
 
-export type OverlayTab = "news" | "info" | "buy";
+export type OverlayTab = 'news' | 'info' | 'buy';

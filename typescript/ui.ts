@@ -1,7 +1,7 @@
-import type { MarketData, ChartRenderer } from "./treemap/types.js";
-import { fetchMarketData } from "./treemap/data.js";
-import { TreemapChart } from "./treemap/index.js";
-import { HistogramChart } from "./histogram/index.js";
+import type { MarketData, ChartRenderer } from './treemap/types.js';
+import { fetchMarketData } from './treemap/data.js';
+import { TreemapChart } from './treemap/index.js';
+import { HistogramChart } from './histogram/index.js';
 import {
   getConfig,
   updateConfig,
@@ -9,22 +9,22 @@ import {
   EXCHANGE_INFO,
   getDateRange,
   toggleLanguage,
-} from "./config.js";
-import { toggleCurrency } from "./currency/data.js";
-import { OverlayComponent } from "./overlay/index.js";
-import { getExchangeRate } from "./currency/index.js";
+} from './config.js';
+import { toggleCurrency } from './currency/data.js';
+import { OverlayComponent } from './overlay/index.js';
+import { getExchangeRate } from './currency/index.js';
 
 let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
 let currentFetchController: AbortController | null = null;
 
 function loadFiltersFromStorage(): string[] {
-  const stored = localStorage.getItem("finmap-filters");
+  const stored = localStorage.getItem('finmap-filters');
   return stored ? JSON.parse(stored) : [];
 }
 
 function saveFiltersToStorage(filters: string[]): void {
-  localStorage.setItem("finmap-filters", JSON.stringify(filters));
+  localStorage.setItem('finmap-filters', JSON.stringify(filters));
 }
 
 export function initializeUI(): void {
@@ -36,15 +36,13 @@ export function initializeUI(): void {
 }
 
 function setupEventListeners(): void {
-  const dataTypeSelect = document.getElementById(
-    "dataType",
-  ) as HTMLSelectElement;
-  const dateInput = document.getElementById("date") as HTMLInputElement;
-  const searchInput = document.getElementById("search") as HTMLInputElement;
-  const fileInput = document.getElementById("inputFile") as HTMLInputElement;
+  const dataTypeSelect = document.getElementById('dataType') as HTMLSelectElement;
+  const dateInput = document.getElementById('date') as HTMLInputElement;
+  const searchInput = document.getElementById('search') as HTMLInputElement;
+  const fileInput = document.getElementById('inputFile') as HTMLInputElement;
 
   if (dataTypeSelect) {
-    dataTypeSelect.addEventListener("change", () => {
+    dataTypeSelect.addEventListener('change', () => {
       updateConfig({ dataType: dataTypeSelect.value as any });
       saveConfigToURL();
       renderChart();
@@ -52,15 +50,10 @@ function setupEventListeners(): void {
   }
 
   if (dateInput) {
-    dateInput.addEventListener("change", async () => {
-      const dateParts = dateInput.value.split("-");
-      if (
-        dateParts.length === 3 &&
-        dateParts[0] &&
-        dateParts[1] &&
-        dateParts[2]
-      ) {
-        const formattedDate = `${dateParts[0]}/${dateParts[1].padStart(2, "0")}/${dateParts[2].padStart(2, "0")}`;
+    dateInput.addEventListener('change', async () => {
+      const dateParts = dateInput.value.split('-');
+      if (dateParts.length === 3 && dateParts[0] && dateParts[1] && dateParts[2]) {
+        const formattedDate = `${dateParts[0]}/${dateParts[1].padStart(2, '0')}/${dateParts[2].padStart(2, '0')}`;
         updateConfig({ date: formattedDate });
 
         const currentConfig = getConfig();
@@ -69,12 +62,12 @@ function setupEventListeners(): void {
           try {
             const currencyExchangeRate = await getExchangeRate(
               currentExchangeInfo.nativeCurrency,
-              "USD",
+              'USD',
               currentConfig.date,
             );
             updateConfig({ currencyExchangeRate });
           } catch (error) {
-            console.warn("Failed to fetch exchange rate:", error);
+            console.warn('Failed to fetch exchange rate:', error);
           }
         }
 
@@ -85,55 +78,51 @@ function setupEventListeners(): void {
   }
 
   if (searchInput) {
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
         e.preventDefault();
         const query = (e.target as HTMLInputElement).value.trim();
-        if (
-          query &&
-          currentRenderer &&
-          "searchAndHighlight" in currentRenderer
-        ) {
+        if (query && currentRenderer && 'searchAndHighlight' in currentRenderer) {
           (currentRenderer as any).searchAndHighlight(query);
         }
-        (e.target as HTMLInputElement).value = "";
+        (e.target as HTMLInputElement).value = '';
       }
     });
   }
 
   if (fileInput) {
-    fileInput.addEventListener("change", (event) => {
+    fileInput.addEventListener('change', event => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = e => {
           const csvContent = e.target?.result as string;
           if (csvContent) {
-            localStorage.setItem("filterCsv", csvContent);
+            localStorage.setItem('filterCsv', csvContent);
             updateFilterVisibility();
             renderChart();
           }
         };
         reader.readAsText(file);
       }
-      (event.target as HTMLInputElement).value = "";
+      (event.target as HTMLInputElement).value = '';
     });
   }
 
-  const filterLabel = document.getElementById("inputFileLabel");
+  const filterLabel = document.getElementById('inputFileLabel');
   if (filterLabel) {
-    filterLabel.addEventListener("click", (event) => {
-      const hasFilter = localStorage.getItem("filterCsv") !== null;
+    filterLabel.addEventListener('click', event => {
+      const hasFilter = localStorage.getItem('filterCsv') !== null;
       if (hasFilter) {
         event.preventDefault();
-        localStorage.removeItem("filterCsv");
+        localStorage.removeItem('filterCsv');
         updateFilterVisibility();
         renderChart();
       }
     });
   }
 
-  document.addEventListener("click", async (event) => {
+  document.addEventListener('click', async event => {
     const target = event.target as HTMLElement;
 
     if (target.dataset.chartType) {
@@ -155,12 +144,12 @@ function setupEventListeners(): void {
         try {
           const currencyExchangeRate = await getExchangeRate(
             currentExchangeInfo.nativeCurrency,
-            "USD",
+            'USD',
             currentConfig.date,
           );
           updateConfig({ currencyExchangeRate });
         } catch (error) {
-          console.warn("Failed to fetch exchange rate:", error);
+          console.warn('Failed to fetch exchange rate:', error);
         }
       }
 
@@ -170,16 +159,16 @@ function setupEventListeners(): void {
       return;
     }
 
-    if (target.dataset.action === "currency-toggle") {
+    if (target.dataset.action === 'currency-toggle') {
       event.preventDefault();
 
-      if (target.hasAttribute("currency-toggle-disabled")) {
+      if (target.hasAttribute('currency-toggle-disabled')) {
         return;
       }
 
       const currentConfig = getConfig();
       const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
-      if (currentExchangeInfo && currentExchangeInfo.nativeCurrency !== "USD") {
+      if (currentExchangeInfo && currentExchangeInfo.nativeCurrency !== 'USD') {
         cleanupOnConfigChange();
         toggleCurrency();
         const newConfig = getConfig();
@@ -188,12 +177,12 @@ function setupEventListeners(): void {
         try {
           const currencyExchangeRate = await getExchangeRate(
             currentExchangeInfo.nativeCurrency,
-            "USD",
+            'USD',
             newConfig.date,
           );
           updateConfig({ currencyExchangeRate });
         } catch (error) {
-          console.warn("Failed to fetch exchange rate:", error);
+          console.warn('Failed to fetch exchange rate:', error);
         }
 
         saveConfigToURL();
@@ -202,7 +191,7 @@ function setupEventListeners(): void {
       return;
     }
 
-    if (target.id === "langToggle") {
+    if (target.id === 'langToggle') {
       event.preventDefault();
       cleanupOnConfigChange();
       toggleLanguage();
@@ -213,9 +202,9 @@ function setupEventListeners(): void {
       return;
     }
 
-    if (target.dataset.action === "erase-filter") {
+    if (target.dataset.action === 'erase-filter') {
       event.preventDefault();
-      localStorage.removeItem("filterCsv");
+      localStorage.removeItem('filterCsv');
       updateFilterVisibility();
       renderChart();
       return;
@@ -224,38 +213,35 @@ function setupEventListeners(): void {
 }
 
 function setupMenu(): void {
-  const menuButton = document.querySelector(".hamburger") as HTMLElement;
-  const menu = document.querySelector(".menu") as HTMLElement;
+  const menuButton = document.querySelector('.hamburger') as HTMLElement;
+  const menu = document.querySelector('.menu') as HTMLElement;
 
   if (menuButton && menu) {
-    menuButton.addEventListener("click", () => {
-      const isOpen = menu.classList.contains("showMenu");
+    menuButton.addEventListener('click', () => {
+      const isOpen = menu.classList.contains('showMenu');
       if (isOpen) {
-        menu.classList.remove("showMenu");
-        menuButton.classList.remove("active");
+        menu.classList.remove('showMenu');
+        menuButton.classList.remove('active');
       } else {
-        menu.classList.add("showMenu");
-        menuButton.classList.add("active");
+        menu.classList.add('showMenu');
+        menuButton.classList.add('active');
       }
     });
 
     // Close menu when clicking on menu items
-    menu.addEventListener("click", (e) => {
+    menu.addEventListener('click', e => {
       const target = e.target as HTMLElement;
-      if (target.classList.contains("menuItem")) {
-        menu.classList.remove("showMenu");
-        menuButton.classList.remove("active");
+      if (target.classList.contains('menuItem')) {
+        menu.classList.remove('showMenu');
+        menuButton.classList.remove('active');
       }
     });
 
     // Close menu when clicking outside
-    document.addEventListener("click", (e) => {
-      if (
-        !menuButton.contains(e.target as Node) &&
-        !menu.contains(e.target as Node)
-      ) {
-        menu.classList.remove("showMenu");
-        menuButton.classList.remove("active");
+    document.addEventListener('click', e => {
+      if (!menuButton.contains(e.target as Node) && !menu.contains(e.target as Node)) {
+        menu.classList.remove('showMenu');
+        menuButton.classList.remove('active');
       }
     });
   }
@@ -270,23 +256,23 @@ function removeFilter(filter: string): void {
 }
 
 function updateFilterDisplay(): void {
-  const filtersContainer = document.getElementById("active-filters");
+  const filtersContainer = document.getElementById('active-filters');
   if (!filtersContainer) return;
 
   const filters = loadFiltersFromStorage();
-  filtersContainer.innerHTML = "";
+  filtersContainer.innerHTML = '';
 
   filters.forEach((filter: string) => {
-    const filterTag = document.createElement("div");
-    filterTag.className = "filter-tag";
+    const filterTag = document.createElement('div');
+    filterTag.className = 'filter-tag';
 
     const textNode = document.createTextNode(`${filter} `);
     filterTag.appendChild(textNode);
 
-    const btn = document.createElement("button");
-    btn.setAttribute("aria-label", "Remove filter");
-    btn.textContent = "×";
-    btn.addEventListener("click", () => removeFilter(filter));
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-label', 'Remove filter');
+    btn.textContent = '×';
+    btn.addEventListener('click', () => removeFilter(filter));
 
     filterTag.appendChild(btn);
     filtersContainer.appendChild(filterTag);
@@ -295,7 +281,7 @@ function updateFilterDisplay(): void {
 
 export async function renderChart(): Promise<void> {
   try {
-    const container = document.getElementById("chart");
+    const container = document.getElementById('chart');
     if (!container) return;
 
     if (currentFetchController) {
@@ -314,10 +300,10 @@ export async function renderChart(): Promise<void> {
     const config = getConfig();
 
     switch (config.chartType) {
-      case "treemap":
+      case 'treemap':
         currentRenderer = new TreemapChart();
         break;
-      case "histogram":
+      case 'histogram':
         currentRenderer = new HistogramChart();
         break;
       default:
@@ -332,7 +318,7 @@ export async function renderChart(): Promise<void> {
     updateUIState();
     hideLoadingState(container);
   } catch (error: any) {
-    if (error?.name === "AbortError") {
+    if (error?.name === 'AbortError') {
       return;
     }
     showErrorState(error as Error);
@@ -357,31 +343,27 @@ function applyFilters(data: MarketData[]): MarketData[] {
   const config = getConfig();
   const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
-  const csvData = localStorage.getItem("filterCsv");
+  const csvData = localStorage.getItem('filterCsv');
   if (!csvData) return data;
 
   try {
     const portfolioData = parsePortfolioCSV(csvData);
     if (portfolioData.length === 0) return data;
 
-    const portfolioTickers = portfolioData.map((item) =>
-      item.ticker.toUpperCase(),
-    );
+    const portfolioTickers = portfolioData.map(item => item.ticker.toUpperCase());
     const filteredData = data.filter(
-      (item) =>
-        portfolioTickers.includes(item.ticker.toUpperCase()) ||
-        item.type === "sector",
+      item => portfolioTickers.includes(item.ticker.toUpperCase()) || item.type === 'sector',
     );
 
-    return filteredData.map((item) => {
-      if (item.type === "sector")
+    return filteredData.map(item => {
+      if (item.type === 'sector')
         return {
           ...item,
           isPortfolio: true,
         };
 
       const portfolioItem = portfolioData.find(
-        (p) => p.ticker.toUpperCase() === item.ticker.toUpperCase(),
+        p => p.ticker.toUpperCase() === item.ticker.toUpperCase(),
       );
 
       if (portfolioItem) {
@@ -399,19 +381,17 @@ function applyFilters(data: MarketData[]): MarketData[] {
       return item;
     });
   } catch (error) {
-    console.warn("Failed to parse portfolio CSV:", error);
+    console.warn('Failed to parse portfolio CSV:', error);
     return data;
   }
 }
 
-function parsePortfolioCSV(
-  csvContent: string,
-): Array<{ ticker: string; amount: number }> {
-  const lines = csvContent.split("\n").filter((line) => line.trim());
+function parsePortfolioCSV(csvContent: string): Array<{ ticker: string; amount: number }> {
+  const lines = csvContent.split('\n').filter(line => line.trim());
   const portfolioData: Array<{ ticker: string; amount: number }> = [];
 
   for (const line of lines) {
-    const parts = line.split(",").map((part) => part.trim());
+    const parts = line.split(',').map(part => part.trim());
     if (parts.length >= 2 && parts[0] && parts[1]) {
       const ticker = parts[0];
       const amount = parseFloat(parts[1]);
@@ -428,41 +408,33 @@ function parsePortfolioCSV(
 function updateUIState(): void {
   const config = getConfig();
 
-  const exchangeSelect = document.getElementById(
-    "exchange",
-  ) as HTMLSelectElement;
-  const chartTypeSelect = document.getElementById(
-    "chartType",
-  ) as HTMLSelectElement;
-  const dataTypeSelect = document.getElementById(
-    "dataType",
-  ) as HTMLSelectElement;
-  const dateInput = document.getElementById("date") as HTMLInputElement;
-  const currencyToggle = document.querySelector(
-    '[data-action="currency-toggle"]',
-  ) as HTMLElement;
-  const langToggle = document.getElementById("langToggle") as HTMLElement;
+  const exchangeSelect = document.getElementById('exchange') as HTMLSelectElement;
+  const chartTypeSelect = document.getElementById('chartType') as HTMLSelectElement;
+  const dataTypeSelect = document.getElementById('dataType') as HTMLSelectElement;
+  const dateInput = document.getElementById('date') as HTMLInputElement;
+  const currencyToggle = document.querySelector('[data-action="currency-toggle"]') as HTMLElement;
+  const langToggle = document.getElementById('langToggle') as HTMLElement;
 
   if (exchangeSelect) exchangeSelect.value = config.exchange;
   if (chartTypeSelect) chartTypeSelect.value = config.chartType;
   if (dataTypeSelect) dataTypeSelect.value = config.dataType;
 
   if (dateInput && config.date) {
-    const parts = config.date.split("/");
+    const parts = config.date.split('/');
     if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
-      dateInput.value = `${parts[0]}-${parts[1].padStart(2, "0")}-${parts[2].padStart(2, "0")}`;
+      dateInput.value = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
     }
   }
 
   if (currencyToggle) {
     const exchangeInfo = EXCHANGE_INFO[config.exchange];
     currencyToggle.textContent = config.currency;
-    currencyToggle.style.display = "inline-block";
+    currencyToggle.style.display = 'inline-block';
 
-    if (!exchangeInfo || exchangeInfo.nativeCurrency === "USD") {
-      currencyToggle.setAttribute("currency-toggle-disabled", "true");
+    if (!exchangeInfo || exchangeInfo.nativeCurrency === 'USD') {
+      currencyToggle.setAttribute('currency-toggle-disabled', 'true');
     } else {
-      currencyToggle.removeAttribute("currency-toggle-disabled");
+      currencyToggle.removeAttribute('currency-toggle-disabled');
     }
   }
 
@@ -476,7 +448,7 @@ function updateUIState(): void {
 
 function updateDateInputLimits(): void {
   const config = getConfig();
-  const dateInput = document.getElementById("date") as HTMLInputElement;
+  const dateInput = document.getElementById('date') as HTMLInputElement;
 
   if (dateInput) {
     const { min, max } = getDateRange(config.exchange);
@@ -486,32 +458,32 @@ function updateDateInputLimits(): void {
     // Set current value if not already set or if it's outside the new range
     if (!dateInput.value || dateInput.value < min || dateInput.value > max) {
       dateInput.value = max;
-      updateConfig({ date: max.replace(/-/g, "/") });
+      updateConfig({ date: max.replace(/-/g, '/') });
     }
   }
 }
 
 function updateFilterVisibility(): void {
-  const filterLabel = document.getElementById("inputFileLabel");
-  const eraseFilterLink = document.getElementById("linkEraseFilter");
-  const hasFilter = localStorage.getItem("filterCsv") !== null;
+  const filterLabel = document.getElementById('inputFileLabel');
+  const eraseFilterLink = document.getElementById('linkEraseFilter');
+  const hasFilter = localStorage.getItem('filterCsv') !== null;
 
   if (filterLabel) {
-    filterLabel.style.display = "inline-block";
-    const img = filterLabel.querySelector("img");
+    filterLabel.style.display = 'inline-block';
+    const img = filterLabel.querySelector('img');
     if (img) {
       if (hasFilter) {
-        img.src = "images/icons/erasefilter.png";
-        img.title = "Remove filter";
+        img.src = 'images/icons/erasefilter.png';
+        img.title = 'Remove filter';
       } else {
-        img.src = "images/icons/filter.png";
-        img.title = "Apply filter";
+        img.src = 'images/icons/filter.png';
+        img.title = 'Apply filter';
       }
     }
   }
 
   if (eraseFilterLink) {
-    eraseFilterLink.style.display = "none";
+    eraseFilterLink.style.display = 'none';
   }
 }
 
@@ -520,32 +492,32 @@ function showLoadingState(container: HTMLElement): void {
 }
 
 function hideLoadingState(container: HTMLElement): void {
-  const loading = container.querySelector(".loading");
+  const loading = container.querySelector('.loading');
   if (loading) {
     loading.remove();
   }
 }
 
 function showErrorState(error: Error): void {
-  const container = document.getElementById("chart");
+  const container = document.getElementById('chart');
   if (container) {
     container.innerHTML = `<div class="error">Error: ${error.message}</div>`;
   }
 }
 
 function setupShareFeature(): void {
-  const shareLink = document.getElementById("share");
+  const shareLink = document.getElementById('share');
   if (shareLink) {
-    shareLink.addEventListener("click", handleShareClick);
+    shareLink.addEventListener('click', handleShareClick);
   }
 }
 
 function setupInstallFeature(): void {
-  const installLink = document.getElementById("install");
+  const installLink = document.getElementById('install');
   if (installLink) {
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    window.addEventListener("appinstalled", handleAppInstalled);
-    installLink.addEventListener("click", handleInstallClick);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+    installLink.addEventListener('click', handleInstallClick);
   }
 }
 
@@ -565,17 +537,17 @@ function handleShareClick(): void {
 function handleBeforeInstallPrompt(event: Event): void {
   event.preventDefault();
   installPrompt = event;
-  const installLink = document.getElementById("install");
+  const installLink = document.getElementById('install');
   if (installLink) {
-    installLink.removeAttribute("hidden");
+    installLink.removeAttribute('hidden');
   }
 }
 
 function handleAppInstalled(): void {
   installPrompt = null;
-  const installLink = document.getElementById("install");
+  const installLink = document.getElementById('install');
   if (installLink) {
-    installLink.setAttribute("hidden", "");
+    installLink.setAttribute('hidden', '');
   }
 }
 
@@ -586,8 +558,8 @@ async function handleInstallClick(): Promise<void> {
   console.log(`Install prompt result: ${result.outcome}`);
 
   installPrompt = null;
-  const installLink = document.getElementById("install");
+  const installLink = document.getElementById('install');
   if (installLink) {
-    installLink.setAttribute("hidden", "");
+    installLink.setAttribute('hidden', '');
   }
 }

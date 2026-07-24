@@ -1,12 +1,7 @@
-import type {
-  MarketData,
-  MarketDataResponse,
-  TreemapNode,
-  HierarchyNode,
-} from "./types.js";
-import { parseMarketData, getNodeData } from "./types.js";
-import { getConfig, EXCHANGE_INFO } from "../config.js";
-import { convertCurrencyValues } from "../currency/data.js";
+import type { MarketData, MarketDataResponse, TreemapNode, HierarchyNode } from './types.js';
+import { parseMarketData, getNodeData } from './types.js';
+import { getConfig, EXCHANGE_INFO } from '../config.js';
+import { convertCurrencyValues } from '../currency/data.js';
 
 declare const d3: any;
 
@@ -16,8 +11,8 @@ export function buildHierarchy(data: MarketData[]): HierarchyNode {
   let rootSector: MarketData | null = null;
 
   for (const item of data) {
-    if (item.type === "sector") {
-      if (item.sector === "") {
+    if (item.type === 'sector') {
+      if (item.sector === '') {
         rootSector = item;
       } else {
         sectors.set(item.ticker, item);
@@ -30,13 +25,13 @@ export function buildHierarchy(data: MarketData[]): HierarchyNode {
   }
 
   if (!rootSector) {
-    throw new Error("Root sector not found in data");
+    throw new Error('Root sector not found in data');
   }
 
   const children: TreemapNode[] = Array.from(sectors.entries()).map(
     ([sectorTicker, sectorData]) => ({
       data: sectorData,
-      children: (securitiesMap.get(sectorTicker) || []).map((security) => ({
+      children: (securitiesMap.get(sectorTicker) || []).map(security => ({
         data: security,
       })),
     }),
@@ -59,22 +54,20 @@ export function getValueForDataType(item: MarketData): number {
 
   const config = getConfig();
   switch (config.dataType) {
-    case "marketcap":
+    case 'marketcap':
       return item.marketCap || 0;
-    case "value":
+    case 'value':
       return item.value || 0;
-    case "trades":
+    case 'trades':
       return item.numTrades || 0;
-    case "nestedItems":
+    case 'nestedItems':
       return item.nestedItemsCount || 0;
     default:
       return item.marketCap || 0;
   }
 }
 
-export async function fetchMarketData(
-  signal?: AbortSignal,
-): Promise<MarketData[]> {
+export async function fetchMarketData(signal?: AbortSignal): Promise<MarketData[]> {
   const config = getConfig();
   const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
@@ -102,7 +95,7 @@ export async function fetchMarketData(
 
     return marketData;
   } catch (error: any) {
-    if (error?.name === "AbortError") {
+    if (error?.name === 'AbortError') {
       throw error;
     }
     throw new Error(`Failed to fetch market data: ${error}`);
