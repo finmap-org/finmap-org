@@ -22,6 +22,7 @@ export class HistogramChart implements ChartRenderer {
   private plotElement: HTMLElement | null = null;
   private chartData: PlotlyTrace[] = [];
   private isFirstRender: boolean = true;
+  private fetchController: AbortController | null = null;
 
   render(_: any[], container: HTMLElement): void {
     this.container = container;
@@ -30,7 +31,11 @@ export class HistogramChart implements ChartRenderer {
   }
 
   destroy(): void {
-    if (this.plotElement && (window as any).Plotly) {
+    if (this.fetchController) {
+      this.fetchController.abort();
+      this.fetchController = null;
+    }
+    if (this.plotElement && typeof Plotly !== 'undefined') {
       Plotly.purge(this.plotElement);
     }
     if (this.container) {
@@ -50,14 +55,20 @@ export class HistogramChart implements ChartRenderer {
   }
 
   private async loadAndRenderChart(): Promise<void> {
+    if (this.fetchController) {
+      this.fetchController.abort();
+    }
+    this.fetchController = new AbortController();
+    const signal = this.fetchController.signal;
+
     try {
       const config = getConfig();
       const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
       const [historicalData, exchangeRates, commodityData] = await Promise.all([
-        fetchHistoricalData(),
-        fetchExchangeRates(exchangeInfo.nativeCurrency),
-        fetchCommodityData(),
+        fetchHistoricalData(signal),
+        fetchExchangeRates(exchangeInfo.nativeCurrency, signal),
+        fetchCommodityData(signal),
       ]);
 
       if (!this.container || !this.plotElement) {
@@ -84,7 +95,10 @@ export class HistogramChart implements ChartRenderer {
       }
 
       this.renderChart(processedData, exchangeRates, commodityData, exchangeInfo.nativeCurrency);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        return;
+      }
       this.showError(error as Error);
     }
   }
