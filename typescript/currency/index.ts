@@ -21,29 +21,18 @@ export function getCurrencyInfo(currency: Currency): CurrencyInfo {
   return CURRENCY_INFO[currency] || CURRENCY_INFO.USD;
 }
 
+import { DataService } from '../services/api.js';
+
 export async function fetchExchangeRates(
   currency: Currency,
   signal?: AbortSignal,
 ): Promise<ExchangeRates> {
   if (currency === 'USD') return {};
 
-  // Check cache first
-  const cached = ratesCache.get(currency);
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    return cached.rates;
-  }
-
   const url = `https://raw.githubusercontent.com/finmap-org/data-currency/refs/heads/main/marketdata/${currency}perUSD.json?_=${new Date().toISOString().split('T')[0]}`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const rates: ExchangeRates = await response.json();
-
-    // Cache the result
-    ratesCache.set(currency, { rates, timestamp: Date.now() });
-    return rates;
+    return await DataService.fetchJson<ExchangeRates>(url, signal, CACHE_TTL);
   } catch (error: any) {
     if (error?.name === 'AbortError') {
       throw error;

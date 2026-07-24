@@ -5,6 +5,7 @@ import type {
   CommodityData,
 } from './types.js';
 import { getConfig, EXCHANGE_INFO } from '../config.js';
+import { DataService } from '../services/api.js';
 export { fetchExchangeRates } from '../currency/index.js';
 
 export async function fetchHistoricalData(signal?: AbortSignal): Promise<HistoricalDataResponse> {
@@ -13,9 +14,7 @@ export async function fetchHistoricalData(signal?: AbortSignal): Promise<Histori
   const url = `https://raw.githubusercontent.com/finmap-org/${exchangeInfo.dataRepo}/refs/heads/main/history/${config.exchange}.json`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
+    return await DataService.fetchJson<HistoricalDataResponse>(url, signal);
   } catch (error: any) {
     if (error?.name === 'AbortError') {
       throw error;
@@ -29,9 +28,7 @@ export async function fetchCommodityData(signal?: AbortSignal): Promise<Commodit
     'https://raw.githubusercontent.com/finmap-org/data-commodity/refs/heads/main/marketdata/brent.json';
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
+    return await DataService.fetchJson<CommodityData>(url, signal);
   } catch (error: any) {
     if (error?.name === 'AbortError') {
       throw error;

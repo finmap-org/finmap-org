@@ -87,6 +87,8 @@ export function getValueForDataType(item: MarketData): number {
   }
 }
 
+import { DataService } from '../services/api.js';
+
 export async function fetchMarketData(signal?: AbortSignal): Promise<MarketData[]> {
   const config = getConfig();
   const exchangeInfo = EXCHANGE_INFO[config.exchange];
@@ -98,10 +100,7 @@ export async function fetchMarketData(signal?: AbortSignal): Promise<MarketData[
   const url = `https://raw.githubusercontent.com/finmap-org/${exchangeInfo.dataRepo}/refs/heads/main/marketdata/${config.date}/${config.exchange}.json`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const data: MarketDataResponse = await response.json();
+    const data = await DataService.fetchJson<MarketDataResponse>(url, signal);
     let marketData = parseMarketData(data);
 
     if (config.currency !== exchangeInfo.nativeCurrency) {

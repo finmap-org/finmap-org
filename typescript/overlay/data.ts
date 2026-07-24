@@ -1,6 +1,7 @@
 import type { NewsItem, CompanyInfo } from './types.js';
 import type { Language } from '../types.js';
 import { getConfig } from '../config.js';
+import { DataService } from '../services/api.js';
 
 export function escapeHtml(str: string): string {
   if (!str) return '';
@@ -51,10 +52,7 @@ export async function fetchNews(
   const url = `https://news.finmap.org/${config.language}:${ticker}.xml?q=${newsQuery}+before:${formattedDate}&${newsLang}&_=${new Date().toISOString().split(':')[0]}`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const xmlText = await response.text();
+    const xmlText = await DataService.fetchText(url, signal);
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
@@ -162,10 +160,7 @@ async function fetchUSCompanyInfo(
   const url = `https://raw.githubusercontent.com/finmap-org/data-us/refs/heads/main/securities/${exchange}/${ticker[0]}/${ticker}.json`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) return null;
-
-    const json = await response.json();
+    const json = await DataService.fetchJson<any>(url, signal);
     const description = json.data?.CompanyDescription?.value || '';
     const sourceLink = json.data?.CompanyUrl?.value || '';
 
@@ -193,10 +188,7 @@ async function fetchHKCompanyInfo(
   const url = `https://raw.githubusercontent.com/finmap-org/data-hongkong/refs/heads/main/securities/hkex/${lang}/${ticker[0]}/${ticker}.json`;
 
   try {
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) return null;
-
-    const json = await response.json();
+    const json = await DataService.fetchJson<any>(url, signal);
     const description = json.data?.quote?.summary || '';
     const sourceLink = ''; // No URL available in the data
 
@@ -241,10 +233,7 @@ async function fetchWikiInfo(
   try {
     const url = `https://${lang}.wikipedia.org/w/api.php?action=query&pageids=${pageId}&prop=extracts&exintro&explaintext&format=json&origin=*`;
 
-    const response = await fetch(url, signal ? { signal } : undefined);
-    if (!response.ok) return null;
-
-    const json = await response.json();
+    const json = await DataService.fetchJson<any>(url, signal);
     const pages = (json.query?.pages as Record<string, any>) || {};
     const pageIds = Object.keys(pages);
     if (pageIds.length === 0) return null;
