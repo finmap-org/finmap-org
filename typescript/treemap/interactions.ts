@@ -44,49 +44,51 @@ export class InteractionHandler {
 
   private createClickHandler() {
     return (event: Event) => {
+      if (!this.callbacks) return;
       const mouseEvent = event as MouseEvent;
-      if (this.callbacks!.isTransitioning()) return;
+      if (this.callbacks.isTransitioning()) return;
 
-      const node = this.callbacks!.onNodeAtPosition(mouseEvent);
+      const node = this.callbacks.onNodeAtPosition(mouseEvent);
       if (!node) return;
 
       const isLeaf = isLeafNode(node);
       const data = getNodeData(node);
 
       if (isLeaf) {
-        this.callbacks!.onShowCompany(data);
+        this.callbacks.onShowCompany(data);
       } else {
-        this.callbacks!.onDrill(node);
+        this.callbacks.onDrill(node);
       }
     };
   }
 
   private createMouseMoveHandler(canvasSelection: any) {
     return (event: Event) => {
+      if (!this.callbacks) return;
       const mouseEvent = event as MouseEvent;
-      if (this.callbacks!.isTransitioning()) return;
+      if (this.callbacks.isTransitioning()) return;
 
-      const node = this.callbacks!.onNodeAtPosition(mouseEvent);
+      const node = this.callbacks.onNodeAtPosition(mouseEvent);
 
       // Optimize: only update if node changed
       if (node === this.lastHoveredNode) return;
       this.lastHoveredNode = node;
 
       if (!node) {
-        this.callbacks!.onHideTooltip();
+        this.callbacks.onHideTooltip();
         canvasSelection.style("cursor", "default");
         return;
       }
 
       const data = getNodeData(node);
-      this.callbacks!.onShowTooltip(data, mouseEvent, node);
+      this.callbacks.onShowTooltip(data, mouseEvent, node);
       canvasSelection.style("cursor", "pointer");
     };
   }
 
   private createMouseEnterHandler(canvasSelection: any) {
     return () => {
-      if (!this.callbacks!.isTransitioning()) {
+      if (this.callbacks && !this.callbacks.isTransitioning()) {
         canvasSelection
           .transition()
           .duration(TRANSITIONS.HOVER)
@@ -103,13 +105,16 @@ export class InteractionHandler {
         .duration(TRANSITIONS.HOVER)
         .style("filter", "brightness(1)")
         .style("cursor", "default");
-      this.callbacks!.onHideTooltip();
+      if (this.callbacks) {
+        this.callbacks.onHideTooltip();
+      }
     };
   }
 
   private registerListener(eventType: string, handler: EventListener): void {
+    if (!this.canvas) return;
     this.eventListeners.set(eventType, handler);
-    this.canvas!.addEventListener(eventType, handler);
+    this.canvas.addEventListener(eventType, handler);
   }
 
   destroy(): void {
