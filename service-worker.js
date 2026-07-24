@@ -14,7 +14,7 @@ const STATIC_FILES = [
   '/images/icons/favicon.png',
   '/images/icons/ios/180.png',
   '/js/d3.v7.min.js',
-  '/js/plotly-3.5.1.min.js',
+  '/js/plotly-3.7.0.min.js',
 ];
 
 const DATA_URLS = [
@@ -49,7 +49,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
-  
+
   if (isStaticAsset(request.url)) {
     event.respondWith(cacheFirst(request, STATIC_CACHE));
   } else if (isDataRequest(request.url)) {
@@ -60,31 +60,31 @@ self.addEventListener('fetch', event => {
 });
 
 function isStaticAsset(url) {
-  return STATIC_FILES.some(file => url.includes(file)) || 
-         url.includes('d3js.org') ||
-         url.endsWith('.js') ||
-         url.endsWith('.ts') ||
-         url.endsWith('.css') ||
-         url.endsWith('.png') ||
-         url.endsWith('.svg');
+  return STATIC_FILES.some(file => url.includes(file)) ||
+    url.includes('d3js.org') ||
+    url.endsWith('.js') ||
+    url.endsWith('.ts') ||
+    url.endsWith('.css') ||
+    url.endsWith('.png') ||
+    url.endsWith('.svg');
 }
 
 function isDataRequest(url) {
   return DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
-         url.includes('githubusercontent') ||
-         url.includes('wikipedia') ||
-         url.includes('news.finmap.org');
+    url.includes('githubusercontent') ||
+    url.includes('wikipedia') ||
+    url.includes('news.finmap.org');
 }
 
 async function cacheFirst(request, cacheName) {
   try {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request);
-    
+
     if (cached) {
       return cached;
     }
-    
+
     const response = await fetch(request);
     if (response.status === 200) {
       cache.put(request, response.clone());
@@ -99,21 +99,21 @@ async function cacheFirst(request, cacheName) {
 async function networkFirst(request, cacheName) {
   try {
     const response = await fetch(request);
-    
+
     if (response.status === 200) {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
     }
-    
+
     return response;
   } catch (error) {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request);
-    
+
     if (cached) {
       return cached;
     }
-    
+
     throw error;
   }
 }

@@ -1,190 +1,173 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>finmap.org</title>
-    <base href="https://finmap.org/" />
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="Global stock market visualisation tool and your personal news feed reader. London Stock Exchange, NASDAQ, NYSE, American Exchange, Moscow Exchange, Borsa Istanbul. Market Capitalization, Listings, Value. Treemap and Histogram"
-    />
-    <meta name="theme-color" content="#414554" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="finmap.org" />
 
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" type="text/css" href="styles/style.css" />
-    <link rel="icon" href="images/icons/favicon.png" type="image/png" />
-    <link rel="apple-touch-icon" href="images/icons/ios/152.png" />
+<head>
+  <title>finmap.org</title>
+  <base href="https://finmap.org/" />
+  <meta charset="UTF-8" />
+  <meta name="description"
+    content="Global stock market visualisation tool and your personal news feed reader. London Stock Exchange, NASDAQ, NYSE, American Exchange, Moscow Exchange, Borsa Istanbul. Market Capitalization, Listings, Value. Treemap and Histogram" />
+  <meta name="theme-color" content="#414554" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="finmap.org" />
 
-    <script src="js/d3.v7.min.js"></script>
-    <script src="js/plotly-3.5.1.min.js" charset="utf-8"></script>
-  </head>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" type="text/css" href="styles/style.css" />
+  <link rel="icon" href="images/icons/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="images/icons/ios/152.png" />
 
-  <body>
-    <header>
-      <img id="logo" src="" height="30px" />
-      <input type="file" id="inputFile" accept=".csv,.txt" hidden />
-      <label for="inputFile" id="inputFileLabel">
-        <img
-          src="images/icons/filter.png"
-          title="Apply filter"
-        />
-      </label>
-      <a id="linkEraseFilter" data-action="erase-filter" hidden>
-        <img
-          src="images/icons/erasefilter.png"
-          title="Erase filter"
-        />
+  <script src="js/d3.v7.min.js"></script>
+  <script src="js/plotly-3.7.0.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <header>
+    <img id="logo" src="" height="30px" />
+    <input type="file" id="inputFile" accept=".csv,.txt" hidden />
+    <label for="inputFile" id="inputFileLabel">
+      <img src="images/icons/filter.png" title="Apply filter" />
+    </label>
+    <a id="linkEraseFilter" data-action="erase-filter" hidden>
+      <img src="images/icons/erasefilter.png" title="Erase filter" />
+    </a>
+    <form id="inputForm" onsubmit="return false;">
+      <div class="autocomplete">
+        <input type="text" id="search" placeholder="🔎 AAPL" maxlength="40" />
+      </div>
+    </form>
+
+    <input type="date" id="date" name="date" pattern="\d{4}-\d{2}-\d{2}" />
+    <select id="dataType">
+      <option value="marketcap" selected="selected">marketcap</option>
+      <option value="value">value</option>
+      <option value="trades">trades</option>
+      <!-- <option value="nestedItems">listed items</option> -->
+    </select>
+  </header>
+  <div id="chart"></div>
+  <ul class="menu">
+    <li>
+      <a class="menuItem" target="_blank" rel="noopener" href="https://bsky.app/profile/finmap.org">
+        <img src="images/icons/bluesky.svg" />
       </a>
-      <form id="inputForm" onsubmit="return false;">
-        <div class="autocomplete">
-          <input
-            type="text"
-            id="search"
-            placeholder="🔎 AAPL"
-            maxlength="40"
-          />
-        </div>
-      </form>
-
-      <input
-        type="date"
-        id="date"
-        name="date"
-        pattern="\d{4}-\d{2}-\d{2}"
-      />
-      <select id="dataType">
-        <option value="marketcap" selected="selected">marketcap</option>
-        <option value="value">value</option>
-        <option value="trades">trades</option>
-        <!-- <option value="nestedItems">listed items</option> -->
-      </select>
-    </header>
-    <div id="chart"></div>
-    <ul class="menu">
-      <li>
-        <a class="menuItem" target="_blank" rel="noopener" href="https://bsky.app/profile/finmap.org">
-          <img src="images/icons/bluesky.svg"  />
-        </a>
-        <a class="menuItem" target="_blank" rel="noopener" href="https://www.youtube.com/@finmaporg">
-          <img src="images/icons/youtube.png"  />
-        </a>
-        <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org">
-          <img src="images/icons/github.png"  />
-        </a>
-        <a class="menuItem" target="_blank" rel="noopener" href="mailto:contact@finmap.org">
-          <img src="images/icons/mail.png"  />
-        </a>
-        <a class="menuItem" target="_blank" rel="noopener" href="https://boosty.to/finmap/donate">
-          <img src="images/icons/boosty.png"  />
-        </a>
-        <a class="menuItem" target="_blank" rel="noopener" href="https://www.patreon.com/finmap">
-          <img src="images/icons/patreon.png"  />
-        </a>
-      </li>
-      <li>
-        <a class="menuItem" data-chart-type="treemap" href="#" rel="noopener">TREEMAP</a>|
-        <a class="menuItem" data-chart-type="histogram" href="#" rel="noopener">HISTOGRAM</a>
-      </li>
-      <li>
-        <a class="menuItem" data-exchange="nasdaq" href="#" rel="noopener">NASDAQ</a>|
-        <a class="menuItem" data-exchange="nyse" href="#" rel="noopener">NYSE</a>|
-        <a class="menuItem" data-exchange="amex" href="#" rel="noopener">AMEX</a>|
-        <a class="menuItem" data-exchange="us-all" href="#" rel="noopener">US ALL</a>
-      </li>
-      <li>
-        <a class="menuItem" data-exchange="lse" href="#" rel="noopener">LONDON STOCK EXCHANGE</a>
-      </li>
-      <li>
-        <a class="menuItem" data-exchange="hkex" href="#" rel="noopener">HONG KONG EXCHANGE</a>
-      </li>
-      <li>
-        <a class="menuItem" data-exchange="bist" href="#" rel="noopener">TURKISH STOCK MARKET</a>
-      </li>
-      <li>
-        <a class="menuItem" data-exchange="moex" href="#" rel="noopener">MOSCOW EXCHANGE</a>
-      </li>
-      <li>
-        <a class="menuItem" target="_self" rel="noopener"
-          href="/tcg">COLLECTIBLE CARDS</a>
-      </li>
-    </ul>
-    <button class="hamburger">
-      <i class="menuIcon material-icons">menu</i>
-      <i class="closeIcon material-icons">close</i>
-    </button>
-    <footer>
-      <a href="https://www.patreon.com/finmap" target="_blank" rel="noopener">
-        <img src="images/icons/patreon.png" height="14px" /> Patreon
+      <a class="menuItem" target="_blank" rel="noopener" href="https://www.youtube.com/@finmaporg">
+        <img src="images/icons/youtube.png" />
       </a>
-      <a id="share">
-        <img src="images/icons/share.png" height="14px" /> Share</a>
-      <a id="install" hidden>✓ Install</a>
-      <a id="currencyToggle" data-action="currency-toggle">USD</a>
-      <a id="langToggle">ENG</a>
-    </footer>
+      <a class="menuItem" target="_blank" rel="noopener" href="https://github.com/finmap-org/finmap-org">
+        <img src="images/icons/github.png" />
+      </a>
+      <a class="menuItem" target="_blank" rel="noopener" href="mailto:contact@finmap.org">
+        <img src="images/icons/mail.png" />
+      </a>
+      <a class="menuItem" target="_blank" rel="noopener" href="https://boosty.to/finmap/donate">
+        <img src="images/icons/boosty.png" />
+      </a>
+      <a class="menuItem" target="_blank" rel="noopener" href="https://www.patreon.com/finmap">
+        <img src="images/icons/patreon.png" />
+      </a>
+    </li>
+    <li>
+      <a class="menuItem" data-chart-type="treemap" href="#" rel="noopener">TREEMAP</a>|
+      <a class="menuItem" data-chart-type="histogram" href="#" rel="noopener">HISTOGRAM</a>
+    </li>
+    <li>
+      <a class="menuItem" data-exchange="nasdaq" href="#" rel="noopener">NASDAQ</a>|
+      <a class="menuItem" data-exchange="nyse" href="#" rel="noopener">NYSE</a>|
+      <a class="menuItem" data-exchange="amex" href="#" rel="noopener">AMEX</a>|
+      <a class="menuItem" data-exchange="us-all" href="#" rel="noopener">US ALL</a>
+    </li>
+    <li>
+      <a class="menuItem" data-exchange="lse" href="#" rel="noopener">LONDON STOCK EXCHANGE</a>
+    </li>
+    <li>
+      <a class="menuItem" data-exchange="hkex" href="#" rel="noopener">HONG KONG EXCHANGE</a>
+    </li>
+    <li>
+      <a class="menuItem" data-exchange="bist" href="#" rel="noopener">TURKISH STOCK MARKET</a>
+    </li>
+    <li>
+      <a class="menuItem" data-exchange="moex" href="#" rel="noopener">MOSCOW EXCHANGE</a>
+    </li>
+    <li>
+      <a class="menuItem" target="_self" rel="noopener" href="/tcg">COLLECTIBLE CARDS</a>
+    </li>
+  </ul>
+  <button class="hamburger">
+    <i class="menuIcon material-icons">menu</i>
+    <i class="closeIcon material-icons">close</i>
+  </button>
+  <footer>
+    <a href="https://www.patreon.com/finmap" target="_blank" rel="noopener">
+      <img src="images/icons/patreon.png" height="14px" /> Patreon
+    </a>
+    <a id="share">
+      <img src="images/icons/share.png" height="14px" /> Share</a>
+    <a id="install" hidden>✓ Install</a>
+    <a id="currencyToggle" data-action="currency-toggle">USD</a>
+    <a id="langToggle">ENG</a>
+  </footer>
 
-    <div id="company-overlay" class="company-overlay">
-      <div class="overlay-content">
-        <div class="overlay-header">
-          <h2 id="overlay-title" class="overlay-title"></h2>
-          <div class="price-info">
-            <div class="price-row">
-              <div class="price-item">
-                <span><b>Price:</b></span>
-                <span id="price-last"></span>
-              </div>
-              <div class="price-item">
-                <span><b>Change:</b></span>
-                <span id="price-change" class="price-change"></span>
-              </div>
+  <div id="company-overlay" class="company-overlay">
+    <div class="overlay-content">
+      <div class="overlay-header">
+        <h2 id="overlay-title" class="overlay-title"></h2>
+        <div class="price-info">
+          <div class="price-row">
+            <div class="price-item">
+              <span><b>Price:</b></span>
+              <span id="price-last"></span>
             </div>
-            <div class="price-row">
-              <div class="price-item">
-                <span><b>Cap:</b></span>
-                <span id="market-cap"></span>
-              </div>
-              <div class="price-item">
-                <span><b>Value:</b></span>
-                <span id="value"></span>
-              </div>
-              <div class="price-item">
-                <span><b>Trades:</b></span>
-                <span id="num-trades"></span>
-              </div>
+            <div class="price-item">
+              <span><b>Change:</b></span>
+              <span id="price-change" class="price-change"></span>
+            </div>
+          </div>
+          <div class="price-row">
+            <div class="price-item">
+              <span><b>Cap:</b></span>
+              <span id="market-cap"></span>
+            </div>
+            <div class="price-item">
+              <span><b>Value:</b></span>
+              <span id="value"></span>
+            </div>
+            <div class="price-item">
+              <span><b>Trades:</b></span>
+              <span id="num-trades"></span>
             </div>
           </div>
         </div>
-        <div class="overlay-tabs">
-          <button class="overlay-tab active" data-tab="news">News</button>
-          <button class="overlay-tab" data-tab="info">Info</button>
-          <button class="overlay-tab" data-tab="buy">Buy</button>
-        </div>
-        <div id="overlay-content" class="overlay-body"></div>
-        <button class="overlay-close" aria-label="Close overlay">×</button>
       </div>
+      <div class="overlay-tabs">
+        <button class="overlay-tab active" data-tab="news">News</button>
+        <button class="overlay-tab" data-tab="info">Info</button>
+        <button class="overlay-tab" data-tab="buy">Buy</button>
+      </div>
+      <div id="overlay-content" class="overlay-body"></div>
+      <button class="overlay-close" aria-label="Close overlay">×</button>
     </div>
+  </div>
 
-    <template id="tooltip">
-      <div class="tooltip-ticker"></div>
-      <div class="tooltip-name"></div>
-      <div class="tooltip-price"></div>
-      <div class="tooltip-position"></div>
-      <div class="tooltip-marketcap"></div>
-      <div class="tooltip-value"></div>
-      <div class="tooltip-volume"></div>
-      <div class="tooltip-trades"></div>
-      <div class="tooltip-exchange"></div>
-      <div class="tooltip-industry"></div>
-      <div class="tooltip-separator"></div>
-      <div class="tooltip-sector-percent"></div>
-      <div class="tooltip-total-percent"></div>
-      <div class="tooltip-items"></div>
-    </template>
+  <template id="tooltip">
+    <div class="tooltip-ticker"></div>
+    <div class="tooltip-name"></div>
+    <div class="tooltip-price"></div>
+    <div class="tooltip-position"></div>
+    <div class="tooltip-marketcap"></div>
+    <div class="tooltip-value"></div>
+    <div class="tooltip-volume"></div>
+    <div class="tooltip-trades"></div>
+    <div class="tooltip-exchange"></div>
+    <div class="tooltip-industry"></div>
+    <div class="tooltip-separator"></div>
+    <div class="tooltip-sector-percent"></div>
+    <div class="tooltip-total-percent"></div>
+    <div class="tooltip-items"></div>
+  </template>
 
   <script type="module" src="js/main.js"></script>
-  </body>
+</body>
+
 </html>
