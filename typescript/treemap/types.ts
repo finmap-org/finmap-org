@@ -1,10 +1,13 @@
 import type { Exchange } from '../types.js';
 import type { HierarchyNode as D3HierarchyNode } from 'd3';
 
+export type RawSecurityValue = string | number | null;
+export type RawSecurityRow = RawSecurityValue[];
+
 export interface MarketDataResponse {
   securities: {
     columns: string[];
-    data: any[][];
+    data: RawSecurityRow[];
   };
 }
 
@@ -42,7 +45,7 @@ export interface DataParsingService {
 }
 
 export interface DataParser {
-  parseSecurityRow(columns: string[], row: any[]): MarketData;
+  parseSecurityRow(columns: string[], row: RawSecurityRow): MarketData;
   validateDataIntegrity(data: MarketDataResponse): boolean;
 }
 
@@ -79,37 +82,42 @@ export function getNodeChange(node: any): number {
 }
 
 export const dataParser: DataParser = {
-  parseSecurityRow(columns: string[], row: any[]): MarketData {
-    const data: Record<string, any> = {};
+  parseSecurityRow(columns: string[], row: RawSecurityRow): MarketData {
+    const data: Record<string, RawSecurityValue> = {};
     columns.forEach((col, index) => {
-      data[col] = row[index];
+      data[col] = row[index] ?? null;
     });
 
-    const exchangeValue = data.exchange || '';
+    const str = (v: RawSecurityValue | undefined): string =>
+      v !== null && v !== undefined ? String(v) : '';
+    const num = (v: RawSecurityValue | undefined): number =>
+      v !== null && v !== undefined ? Number(v) || 0 : 0;
+
+    const exchangeValue = str(data.exchange);
     return {
       exchange: exchangeValue ? (exchangeValue.toLowerCase() as Exchange) : ('' as any),
-      country: data.country || '',
-      type: data.type || '',
-      sector: data.sector || '',
-      industry: data.industry || '',
-      currencyId: data.currencyId || '',
-      ticker: data.ticker || '',
-      nameEng: data.nameEng || '',
-      nameEngShort: data.nameEngShort || '',
-      nameOriginal: data.nameOriginal || '',
-      nameOriginalShort: data.nameOriginalShort || '',
-      priceOpen: Number(data.priceOpen) || 0,
-      priceLastSale: Number(data.priceLastSale) || 0,
-      priceChangePct: data.priceChangePct === null ? null : Number(data.priceChangePct) || 0,
-      volume: Number(data.volume) || 0,
-      value: Number(data.value) || 0,
-      numTrades: Number(data.numTrades) || 0,
-      marketCap: Number(data.marketCap) || 0,
-      listedFrom: data.listedFrom || '',
-      listedTill: data.listedTill || '',
-      wikiPageIdEng: data.wikiPageIdEng || '',
-      wikiPageIdOriginal: data.wikiPageIdOriginal || '',
-      nestedItemsCount: Number(data.nestedItemsCount) || 0,
+      country: str(data.country),
+      type: str(data.type),
+      sector: str(data.sector),
+      industry: str(data.industry),
+      currencyId: str(data.currencyId),
+      ticker: str(data.ticker),
+      nameEng: str(data.nameEng),
+      nameEngShort: str(data.nameEngShort),
+      nameOriginal: str(data.nameOriginal),
+      nameOriginalShort: str(data.nameOriginalShort),
+      priceOpen: num(data.priceOpen),
+      priceLastSale: num(data.priceLastSale),
+      priceChangePct: data.priceChangePct === null ? null : num(data.priceChangePct),
+      volume: num(data.volume),
+      value: num(data.value),
+      numTrades: num(data.numTrades),
+      marketCap: num(data.marketCap),
+      listedFrom: str(data.listedFrom),
+      listedTill: str(data.listedTill),
+      wikiPageIdEng: str(data.wikiPageIdEng),
+      wikiPageIdOriginal: str(data.wikiPageIdOriginal),
+      nestedItemsCount: num(data.nestedItemsCount),
     };
   },
 
