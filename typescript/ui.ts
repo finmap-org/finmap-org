@@ -42,9 +42,6 @@ function setupEventListeners(): void {
   const searchInput = document.getElementById("search") as HTMLInputElement;
   const fileInput = document.getElementById("inputFile") as HTMLInputElement;
 
-  const config = getConfig();
-  const exchangeInfo = EXCHANGE_INFO[config.exchange];
-
   if (dataTypeSelect) {
     dataTypeSelect.addEventListener("change", () => {
       updateConfig({ dataType: dataTypeSelect.value as any });
@@ -65,13 +62,19 @@ function setupEventListeners(): void {
         const formattedDate = `${dateParts[0]}/${dateParts[1].padStart(2, "0")}/${dateParts[2].padStart(2, "0")}`;
         updateConfig({ date: formattedDate });
 
-        getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
-          (currencyExchangeRate: number) => {
+        const currentConfig = getConfig();
+        const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
+        if (currentExchangeInfo) {
+          getExchangeRate(
+            currentExchangeInfo.nativeCurrency,
+            "USD",
+            currentConfig.date,
+          ).then((currencyExchangeRate: number) => {
             updateConfig({
               currencyExchangeRate: currencyExchangeRate,
             });
-          },
-        );
+          });
+        }
 
         saveConfigToURL();
         renderChart();
@@ -144,13 +147,19 @@ function setupEventListeners(): void {
       cleanupOnConfigChange();
       updateConfig({ exchange: target.dataset.exchange as any });
 
-      getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
-        (currencyExchangeRate: number) => {
+      const currentConfig = getConfig();
+      const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
+      if (currentExchangeInfo) {
+        getExchangeRate(
+          currentExchangeInfo.nativeCurrency,
+          "USD",
+          currentConfig.date,
+        ).then((currencyExchangeRate: number) => {
           updateConfig({
             currencyExchangeRate: currencyExchangeRate,
           });
-        },
-      );
+        });
+      }
 
       saveConfigToURL();
       updateDateInputLimits();
@@ -165,20 +174,24 @@ function setupEventListeners(): void {
         return;
       }
 
-      if (exchangeInfo && exchangeInfo.nativeCurrency !== "USD") {
+      const currentConfig = getConfig();
+      const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
+      if (currentExchangeInfo && currentExchangeInfo.nativeCurrency !== "USD") {
         cleanupOnConfigChange();
         toggleCurrency();
         const newConfig = getConfig();
         target.textContent = newConfig.currency;
 
-        getExchangeRate(exchangeInfo.nativeCurrency, "USD", config.date).then(
-          (currencyExchangeRate: number) => {
-            updateConfig({
-              currencyExchangeRate: currencyExchangeRate,
-            });
-          },
-        );
-        
+        getExchangeRate(
+          currentExchangeInfo.nativeCurrency,
+          "USD",
+          newConfig.date,
+        ).then((currencyExchangeRate: number) => {
+          updateConfig({
+            currencyExchangeRate: currencyExchangeRate,
+          });
+        });
+
         saveConfigToURL();
         renderChart();
       }
