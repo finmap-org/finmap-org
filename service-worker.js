@@ -5,18 +5,16 @@ const DATA_CACHE = 'finmap-data-v2.3.3';
 const STATIC_FILES = [
   '/',
   '/index.html',
-  '/main.js',
-  '/types.js',
-  '/config.js',
-  '/data.js',
-  '/charts.js',
-  '/ui.js',
-  '/utils.js',
+  '/js/main.js',
+  '/js/types.js',
+  '/js/config.js',
+  '/js/ui.js',
+  '/js/utils.js',
   '/manifest.json',
   '/images/icons/favicon.png',
   '/images/icons/ios/180.png',
   '/js/d3.v7.min.js',
-  '/js/plotly-3.3.1.min.js',
+  '/js/plotly-3.5.1.min.js',
 ];
 
 const DATA_URLS = [
