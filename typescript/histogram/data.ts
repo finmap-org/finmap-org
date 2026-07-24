@@ -19,7 +19,7 @@ export async function fetchHistoricalData(signal?: AbortSignal): Promise<Histori
     if (error?.name === 'AbortError') {
       throw error;
     }
-    throw new Error(`Failed to fetch historical data: ${error}`);
+    throw new Error(`Failed to fetch historical data: ${error}`, { cause: error });
   }
 }
 

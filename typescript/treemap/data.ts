@@ -117,6 +117,6 @@ export async function fetchMarketData(signal?: AbortSignal): Promise<MarketData[
     if (error?.name === 'AbortError') {
       throw error;
     }
-    throw new Error(`Failed to fetch market data: ${error}`);
+    throw new Error(`Failed to fetch market data: ${error}`, { cause: error });
   }
 }

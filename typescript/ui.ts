@@ -19,6 +19,7 @@ import { getExchangeRate } from './currency/index.js';
 let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
 let currentFetchController: AbortController | null = null;
+let activePortfolioCsv: string | null = null;
 
 export function initializeUI(): void {
   onConfigChange(() => {
@@ -84,7 +85,7 @@ function setupEventListeners(): void {
         reader.onload = e => {
           const csvContent = e.target?.result as string;
           if (csvContent) {
-            localStorage.setItem('filterCsv', csvContent);
+            activePortfolioCsv = csvContent;
             updateFilterVisibility();
             renderChart();
           }
@@ -98,10 +99,10 @@ function setupEventListeners(): void {
   const filterLabel = document.getElementById('inputFileLabel');
   if (filterLabel) {
     filterLabel.addEventListener('click', event => {
-      const hasFilter = localStorage.getItem('filterCsv') !== null;
+      const hasFilter = activePortfolioCsv !== null;
       if (hasFilter) {
         event.preventDefault();
-        localStorage.removeItem('filterCsv');
+        activePortfolioCsv = null;
         updateFilterVisibility();
         renderChart();
       }
@@ -190,7 +191,7 @@ function setupEventListeners(): void {
 
     if (target.dataset.action === 'erase-filter') {
       event.preventDefault();
-      localStorage.removeItem('filterCsv');
+      activePortfolioCsv = null;
       updateFilterVisibility();
       renderChart();
       return;
@@ -297,7 +298,7 @@ function applyFilters(data: MarketData[]): MarketData[] {
   const config = getConfig();
   const exchangeInfo = EXCHANGE_INFO[config.exchange];
 
-  const csvData = localStorage.getItem('filterCsv');
+  const csvData = activePortfolioCsv;
   if (!csvData) return data;
 
   try {
@@ -418,7 +419,7 @@ function updateDateInputLimits(): void {
 function updateFilterVisibility(): void {
   const filterLabel = document.getElementById('inputFileLabel');
   const eraseFilterLink = document.getElementById('linkEraseFilter');
-  const hasFilter = localStorage.getItem('filterCsv') !== null;
+  const hasFilter = activePortfolioCsv !== null;
 
   if (filterLabel) {
     filterLabel.style.display = 'inline-block';
