@@ -257,6 +257,14 @@ function setupMenu(): void {
   }
 }
 
+function removeFilter(filter: string): void {
+  const filters = loadFiltersFromStorage();
+  const newFilters = filters.filter((f: string) => f !== filter);
+  saveFiltersToStorage(newFilters);
+  updateFilterDisplay();
+  renderChart();
+}
+
 function updateFilterDisplay(): void {
   const filtersContainer = document.getElementById("active-filters");
   if (!filtersContainer) return;
@@ -267,21 +275,19 @@ function updateFilterDisplay(): void {
   filters.forEach((filter: string) => {
     const filterTag = document.createElement("div");
     filterTag.className = "filter-tag";
-    filterTag.innerHTML = `
-      ${filter}
-      <button onclick="removeFilter('${filter}')" aria-label="Remove filter">×</button>
-    `;
+
+    const textNode = document.createTextNode(`${filter} `);
+    filterTag.appendChild(textNode);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", "Remove filter");
+    btn.textContent = "×";
+    btn.addEventListener("click", () => removeFilter(filter));
+
+    filterTag.appendChild(btn);
     filtersContainer.appendChild(filterTag);
   });
 }
-
-(window as any).removeFilter = function (filter: string): void {
-  const filters = loadFiltersFromStorage();
-  const newFilters = filters.filter((f: string) => f !== filter);
-  saveFiltersToStorage(newFilters);
-  updateFilterDisplay();
-  renderChart();
-};
 
 export async function renderChart(): Promise<void> {
   try {
