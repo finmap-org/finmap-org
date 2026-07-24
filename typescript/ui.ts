@@ -7,7 +7,7 @@ import { HistogramChart } from './histogram/index.js';
 import {
   getConfig,
   updateConfig,
-  saveConfigToURL,
+  onConfigChange,
   EXCHANGE_INFO,
   getDateRange,
   toggleLanguage,
@@ -21,6 +21,9 @@ let currentData: MarketData[] = [];
 let currentFetchController: AbortController | null = null;
 
 export function initializeUI(): void {
+  onConfigChange(() => {
+    updateUIState();
+  });
   setupEventListeners();
   setupMenu();
   setupShareFeature();
@@ -55,7 +58,6 @@ function setupEventListeners(): void {
           }
         }
 
-        saveConfigToURL();
         renderChart();
       }
     });
@@ -112,7 +114,6 @@ function setupEventListeners(): void {
     if (target.dataset.chartType) {
       event.preventDefault();
       updateConfig({ chartType: target.dataset.chartType as any });
-      saveConfigToURL();
       renderChart();
       return;
     }
@@ -137,7 +138,6 @@ function setupEventListeners(): void {
         }
       }
 
-      saveConfigToURL();
       updateDateInputLimits();
       renderChart();
       return;
@@ -173,7 +173,6 @@ function setupEventListeners(): void {
           console.warn('Failed to fetch exchange rate:', error);
         }
 
-        saveConfigToURL();
         renderChart();
       }
       return;
@@ -185,7 +184,6 @@ function setupEventListeners(): void {
       toggleLanguage();
       const newConfig = getConfig();
       target.textContent = newConfig.language;
-      saveConfigToURL();
       renderChart();
       return;
     }
