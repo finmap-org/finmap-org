@@ -1,5 +1,5 @@
 import type { OverlayTab } from "./types.js";
-import type { MarketData } from "../treemap/types.js";
+import { getDisplayName, type MarketData } from "../treemap/types.js";
 import { fetchNews, fetchCompanyInfo } from "./data.js";
 import { getConfig, EXCHANGE_INFO } from "../config.js";
 import { getCurrencyInfo } from "../currency/index.js";
@@ -116,18 +116,11 @@ export class OverlayComponent {
 
     const config = getConfig();
     const exchangeInfo = data.exchange ? EXCHANGE_INFO[data.exchange] : null;
-    let displayName: string;
-
-    if (
-      exchangeInfo &&
-      config.language !== "en" &&
-      config.language === exchangeInfo.language &&
-      data.nameOriginalShort
-    ) {
-      displayName = data.nameOriginalShort;
-    } else {
-      displayName = data.nameEng;
-    }
+    const displayName = getDisplayName(
+      data,
+      config.language,
+      exchangeInfo?.language || null,
+    );
 
     const titleEl = this.overlay.querySelector("#overlay-title") as HTMLElement;
     titleEl.textContent = `${data.ticker} - ${displayName}`;
@@ -207,18 +200,11 @@ export class OverlayComponent {
     try {
       const config = getConfig();
       const exchangeInfo = data.exchange ? EXCHANGE_INFO[data.exchange] : null;
-      let companyName: string;
-
-      if (
-        exchangeInfo &&
-        config.language !== "en" &&
-        config.language === exchangeInfo.language &&
-        data.nameOriginalShort
-      ) {
-        companyName = data.nameOriginalShort;
-      } else {
-        companyName = data.nameEng;
-      }
+      const companyName = getDisplayName(
+        data,
+        config.language,
+        exchangeInfo?.language || null,
+      );
 
       const newsItems = await fetchNews(data.ticker, companyName, config.date);
 
