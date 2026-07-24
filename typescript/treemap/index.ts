@@ -454,13 +454,13 @@ export class TreemapChart implements ChartRenderer {
     this.nodes.length = 0;
     this.currentData.length = 0;
     this.pathToRestore.length = 0;
-    this.canvas = null;
-    this.context = null;
-    this.container = null;
-
     if (this.container) {
       d3.select(this.container).selectAll("*").remove();
     }
+
+    this.canvas = null;
+    this.context = null;
+    this.container = null;
   }
 }
 

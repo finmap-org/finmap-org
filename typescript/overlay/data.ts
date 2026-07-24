@@ -87,7 +87,6 @@ export async function fetchNews(
 
     // Remove the temporary originalPubDate field
     return newsItems.map(({ originalPubDate, ...item }) => item);
-    return newsItems;
   } catch (error) {
     console.warn("Failed to fetch news:", error);
     return [];

@@ -1,12 +1,12 @@
 {
   "scripts": {
     "clean": "rimraf js",
-    "lint": "npx eslint . --ext .ts",
-    "lint:fix": "npx eslint . --ext .ts --fix",
-    "format": "npx prettier --write \"typescript/**/*.{ts,js,json,html,css}\"",
-    "format:check": "npx prettier --check \"typescript/**/*.{ts,js,json,html,css}\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"typescript/**/*.{ts,js,json,html,css}\"",
+    "format:check": "prettier --check \"typescript/**/*.{ts,js,json,html,css}\"",
     "check": "npm run lint && npm run format:check",
-    "build": "npx tsc"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
