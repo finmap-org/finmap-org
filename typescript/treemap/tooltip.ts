@@ -6,8 +6,6 @@ import { getDisplayName } from './types.js';
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { getCurrencyInfo } from '../currency/index.js';
 
-declare const d3: any;
-
 export class TooltipComponent {
   private element: HTMLElement | null = null;
   private isVisible: boolean = false;

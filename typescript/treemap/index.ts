@@ -8,8 +8,6 @@ import { OverlayComponent } from '../overlay/index.js';
 import { CanvasRenderer } from './renderer.js';
 import { InteractionHandler } from './interactions.js';
 
-declare const d3: any;
-
 const getCanvasSize = (container: DOMRect) => {
   const devicePixelRatio = window.devicePixelRatio || 1;
   const availableHeight = container.height - LAYOUT.PATHBAR_HEIGHT - LAYOUT.FOOTER_HEIGHT;

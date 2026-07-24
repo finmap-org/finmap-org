@@ -1,4 +1,5 @@
 import type { Exchange } from '../types.js';
+import type { HierarchyNode as D3HierarchyNode } from 'd3';
 
 export interface MarketDataResponse {
   securities: {
@@ -50,22 +51,14 @@ export interface ChartRenderer {
   destroy(): void;
 }
 
-export interface TreemapNode {
-  children?: TreemapNode[];
-  parent?: TreemapNode;
-  data: MarketData;
+export type HierarchyNode = D3HierarchyNode<any> & {
   x0?: number;
   y0?: number;
   x1?: number;
   y1?: number;
-  value?: number;
-  depth?: number;
-}
+};
 
-export interface HierarchyNode extends TreemapNode {
-  descendants: () => HierarchyNode[];
-  leaves: () => HierarchyNode[];
-}
+export type TreemapNode = HierarchyNode;
 
 export interface PathbarItem {
   name: string;

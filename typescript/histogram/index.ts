@@ -15,8 +15,6 @@ import {
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { getCurrencyInfo } from '../currency/index.js';
 
-declare const Plotly: any;
-
 export class HistogramChart implements ChartRenderer {
   private container: HTMLElement | null = null;
   private plotElement: HTMLElement | null = null;

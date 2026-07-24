@@ -1,5 +1,3 @@
-declare const d3: any;
-
 export const LAYOUT = {
   PATHBAR_HEIGHT: 24,
   FOOTER_HEIGHT: 25,
@@ -50,7 +48,7 @@ export const FONT = {
 } as const;
 
 export const COLOR_SCALE = d3
-  .scaleLinear()
+  .scaleLinear<string>()
   .domain([-3, 0, 3])
   .range(['rgb(236, 48, 51)', 'rgb(64, 68, 82)', 'rgb(42, 202, 85)'])
   .clamp(true)

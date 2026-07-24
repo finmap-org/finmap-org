@@ -2,8 +2,6 @@ import { COLOR_SCALE, COLORS, LAYOUT, FONT } from './constants.js';
 import { getNodeData } from './types.js';
 import type { MarketData } from './types.js';
 
-declare const d3: any;
-
 export class PathbarComponent {
   private element: HTMLElement | null = null;
 

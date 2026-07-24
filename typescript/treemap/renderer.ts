@@ -10,8 +10,6 @@ import {
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { getCurrencyInfo } from '../currency/index.js';
 
-declare const d3: any;
-
 export class CanvasRenderer {
   render(nodes: any[], context: CanvasRenderingContext2D): void {
     const config = getConfig();

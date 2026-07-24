@@ -4,8 +4,6 @@ import { fetchNews, fetchCompanyInfo, escapeHtml } from './data.js';
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { getCurrencyInfo } from '../currency/index.js';
 
-declare const d3: any;
-
 export class OverlayComponent {
   private static instance: OverlayComponent | null = null;
   private overlay: HTMLElement | null = null;

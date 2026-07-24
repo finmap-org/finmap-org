@@ -3,8 +3,6 @@ import { parseMarketData, getNodeData } from './types.js';
 import { getConfig, EXCHANGE_INFO } from '../config.js';
 import { convertCurrencyValues } from '../currency/data.js';
 
-declare const d3: any;
-
 export function buildHierarchy(data: MarketData[]): HierarchyNode {
   const securitiesMap = new Map<string, MarketData[]>();
   const sectors = new Map<string, MarketData>();
@@ -52,14 +50,12 @@ export function buildHierarchy(data: MarketData[]): HierarchyNode {
     };
   }
 
-  const children: TreemapNode[] = Array.from(sectors.entries()).map(
-    ([sectorTicker, sectorData]) => ({
-      data: sectorData,
-      children: (securitiesMap.get(sectorTicker) || []).map(security => ({
-        data: security,
-      })),
-    }),
-  );
+  const children = Array.from(sectors.entries()).map(([sectorTicker, sectorData]) => ({
+    data: sectorData,
+    children: (securitiesMap.get(sectorTicker) || []).map(security => ({
+      data: security,
+    })),
+  }));
 
   const hierarchyData = { data: rootSector, children };
 

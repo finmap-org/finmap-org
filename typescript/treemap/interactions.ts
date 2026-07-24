@@ -2,8 +2,6 @@ import { TRANSITIONS } from './constants.js';
 import { isLeafNode, getNodeData } from './types.js';
 import type { MarketData } from './types.js';
 
-declare const d3: any;
-
 interface InteractionCallbacks {
   onDrill: (node: any) => void;
   onShowCompany: (data: MarketData) => void;
