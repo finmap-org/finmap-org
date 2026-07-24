@@ -1,8 +1,29 @@
 select,
-input {
+input,
+#inputFileLabel,
+#linkEraseFilter {
   min-height: 30px;
+  height: 30px;
   margin: 0 2px;
   border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#inputFileLabel,
+#linkEraseFilter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  font: inherit;
+  font-size: 13px;
+  background-color: field;
+  color: fieldtext;
+  border: 1px solid #767676;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
 }
 
 #search {
