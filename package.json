@@ -6,6 +6,7 @@
     "format": "prettier --write \"typescript/**/*.{ts,js,json,html,css}\"",
     "format:check": "prettier --check \"typescript/**/*.{ts,js,json,html,css}\"",
     "check": "npm run lint && npm run format:check",
+    "fix": "npm run lint:fix && npm run format",
     "build": "tsc"
   },
   "devDependencies": {
