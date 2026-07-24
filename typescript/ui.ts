@@ -150,10 +150,14 @@ function setupEventListeners(): void {
       return;
     }
 
-    if (target.dataset.action === 'currency-toggle') {
+    const currencyBtn =
+      (target.closest('[data-action="currency-toggle"]') as HTMLElement) ||
+      (target.id === 'currencyToggle' ? target : null);
+
+    if (currencyBtn) {
       event.preventDefault();
 
-      if (target.hasAttribute('currency-toggle-disabled')) {
+      if (currencyBtn.hasAttribute('currency-toggle-disabled')) {
         return;
       }
 
@@ -163,7 +167,7 @@ function setupEventListeners(): void {
         cleanupOnConfigChange();
         toggleCurrency();
         const newConfig = getConfig();
-        target.textContent = newConfig.currency;
+        currencyBtn.textContent = newConfig.currency;
 
         try {
           const currencyExchangeRate = await getExchangeRate(
