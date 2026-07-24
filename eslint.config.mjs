@@ -38,7 +38,6 @@ export default [
       },
       globals: {
         ...globals.browser,
-        ...globals.webextensions,
         Buffer: 'readonly',
       },
     },
@@ -83,11 +82,6 @@ export default [
         location: 'anywhere' 
       }],
       'no-debugger': 'error', // No debugger statements in production
-      
-      // === WebExtension Specific ===
-      'no-restricted-globals': ['error', 
-        { name: 'chrome', message: 'Use browser instead for Firefox extensions' }
-      ],
       
       // === Complexity Control ===
       'complexity': ['warn', 22],
