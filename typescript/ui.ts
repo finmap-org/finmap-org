@@ -1,4 +1,6 @@
-import type { MarketData, ChartRenderer } from './treemap/types.js';
+import type { MarketData } from './treemap/types.js';
+import type { ChartRenderer } from './types.js';
+import { isSearchableChart } from './types.js';
 import { fetchMarketData } from './treemap/data.js';
 import { TreemapChart } from './treemap/index.js';
 import { HistogramChart } from './histogram/index.js';
@@ -64,8 +66,8 @@ function setupEventListeners(): void {
       if (e.key === 'Enter') {
         e.preventDefault();
         const query = (e.target as HTMLInputElement).value.trim();
-        if (query && currentRenderer && 'searchAndHighlight' in currentRenderer) {
-          (currentRenderer as any).searchAndHighlight(query);
+        if (query && isSearchableChart(currentRenderer)) {
+          currentRenderer.searchAndHighlight(query);
         }
         (e.target as HTMLInputElement).value = '';
       }

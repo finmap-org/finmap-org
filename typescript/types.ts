@@ -14,3 +14,18 @@ export interface AppConfig {
   currencyExchangeRate: number;
   language: Language;
 }
+
+export interface ChartRenderer {
+  render(data: any[], container: HTMLElement): void;
+  destroy(): void;
+}
+
+export interface SearchableChart extends ChartRenderer {
+  searchAndHighlight(query: string): void;
+}
+
+export function isSearchableChart(renderer: ChartRenderer | null): renderer is SearchableChart {
+  return (
+    renderer !== null && typeof (renderer as SearchableChart).searchAndHighlight === 'function'
+  );
+}
