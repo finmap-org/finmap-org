@@ -25,7 +25,31 @@ export function buildHierarchy(data: MarketData[]): HierarchyNode {
   }
 
   if (!rootSector) {
-    throw new Error('Root sector not found in data');
+    rootSector = {
+      exchange: '' as any,
+      country: '',
+      type: 'sector',
+      sector: '',
+      industry: '',
+      currencyId: '',
+      ticker: 'MARKET',
+      nameEng: 'Market',
+      nameEngShort: 'Market',
+      nameOriginal: 'Market',
+      nameOriginalShort: 'Market',
+      priceOpen: 0,
+      priceLastSale: 0,
+      priceChangePct: 0,
+      volume: 0,
+      value: 0,
+      numTrades: 0,
+      marketCap: 0,
+      listedFrom: '',
+      listedTill: '',
+      wikiPageIdEng: '',
+      wikiPageIdOriginal: '',
+      nestedItemsCount: 0,
+    };
   }
 
   const children: TreemapNode[] = Array.from(sectors.entries()).map(

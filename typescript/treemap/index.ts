@@ -388,7 +388,17 @@ export class TreemapChart implements ChartRenderer {
 
     for (let i = this.nodes.length - 1; i >= 0; i--) {
       const node = this.nodes[i];
-      if (node?.x0 <= x && x <= node?.x1 && node?.y0 <= y && y <= node?.y1) {
+      if (
+        node &&
+        typeof node.x0 === 'number' &&
+        typeof node.x1 === 'number' &&
+        typeof node.y0 === 'number' &&
+        typeof node.y1 === 'number' &&
+        node.x0 <= x &&
+        x <= node.x1 &&
+        node.y0 <= y &&
+        y <= node.y1
+      ) {
         return node;
       }
     }
