@@ -152,7 +152,23 @@ export function toggleLanguage(): void {
   updateConfig({ language: newLanguage });
 }
 
+export type ConfigChangeListener = (
+  config: Readonly<AppConfig>,
+  changedKeys: (keyof AppConfig)[],
+) => void;
+
+const listeners = new Set<ConfigChangeListener>();
+
+export function onConfigChange(listener: ConfigChangeListener): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
 export function updateConfig(updates: Partial<AppConfig>): void {
+  const previousConfig = { ...appConfig };
+
   appConfig = { ...appConfig, ...updates };
 
   if (updates.exchange) {
@@ -167,6 +183,15 @@ export function updateConfig(updates: Partial<AppConfig>): void {
         appConfig.date = latestDate.replace(/-/g, '/');
       }
     }
+  }
+
+  const changedKeys = (Object.keys(appConfig) as (keyof AppConfig)[]).filter(
+    key => appConfig[key] !== previousConfig[key],
+  );
+
+  if (changedKeys.length > 0) {
+    saveConfigToURL();
+    listeners.forEach(listener => listener(appConfig, changedKeys));
   }
 }
 
