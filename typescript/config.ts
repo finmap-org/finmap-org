@@ -158,7 +158,7 @@ export function updateConfig(updates: Partial<AppConfig>): void {
   if (updates.exchange) {
     const exchangeInfo = EXCHANGE_INFO[updates.exchange];
     if (exchangeInfo) {
-      if (appConfig.currency !== 'USD' && appConfig.currency !== exchangeInfo.nativeCurrency) {
+      if (!updates.currency) {
         appConfig.currency = exchangeInfo.nativeCurrency;
       }
 
@@ -206,6 +206,14 @@ export function loadConfigFromURL(): void {
   const lang = params.get('lang');
   if (lang && ['en', 'ru', 'tr', 'cn'].includes(lang)) {
     urlConfig.language = lang as any;
+  }
+
+  if (!params.has('currency')) {
+    const targetExchange = urlConfig.exchange || defaultConfig.exchange;
+    const exchangeInfo = EXCHANGE_INFO[targetExchange];
+    if (exchangeInfo) {
+      urlConfig.currency = exchangeInfo.nativeCurrency;
+    }
   }
 
   updateConfig(urlConfig);
