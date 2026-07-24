@@ -95,6 +95,11 @@ export class TooltipComponent {
   show(data: MarketData, event: MouseEvent, node?: any): void {
     if (!this.element || !data) return;
 
+    if (this.hideTimeout !== null) {
+      clearTimeout(this.hideTimeout);
+      this.hideTimeout = null;
+    }
+
     if (this.currentData === data && this.isVisible && !this.isSticky) {
       this.position(event);
       return;
@@ -113,6 +118,11 @@ export class TooltipComponent {
 
   showSticky(data: MarketData, event: MouseEvent, node?: any): void {
     if (!this.element || !data) return;
+
+    if (this.hideTimeout !== null) {
+      clearTimeout(this.hideTimeout);
+      this.hideTimeout = null;
+    }
 
     this.hide();
     this.currentData = data;
