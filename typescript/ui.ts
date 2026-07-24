@@ -11,10 +11,12 @@ import {
   EXCHANGE_INFO,
   getDateRange,
   toggleLanguage,
+  getFallbackDate,
 } from './config.js';
 import { toggleCurrency } from './currency/data.js';
 import { OverlayComponent } from './overlay/index.js';
 import { getExchangeRate } from './currency/index.js';
+import { formatDisplayDate } from './utils.js';
 
 let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
@@ -276,7 +278,67 @@ export async function renderChart(): Promise<void> {
     if (error?.name === 'AbortError') {
       return;
     }
+    if (error?.name === 'HttpError' && error?.status === 404) {
+      const config = getConfig();
+      handle404Error(config.date, config.exchange);
+      return;
+    }
     showErrorState(error as Error);
+  }
+}
+
+function handle404Error(requestedDateStr: string, exchange: keyof typeof EXCHANGE_INFO): void {
+  const container = document.getElementById('chart');
+  if (container) {
+    container.innerHTML = '<div class="error">Data not available for this date.</div>';
+  }
+
+  const fallbackDateStr = getFallbackDate(requestedDateStr, exchange);
+
+  const dialog = document.getElementById('fallback-dialog') as HTMLDialogElement | null;
+  const desc = document.getElementById('fallback-dialog-desc');
+  const yesBtn = document.getElementById('fallback-yes-btn');
+  const noBtn = document.getElementById('fallback-no-btn');
+
+  if (dialog && desc && yesBtn && noBtn) {
+    const formattedReq = formatDisplayDate(requestedDateStr);
+    const formattedFallback = formatDisplayDate(fallbackDateStr);
+
+    const isFutureOrLatest = requestedDateStr >= fallbackDateStr;
+    const dateDesc = isFutureOrLatest ? 'the latest available date' : 'the nearest available date';
+
+    desc.textContent = `No data is available for ${formattedReq}. Show the chart for ${formattedFallback}, ${dateDesc}?`;
+
+    const onYes = () => {
+      cleanupDialog();
+      updateConfig({ date: fallbackDateStr });
+      renderChart();
+    };
+
+    const onNo = () => {
+      cleanupDialog();
+    };
+
+    const cleanupDialog = () => {
+      yesBtn.removeEventListener('click', onYes);
+      noBtn.removeEventListener('click', onNo);
+      dialog.removeEventListener('cancel', onNo);
+      if (typeof dialog.close === 'function') {
+        dialog.close();
+      } else {
+        dialog.removeAttribute('open');
+      }
+    };
+
+    yesBtn.addEventListener('click', onYes);
+    noBtn.addEventListener('click', onNo);
+    dialog.addEventListener('cancel', onNo, { once: true });
+
+    if (typeof dialog.showModal === 'function') {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute('open', '');
+    }
   }
 }
 

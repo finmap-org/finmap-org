@@ -172,6 +172,18 @@
       <div class="tooltip-items"></div>
     </template>
 
-    <script type="module" src="js/main.js"></script>
-  </body>
+  <dialog id="fallback-dialog" class="app-dialog" aria-labelledby="fallback-dialog-title" aria-describedby="fallback-dialog-desc">
+    <div class="app-dialog-content">
+      <h2 id="fallback-dialog-title">Data Not Available</h2>
+      <p id="fallback-dialog-desc"></p>
+      <div class="app-dialog-actions">
+        <button id="fallback-yes-btn" class="app-dialog-btn" type="button">Yes</button>
+        <button id="fallback-no-btn" class="app-dialog-btn app-dialog-btn-secondary" type="button">No</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
 </html>

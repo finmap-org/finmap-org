@@ -13,3 +13,20 @@ export function formatCurrency(value: number, currencySign: string): string {
   }
   return `${currencySign}${value.toFixed(2)}`;
 }
+
+export function formatDisplayDate(dateStr: string): string {
+  const parts = dateStr.split('/');
+  if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    const date = new Date(Date.UTC(year, month, day));
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(date);
+  }
+  return dateStr;
+}

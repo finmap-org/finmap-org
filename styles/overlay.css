@@ -258,3 +258,89 @@
     min-height: 44px;
   }
 }
+
+/* App modal dialog */
+.app-dialog {
+  border: none;
+  border-radius: 8px;
+  padding: 24px;
+  background: rgba(65, 69, 84, 0.95);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-primary);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-family-base);
+  margin: auto;
+}
+
+.app-dialog[open] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+
+.app-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.app-dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.app-dialog-content h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.app-dialog-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.app-dialog-btn {
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.app-dialog-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.app-dialog-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.app-dialog-actions .app-dialog-btn {
+  flex: 1;
+  max-width: 120px;
+}
+
+.app-dialog-btn-secondary {
+  background-color: #6b7280;
+}
+
+.app-dialog-btn-secondary:hover {
+  background-color: #4b5563;
+}

@@ -3,6 +3,16 @@ interface CacheEntry<T> {
   timestamp: number;
 }
 
+export class HttpError extends Error {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = 'HttpError';
+  }
+}
+
 export class DataService {
   private static cache = new Map<string, CacheEntry<any>>();
 
@@ -17,7 +27,7 @@ export class DataService {
     try {
       const response = await fetch(url, signal ? { signal } : undefined);
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new HttpError(response.status, `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data: T = await response.json();
@@ -39,7 +49,7 @@ export class DataService {
     try {
       const response = await fetch(url, signal ? { signal } : undefined);
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new HttpError(response.status, `HTTP ${response.status}: ${response.statusText}`);
       }
 
       return await response.text();

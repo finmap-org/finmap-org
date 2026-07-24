@@ -128,6 +128,32 @@ export function getDateRange(exchange: keyof typeof EXCHANGE_INFO): {
   };
 }
 
+export function getFallbackDate(
+  requestedDateStr: string,
+  exchange: keyof typeof EXCHANGE_INFO,
+): string {
+  const latestDateStr = calculateLatestAvailableDate(exchange);
+  const requestedDate = new Date(requestedDateStr.replace(/\//g, '-'));
+  const latestDate = new Date(latestDateStr);
+
+  if (requestedDate > latestDate) {
+    return latestDateStr.replace(/-/g, '/');
+  }
+
+  const date = new Date(requestedDate);
+  do {
+    date.setUTCDate(date.getUTCDate() - 1);
+  } while (date.getUTCDay() === 0 || date.getUTCDay() === 6);
+
+  const prevDateStr = date.toISOString().split('T')[0];
+  const minDateStr = EXCHANGE_INFO[exchange].minDate;
+
+  if (minDateStr && prevDateStr! < minDateStr) {
+    return latestDateStr.replace(/-/g, '/');
+  }
+  return prevDateStr!.replace(/-/g, '/');
+}
+
 export const defaultConfig: AppConfig = {
   exchange: 'nasdaq',
   chartType: 'treemap',
