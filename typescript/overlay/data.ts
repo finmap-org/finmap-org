@@ -2,10 +2,21 @@ import type { NewsItem, CompanyInfo } from './types.js';
 import type { Language } from '../types.js';
 import { getConfig } from '../config.js';
 
+export function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export async function fetchNews(
   ticker: string,
   companyName: string,
   date: string,
+  signal?: AbortSignal,
 ): Promise<NewsItem[]> {
   const config = getConfig();
 
@@ -36,10 +47,11 @@ export async function fetchNews(
   }
 
   const newsQuery = encodeURIComponent(displayName.split(' ').slice(0, 2).join(' '));
-  const url = `https://news.finmap.org/${config.language}:${ticker}.xml?q=${newsQuery}+before:${date}&${newsLang}&_=${new Date().toISOString().split(':')[0]}`;
+  const formattedDate = date.replace(/\//g, '-');
+  const url = `https://news.finmap.org/${config.language}:${ticker}.xml?q=${newsQuery}+before:${formattedDate}&${newsLang}&_=${new Date().toISOString().split(':')[0]}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, signal ? { signal } : undefined);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const xmlText = await response.text();
@@ -80,7 +92,10 @@ export async function fetchNews(
 
     // Remove the temporary originalPubDate field
     return newsItems.map(({ originalPubDate, ...item }) => item);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      throw error;
+    }
     console.warn('Failed to fetch news:', error);
     return [];
   }
@@ -112,6 +127,7 @@ export async function fetchCompanyInfo(
   ticker: string,
   wikiPageIdEng?: string,
   wikiPageIdOriginal?: string,
+  signal?: AbortSignal,
 ): Promise<CompanyInfo | null> {
   const config = getConfig();
 
@@ -121,25 +137,32 @@ export async function fetchCompanyInfo(
       case 'nyse':
       case 'amex':
       case 'us-all':
-        return await fetchUSCompanyInfo(exchange, ticker);
+        return await fetchUSCompanyInfo(exchange, ticker, signal);
       case 'moex':
-        return await fetchWikiInfo(wikiPageIdEng, wikiPageIdOriginal, config.language);
+        return await fetchWikiInfo(wikiPageIdEng, wikiPageIdOriginal, config.language, signal);
       case 'hkex':
-        return await fetchHKCompanyInfo(ticker, config.language);
+        return await fetchHKCompanyInfo(ticker, config.language, signal);
       default:
         return null;
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      throw error;
+    }
     console.warn('Failed to fetch company info:', error);
     return null;
   }
 }
 
-async function fetchUSCompanyInfo(exchange: string, ticker: string): Promise<CompanyInfo | null> {
+async function fetchUSCompanyInfo(
+  exchange: string,
+  ticker: string,
+  signal?: AbortSignal,
+): Promise<CompanyInfo | null> {
   const url = `https://raw.githubusercontent.com/finmap-org/data-us/refs/heads/main/securities/${exchange}/${ticker[0]}/${ticker}.json`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, signal ? { signal } : undefined);
     if (!response.ok) return null;
 
     const json = await response.json();
@@ -152,18 +175,25 @@ async function fetchUSCompanyInfo(exchange: string, ticker: string): Promise<Com
       description: description.trim(),
       sourceLink: sourceLink.trim(),
     };
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      throw error;
+    }
     console.warn(`Failed to fetch US company info for ${ticker}:`, error);
     return null;
   }
 }
 
-async function fetchHKCompanyInfo(ticker: string, language: string): Promise<CompanyInfo | null> {
+async function fetchHKCompanyInfo(
+  ticker: string,
+  language: string,
+  signal?: AbortSignal,
+): Promise<CompanyInfo | null> {
   const lang = language === 'cn' ? 'chi' : 'eng';
   const url = `https://raw.githubusercontent.com/finmap-org/data-hongkong/refs/heads/main/securities/hkex/${lang}/${ticker[0]}/${ticker}.json`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, signal ? { signal } : undefined);
     if (!response.ok) return null;
 
     const json = await response.json();
@@ -176,7 +206,10 @@ async function fetchHKCompanyInfo(ticker: string, language: string): Promise<Com
       description: description.trim(),
       sourceLink: sourceLink.trim(),
     };
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      throw error;
+    }
     console.warn(`Failed to fetch HK company info for ${ticker}:`, error);
     return null;
   }
@@ -186,6 +219,7 @@ async function fetchWikiInfo(
   wikiPageIdEng?: string,
   wikiPageIdOriginal?: string,
   language?: string,
+  signal?: AbortSignal,
 ): Promise<CompanyInfo | null> {
   // Determine which wiki page ID to use based on language
   let wikiPageId: string;
@@ -207,7 +241,7 @@ async function fetchWikiInfo(
   try {
     const url = `https://${lang}.wikipedia.org/w/api.php?action=query&pageids=${pageId}&prop=extracts&exintro&explaintext&format=json&origin=*`;
 
-    const response = await fetch(url);
+    const response = await fetch(url, signal ? { signal } : undefined);
     if (!response.ok) return null;
 
     const json = await response.json();
@@ -227,7 +261,10 @@ async function fetchWikiInfo(
     const sourceLink = `https://${lang}.wikipedia.org/wiki/?curid=${pageId}`;
 
     return { description, sourceLink };
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      throw error;
+    }
     console.warn(`Failed to fetch company info for page ${pageId}:`, error);
     return null;
   }
