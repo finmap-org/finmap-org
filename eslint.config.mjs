@@ -56,10 +56,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn', // Avoid using 'any' type
       '@typescript-eslint/explicit-function-return-type': 'warn', // Require return types
       '@typescript-eslint/no-namespace': 'error', // Prevent wildcard/namespace imports
-      'no-unused-vars': ['error', {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }], // Standard JS unused vars rule with underscore prefix ignored
+      'no-unused-vars': 'off', // Turned off in favor of @typescript-eslint/no-unused-vars
       '@typescript-eslint/no-unused-vars': ['warn', { 
         argsIgnorePattern: '^_|^e$',
         varsIgnorePattern: '^_'
