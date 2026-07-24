@@ -1,14 +1,15 @@
 import type { MarketData } from '../treemap/types.js';
+import type { Currency } from './types.js';
 import { getConfig, updateConfig, EXCHANGE_INFO } from '../config.js';
 import { getExchangeRate } from './index.js';
 
 export async function convertCurrencyValues(
   data: MarketData[],
-  fromCurrency: string,
-  toCurrency: string,
+  fromCurrency: Currency,
+  toCurrency: Currency,
   date: string,
 ): Promise<MarketData[]> {
-  const exchangeRate = await getExchangeRate(fromCurrency as any, toCurrency as any, date);
+  const exchangeRate = await getExchangeRate(fromCurrency, toCurrency, date);
 
   return data.map(item => ({
     ...item,
