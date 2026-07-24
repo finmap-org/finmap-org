@@ -52,7 +52,7 @@ function setupEventListeners(): void {
   }
 
   if (dateInput) {
-    dateInput.addEventListener("change", () => {
+    dateInput.addEventListener("change", async () => {
       const dateParts = dateInput.value.split("-");
       if (
         dateParts.length === 3 &&
@@ -66,15 +66,16 @@ function setupEventListeners(): void {
         const currentConfig = getConfig();
         const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
         if (currentExchangeInfo) {
-          getExchangeRate(
-            currentExchangeInfo.nativeCurrency,
-            "USD",
-            currentConfig.date,
-          ).then((currencyExchangeRate: number) => {
-            updateConfig({
-              currencyExchangeRate: currencyExchangeRate,
-            });
-          });
+          try {
+            const currencyExchangeRate = await getExchangeRate(
+              currentExchangeInfo.nativeCurrency,
+              "USD",
+              currentConfig.date,
+            );
+            updateConfig({ currencyExchangeRate });
+          } catch (error) {
+            console.warn("Failed to fetch exchange rate:", error);
+          }
         }
 
         saveConfigToURL();
@@ -84,7 +85,7 @@ function setupEventListeners(): void {
   }
 
   if (searchInput) {
-    searchInput.addEventListener("keypress", (e) => {
+    searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         const query = (e.target as HTMLInputElement).value.trim();
@@ -132,7 +133,7 @@ function setupEventListeners(): void {
     });
   }
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", async (event) => {
     const target = event.target as HTMLElement;
 
     if (target.dataset.chartType) {
@@ -151,15 +152,16 @@ function setupEventListeners(): void {
       const currentConfig = getConfig();
       const currentExchangeInfo = EXCHANGE_INFO[currentConfig.exchange];
       if (currentExchangeInfo) {
-        getExchangeRate(
-          currentExchangeInfo.nativeCurrency,
-          "USD",
-          currentConfig.date,
-        ).then((currencyExchangeRate: number) => {
-          updateConfig({
-            currencyExchangeRate: currencyExchangeRate,
-          });
-        });
+        try {
+          const currencyExchangeRate = await getExchangeRate(
+            currentExchangeInfo.nativeCurrency,
+            "USD",
+            currentConfig.date,
+          );
+          updateConfig({ currencyExchangeRate });
+        } catch (error) {
+          console.warn("Failed to fetch exchange rate:", error);
+        }
       }
 
       saveConfigToURL();
@@ -183,15 +185,16 @@ function setupEventListeners(): void {
         const newConfig = getConfig();
         target.textContent = newConfig.currency;
 
-        getExchangeRate(
-          currentExchangeInfo.nativeCurrency,
-          "USD",
-          newConfig.date,
-        ).then((currencyExchangeRate: number) => {
-          updateConfig({
-            currencyExchangeRate: currencyExchangeRate,
-          });
-        });
+        try {
+          const currencyExchangeRate = await getExchangeRate(
+            currentExchangeInfo.nativeCurrency,
+            "USD",
+            newConfig.date,
+          );
+          updateConfig({ currencyExchangeRate });
+        } catch (error) {
+          console.warn("Failed to fetch exchange rate:", error);
+        }
 
         saveConfigToURL();
         renderChart();

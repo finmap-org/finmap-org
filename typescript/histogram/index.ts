@@ -60,6 +60,10 @@ export class HistogramChart implements ChartRenderer {
         fetchCommodityData(),
       ]);
 
+      if (!this.container || !this.plotElement) {
+        return;
+      }
+
       let processedData = historicalData;
 
       if (config.currency === "USD" && exchangeInfo.nativeCurrency !== "USD") {
