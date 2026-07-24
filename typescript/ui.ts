@@ -18,15 +18,6 @@ let currentRenderer: ChartRenderer | null = null;
 let currentData: MarketData[] = [];
 let currentFetchController: AbortController | null = null;
 
-function loadFiltersFromStorage(): string[] {
-  const stored = localStorage.getItem('finmap-filters');
-  return stored ? JSON.parse(stored) : [];
-}
-
-function saveFiltersToStorage(filters: string[]): void {
-  localStorage.setItem('finmap-filters', JSON.stringify(filters));
-}
-
 export function initializeUI(): void {
   setupEventListeners();
   setupMenu();
@@ -245,38 +236,6 @@ function setupMenu(): void {
       }
     });
   }
-}
-
-function removeFilter(filter: string): void {
-  const filters = loadFiltersFromStorage();
-  const newFilters = filters.filter((f: string) => f !== filter);
-  saveFiltersToStorage(newFilters);
-  updateFilterDisplay();
-  renderChart();
-}
-
-function updateFilterDisplay(): void {
-  const filtersContainer = document.getElementById('active-filters');
-  if (!filtersContainer) return;
-
-  const filters = loadFiltersFromStorage();
-  filtersContainer.innerHTML = '';
-
-  filters.forEach((filter: string) => {
-    const filterTag = document.createElement('div');
-    filterTag.className = 'filter-tag';
-
-    const textNode = document.createTextNode(`${filter} `);
-    filterTag.appendChild(textNode);
-
-    const btn = document.createElement('button');
-    btn.setAttribute('aria-label', 'Remove filter');
-    btn.textContent = '×';
-    btn.addEventListener('click', () => removeFilter(filter));
-
-    filterTag.appendChild(btn);
-    filtersContainer.appendChild(filterTag);
-  });
 }
 
 export async function renderChart(): Promise<void> {
