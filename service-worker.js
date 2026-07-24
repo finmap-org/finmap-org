@@ -1,6 +1,6 @@
-const CACHE_NAME = 'finmap-v2.3.3';
-const STATIC_CACHE = 'finmap-static-v2.3.3';
-const DATA_CACHE = 'finmap-data-v2.3.3';
+const CACHE_NAME = 'finmap-v2.4.0';
+const STATIC_CACHE = 'finmap-static-v2.4.0';
+const DATA_CACHE = 'finmap-data-v2.4.0';
 
 const STATIC_FILES = [
   '/',
@@ -17,8 +17,9 @@ const STATIC_FILES = [
   '/js/plotly-3.7.0.min.js',
 ];
 
-const DATA_URLS = [
-  'https://raw.githubusercontent.com/finmap-org/',
+const MARKET_DATA_URLS = ['https://raw.githubusercontent.com/finmap-org/'];
+
+const DYNAMIC_DATA_URLS = [
   'https://news.finmap.org/',
   'https://en.wikipedia.org',
   'https://ru.wikipedia.org',
@@ -27,23 +28,27 @@ const DATA_URLS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(STATIC_CACHE)
+    caches
+      .open(STATIC_CACHE)
       .then(cache => cache.addAll(STATIC_FILES))
-      .then(() => self.skipWaiting())
+      .then(() => self.skipWaiting()),
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== STATIC_CACHE && cacheName !== DATA_CACHE) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches
+      .keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            if (cacheName !== STATIC_CACHE && cacheName !== DATA_CACHE) {
+              return caches.delete(cacheName);
+            }
+          }),
+        );
+      })
+      .then(() => self.clients.claim()),
   );
 });
 
@@ -52,7 +57,9 @@ self.addEventListener('fetch', event => {
 
   if (isStaticAsset(request.url)) {
     event.respondWith(cacheFirst(request, STATIC_CACHE));
-  } else if (isDataRequest(request.url)) {
+  } else if (isMarketDataRequest(request.url)) {
+    event.respondWith(staleWhileRevalidate(request, DATA_CACHE));
+  } else if (isDynamicDataRequest(request.url)) {
     event.respondWith(networkFirst(request, DATA_CACHE));
   } else {
     event.respondWith(fetch(request));
@@ -60,20 +67,30 @@ self.addEventListener('fetch', event => {
 });
 
 function isStaticAsset(url) {
-  return STATIC_FILES.some(file => url.includes(file)) ||
+  return (
+    STATIC_FILES.some(file => url.includes(file)) ||
     url.includes('d3js.org') ||
     url.endsWith('.js') ||
     url.endsWith('.ts') ||
     url.endsWith('.css') ||
     url.endsWith('.png') ||
-    url.endsWith('.svg');
+    url.endsWith('.svg')
+  );
 }
 
-function isDataRequest(url) {
-  return DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
-    url.includes('githubusercontent') ||
+function isMarketDataRequest(url) {
+  return (
+    MARKET_DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
+    (url.includes('githubusercontent') && url.endsWith('.json'))
+  );
+}
+
+function isDynamicDataRequest(url) {
+  return (
+    DYNAMIC_DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
     url.includes('wikipedia') ||
-    url.includes('news.finmap.org');
+    url.includes('news.finmap.org')
+  );
 }
 
 async function cacheFirst(request, cacheName) {
@@ -94,6 +111,22 @@ async function cacheFirst(request, cacheName) {
     const cache = await caches.open(cacheName);
     return cache.match(request);
   }
+}
+
+async function staleWhileRevalidate(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
+
+  const fetchPromise = fetch(request)
+    .then(networkResponse => {
+      if (networkResponse.status === 200) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    })
+    .catch(() => cachedResponse);
+
+  return cachedResponse || fetchPromise;
 }
 
 async function networkFirst(request, cacheName) {
