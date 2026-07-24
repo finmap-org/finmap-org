@@ -27,18 +27,9 @@ export function initializeUI(): void {
 }
 
 function setupEventListeners(): void {
-  const dataTypeSelect = document.getElementById('dataType') as HTMLSelectElement;
   const dateInput = document.getElementById('date') as HTMLInputElement;
   const searchInput = document.getElementById('search') as HTMLInputElement;
   const fileInput = document.getElementById('inputFile') as HTMLInputElement;
-
-  if (dataTypeSelect) {
-    dataTypeSelect.addEventListener('change', () => {
-      updateConfig({ dataType: dataTypeSelect.value as any });
-      saveConfigToURL();
-      renderChart();
-    });
-  }
 
   if (dateInput) {
     dateInput.addEventListener('change', async () => {
@@ -373,14 +364,12 @@ function updateUIState(): void {
 
   const exchangeSelect = document.getElementById('exchange') as HTMLSelectElement;
   const chartTypeSelect = document.getElementById('chartType') as HTMLSelectElement;
-  const dataTypeSelect = document.getElementById('dataType') as HTMLSelectElement;
   const dateInput = document.getElementById('date') as HTMLInputElement;
   const currencyToggle = document.querySelector('[data-action="currency-toggle"]') as HTMLElement;
   const langToggle = document.getElementById('langToggle') as HTMLElement;
 
   if (exchangeSelect) exchangeSelect.value = config.exchange;
   if (chartTypeSelect) chartTypeSelect.value = config.chartType;
-  if (dataTypeSelect) dataTypeSelect.value = config.dataType;
 
   if (dateInput && config.date) {
     const parts = config.date.split('/');
@@ -433,15 +422,12 @@ function updateFilterVisibility(): void {
 
   if (filterLabel) {
     filterLabel.style.display = 'inline-block';
-    const img = filterLabel.querySelector('img');
-    if (img) {
-      if (hasFilter) {
-        img.src = 'images/icons/erasefilter.png';
-        img.title = 'Remove filter';
-      } else {
-        img.src = 'images/icons/filter.png';
-        img.title = 'Apply filter';
-      }
+    if (hasFilter) {
+      filterLabel.textContent = 'My Portfolio (×)';
+      filterLabel.title = 'Click to remove portfolio filter';
+    } else {
+      filterLabel.textContent = 'My Portfolio';
+      filterLabel.title = 'Upload portfolio CSV';
     }
   }
 
