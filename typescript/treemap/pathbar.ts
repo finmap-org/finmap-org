@@ -45,26 +45,51 @@ export class PathbarComponent {
       .style('width', '100%')
       .style('height', '100%');
 
-    const sectionWidth = `${100 / path.length}%`;
+    const totalCount = path.length;
+    const arrowWidth = 12;
 
     path.forEach((item: any, index: number) => {
-      const isLast = index === path.length - 1;
+      const isFirst = index === 0;
+      const isLast = index === totalCount - 1;
       const sectorData = getNodeData(item.node);
       const sectorChange = sectorData?.priceChangePct || 0;
       const sectorColor = COLOR_SCALE(sectorChange);
 
+      let clipPath = 'none';
+      let padding = '0 10px';
+      let marginLeft = '0px';
+
+      if (totalCount > 1) {
+        if (isFirst) {
+          clipPath = `polygon(0 0, calc(100% - ${arrowWidth}px) 0, 100% 50%, calc(100% - ${arrowWidth}px) 100%, 0 100%)`;
+          padding = `0 ${arrowWidth + 6}px 0 10px`;
+          marginLeft = '0px';
+        } else if (isLast) {
+          clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%, ${arrowWidth}px 50%)`;
+          padding = `0 10px 0 ${arrowWidth + 8}px`;
+          marginLeft = `-${arrowWidth - 2}px`;
+        } else {
+          clipPath = `polygon(0 0, calc(100% - ${arrowWidth}px) 0, 100% 50%, calc(100% - ${arrowWidth}px) 100%, 0 100%, ${arrowWidth}px 50%)`;
+          padding = `0 ${arrowWidth + 6}px 0 ${arrowWidth + 8}px`;
+          marginLeft = `-${arrowWidth - 2}px`;
+        }
+      }
+
       const section = sectionsContainer
         .append('div')
-        .style('width', sectionWidth)
+        .style('width', `${100 / totalCount}%`)
         .style('height', '100%')
         .style('background-color', sectorColor)
         .style('display', 'flex')
         .style('align-items', 'center')
-        .style('justify-content', 'left')
+        .style('justify-content', 'center')
         .style('cursor', isLast ? 'default' : 'pointer')
-        .style('border-right', index < path.length - 1 ? '1px solid rgba(255,255,255,0.2)' : 'none')
         .style('transition', 'background-color 0.2s ease')
-        .style('position', 'relative');
+        .style('position', 'relative')
+        .style('clip-path', clipPath)
+        .style('margin-left', marginLeft)
+        .style('z-index', totalCount - index)
+        .style('padding', padding);
 
       section
         .append('span')
@@ -76,7 +101,6 @@ export class PathbarComponent {
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
         .style('white-space', 'nowrap')
-        .style('padding', '0 5px')
         .style('pointer-events', 'none')
         .text(sectorData?.nameEng || item.name);
 
