@@ -6,19 +6,23 @@ import globals from 'globals';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
-  // Basic recommended rules
-  js.configs.recommended,
-  
-  // Files to ignore from linting
+  // Files to ignore globally from linting
   {
     ignores: [
       'node_modules/**',
       'tests/**',
       'dist/**',
       'assets/**',
+      'js/**',
+      'tcg/**',
+      'service-worker.js',
       '*.min.js',
+      '*.config.js',
     ],
   },
+
+  // Basic recommended rules
+  js.configs.recommended,
   
   // TypeScript files configuration
   {
@@ -39,6 +43,8 @@ export default [
       globals: {
         ...globals.browser,
         Buffer: 'readonly',
+        d3: 'readonly',
+        Plotly: 'readonly',
       },
     },
     plugins: {
