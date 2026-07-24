@@ -524,16 +524,20 @@ function setupShareFeature(): void {
   }
 }
 
+let installPrompt: BeforeInstallPromptEvent | null = null;
+
+window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+window.addEventListener('appinstalled', handleAppInstalled);
+
 function setupInstallFeature(): void {
   const installLink = document.getElementById('install');
   if (installLink) {
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
     installLink.addEventListener('click', handleInstallClick);
+    if (installPrompt) {
+      installLink.removeAttribute('hidden');
+    }
   }
 }
-
-let installPrompt: any = null;
 
 function handleShareClick(): void {
   if (navigator.share) {
@@ -548,7 +552,7 @@ function handleShareClick(): void {
 
 function handleBeforeInstallPrompt(event: Event): void {
   event.preventDefault();
-  installPrompt = event;
+  installPrompt = event as BeforeInstallPromptEvent;
   const installLink = document.getElementById('install');
   if (installLink) {
     installLink.removeAttribute('hidden');
@@ -566,8 +570,9 @@ function handleAppInstalled(): void {
 async function handleInstallClick(): Promise<void> {
   if (!installPrompt) return;
 
-  const result = await installPrompt.prompt();
-  console.log(`Install prompt result: ${result.outcome}`);
+  await installPrompt.prompt();
+  const choiceResult = await installPrompt.userChoice;
+  console.log(`Install prompt result: ${choiceResult.outcome}`);
 
   installPrompt = null;
   const installLink = document.getElementById('install');

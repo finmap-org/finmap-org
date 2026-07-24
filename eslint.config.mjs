@@ -45,6 +45,7 @@ export default [
         Buffer: 'readonly',
         d3: 'readonly',
         Plotly: 'readonly',
+        BeforeInstallPromptEvent: 'readonly',
       },
     },
     plugins: {
