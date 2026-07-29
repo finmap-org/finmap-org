@@ -90,6 +90,12 @@ function setupEventListeners(): void {
             activePortfolioCsv = csvContent;
             updateFilterVisibility();
             renderChart();
+            const portfolioDialog = document.getElementById(
+              'portfolio-dialog',
+            ) as HTMLDialogElement | null;
+            if (portfolioDialog && portfolioDialog.open) {
+              portfolioDialog.close();
+            }
           }
         };
         reader.readAsText(file);
@@ -99,15 +105,33 @@ function setupEventListeners(): void {
   }
 
   const filterLabel = document.getElementById('inputFileLabel');
+  const portfolioDialog = document.getElementById('portfolio-dialog') as HTMLDialogElement | null;
+  const portfolioSelectBtn = document.getElementById('portfolio-select-btn');
+  const portfolioCloseBtn = document.getElementById('portfolio-close-btn');
+
   if (filterLabel) {
     filterLabel.addEventListener('click', event => {
+      event.preventDefault();
       const hasFilter = activePortfolioCsv !== null;
       if (hasFilter) {
-        event.preventDefault();
         activePortfolioCsv = null;
         updateFilterVisibility();
         renderChart();
+      } else if (portfolioDialog) {
+        portfolioDialog.showModal();
       }
+    });
+  }
+
+  if (portfolioSelectBtn && fileInput) {
+    portfolioSelectBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+  }
+
+  if (portfolioCloseBtn && portfolioDialog) {
+    portfolioCloseBtn.addEventListener('click', () => {
+      portfolioDialog.close();
     });
   }
 
