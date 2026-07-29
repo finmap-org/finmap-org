@@ -135,6 +135,14 @@ function setupEventListeners(): void {
     });
   }
 
+  if (portfolioDialog) {
+    portfolioDialog.addEventListener('click', event => {
+      if (event.target === portfolioDialog) {
+        portfolioDialog.close();
+      }
+    });
+  }
+
   document.addEventListener('click', async event => {
     const target = event.target as HTMLElement;
 
