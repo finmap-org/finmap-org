@@ -184,6 +184,28 @@
     </div>
   </dialog>
 
+  <dialog id="portfolio-dialog" class="app-dialog portfolio-dialog" aria-labelledby="portfolio-dialog-title" aria-describedby="portfolio-dialog-desc">
+    <div class="app-dialog-content portfolio-dialog-content">
+      <h2 id="portfolio-dialog-title">Upload Portfolio CSV / TXT</h2>
+      
+      <div class="portfolio-preview-container">
+        <img src="images/screenshots/portfolio_csv.png" alt="CSV Example showing Ticker and Amount columns" class="portfolio-screenshot" />
+      </div>
+
+      <div id="portfolio-dialog-desc" class="portfolio-instructions">
+        <p>Your file should contain two comma-separated columns: <strong>Ticker</strong> and <strong>Amount</strong> (number of shares or weight).</p>
+        <div class="portfolio-example">
+          <code>AAPL, 10<br />TSLA, 5.5<br />MSFT, 20</code>
+        </div>
+      </div>
+
+      <div class="app-dialog-actions portfolio-dialog-actions">
+        <button id="portfolio-select-btn" class="app-dialog-btn" type="button">Select CSV / TXT file</button>
+        <button id="portfolio-close-btn" class="app-dialog-btn app-dialog-btn-secondary" type="button">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
   <script type="module" src="js/main.js"></script>
 </body>
 
