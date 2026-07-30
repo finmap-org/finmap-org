@@ -13,6 +13,16 @@ export class HttpError extends Error {
   }
 }
 
+export function getFallbackUrl(url: string): string | null {
+  if (url.startsWith('https://raw.githubusercontent.com/finmap-org/')) {
+    return url.replace('https://raw.githubusercontent.com/finmap-org/', 'https://data.finmap.org/');
+  }
+  if (url.startsWith('https://raw.githubusercontent.com/')) {
+    return url.replace('https://raw.githubusercontent.com/', 'https://data.finmap.org/');
+  }
+  return null;
+}
+
 export class DataService {
   private static cache = new Map<string, CacheEntry<any>>();
 
@@ -41,6 +51,31 @@ export class DataService {
       if (error?.name === 'AbortError') {
         throw error;
       }
+
+      const fallbackUrl = getFallbackUrl(url);
+      if (fallbackUrl && fallbackUrl !== url) {
+        console.warn(`Primary fetch failed for ${url}, attempting fallback: ${fallbackUrl}`, error);
+        try {
+          const fallbackResponse = await fetch(fallbackUrl, signal ? { signal } : undefined);
+          if (!fallbackResponse.ok) {
+            throw new HttpError(
+              fallbackResponse.status,
+              `Fallback HTTP ${fallbackResponse.status}: ${fallbackResponse.statusText}`,
+            );
+          }
+          const data: T = await fallbackResponse.json();
+          if (ttlMs && ttlMs > 0) {
+            this.cache.set(url, { data, timestamp: Date.now() });
+          }
+          return data;
+        } catch (fallbackError: any) {
+          if (fallbackError?.name === 'AbortError') {
+            throw fallbackError;
+          }
+          throw error;
+        }
+      }
+
       throw error;
     }
   }
@@ -57,6 +92,27 @@ export class DataService {
       if (error?.name === 'AbortError') {
         throw error;
       }
+
+      const fallbackUrl = getFallbackUrl(url);
+      if (fallbackUrl && fallbackUrl !== url) {
+        console.warn(`Primary fetch failed for ${url}, attempting fallback: ${fallbackUrl}`, error);
+        try {
+          const fallbackResponse = await fetch(fallbackUrl, signal ? { signal } : undefined);
+          if (!fallbackResponse.ok) {
+            throw new HttpError(
+              fallbackResponse.status,
+              `Fallback HTTP ${fallbackResponse.status}: ${fallbackResponse.statusText}`,
+            );
+          }
+          return await fallbackResponse.text();
+        } catch (fallbackError: any) {
+          if (fallbackError?.name === 'AbortError') {
+            throw fallbackError;
+          }
+          throw error;
+        }
+      }
+
       throw error;
     }
   }
