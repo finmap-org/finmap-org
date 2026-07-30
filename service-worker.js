@@ -17,7 +17,10 @@ const STATIC_FILES = [
   '/js/plotly-3.7.0.min.js',
 ];
 
-const MARKET_DATA_URLS = ['https://raw.githubusercontent.com/finmap-org/'];
+const MARKET_DATA_URLS = [
+  'https://raw.githubusercontent.com/finmap-org/',
+  'https://data.finmap.org/',
+];
 
 const DYNAMIC_DATA_URLS = [
   'https://news.finmap.org/',
@@ -81,7 +84,8 @@ function isStaticAsset(url) {
 function isMarketDataRequest(url) {
   return (
     MARKET_DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
-    (url.includes('githubusercontent') && url.endsWith('.json'))
+    (url.includes('githubusercontent') && url.endsWith('.json')) ||
+    (url.includes('data.finmap.org') && url.endsWith('.json'))
   );
 }
 
