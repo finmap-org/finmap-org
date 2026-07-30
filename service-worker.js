@@ -84,8 +84,7 @@ function isStaticAsset(url) {
 function isMarketDataRequest(url) {
   return (
     MARKET_DATA_URLS.some(dataUrl => url.includes(dataUrl)) ||
-    (url.includes('githubusercontent') && url.endsWith('.json')) ||
-    (url.includes('data.finmap.org') && url.endsWith('.json'))
+    (url.includes('githubusercontent') && url.endsWith('.json'))
   );
 }
 
