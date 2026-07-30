@@ -793,6 +793,27 @@ function formatCardInfo(cardInfo, details = "verbose") {
   return html;
 }
 
+async function fetchWithFallback(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return response;
+  } catch (error) {
+    if (url.startsWith('https://raw.githubusercontent.com/finmap-org/')) {
+      const fallbackUrl = url.replace('https://raw.githubusercontent.com/finmap-org/', 'https://data.finmap.org/');
+      console.warn(`Primary fetch failed for ${url}, attempting fallback: ${fallbackUrl}`, error);
+      const fallbackResponse = await fetch(fallbackUrl);
+      if (!fallbackResponse.ok) {
+        throw new Error(`Fallback HTTP ${fallbackResponse.status}: ${fallbackResponse.statusText}`);
+      }
+      return fallbackResponse;
+    }
+    throw error;
+  }
+}
+
 async function renderTreemap() {
   const productLineList = document.getElementById('productLineList');
   const productLineName = productLineList.value;
@@ -800,7 +821,7 @@ async function renderTreemap() {
   let rawDatafile;
   try {
     const url = `https://raw.githubusercontent.com/finmap-org/data-tcg/refs/heads/main/marketdata/raw/${productLineName}.json`;
-    const response = await fetch(url);
+    const response = await fetchWithFallback(url);
     rawDatafile = await response.json();
   } catch (error) {
     console.error("Error loading raw datafile:", error);
@@ -810,7 +831,7 @@ async function renderTreemap() {
 
   try {
     const url = `https://raw.githubusercontent.com/finmap-org/data-tcg/refs/heads/main/marketdata/${productLineName}.json`;
-    const response = await fetch(url);
+    const response = await fetchWithFallback(url);
     const data = await response.json();
 
     const transformedData = treemap.transformData(data);
