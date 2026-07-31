@@ -3,6 +3,7 @@
   src: url("fonts/PokemonHollow.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -10,29 +11,27 @@
   src: url("fonts/PokemonSolid.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-* {
   margin: 0;
   padding: 0;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 body {
