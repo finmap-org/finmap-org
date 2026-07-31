@@ -1,0 +1,21 @@
+select,
+input {
+  height: 30px;
+  margin: 0 2px;
+  border-radius: 4px;
+}
+
+#search {
+  width: 70px;
+  margin: 0 2px;
+}
+
+input[type='date'] {
+  max-width: 120px;
+  margin: 0 2px;
+}
+
+input[type='date']::-webkit-clear-button {
+  display: none;
+  margin: 0 2px;
+}
