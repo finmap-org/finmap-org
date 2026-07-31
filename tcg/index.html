@@ -190,8 +190,7 @@
         -moz-appearance: none;
       }
       
-      select:focus,
-      .nav-dropdown:focus {
+      select:focus {
         outline: none;
         background-color: #333;
       }
@@ -201,49 +200,11 @@
         color: white;
         font-family: Arial;
       }
-      
-      .nav-dropdown {
-        position: absolute;
-        top: 0px;
-        width: auto;
-        height: 40px;
-        background: #333;
-        color: white;
-        border: none;
-        border-radius: 0;
-        padding: 0 5px;
-        font-family: PokemonSolid;
-        font-size: 14px;
-        letter-spacing: 0.1em;
-        cursor: pointer;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      
-      .nav-dropdown::-webkit-scrollbar {
-        display: none;
-      }
-
-      #productLineList {
-        left: 10px;
-        text-align-last: center;
-        width: 110px;
-      }
-
-      #setNameList {
-        left: 130px;
-      }
     </style>
   </head>
 
   <body>
     <div id="container">
-      <select id="productLineList" class="nav-dropdown">
-        <option value="pokemon">Pokemon</option>
-        <option value="pokemon-japan">Pokemon JP</option>
-        <option value="yugioh">Yu-Gi-Oh!</option>
-        <option value="one-piece-card-game">One Piece</option>
-      </select>
       <div id="tooltip"></div>
       <!-- <div id="loadingDiv"></div> -->
     </div>

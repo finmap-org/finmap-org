@@ -131,53 +131,7 @@ class Treemap {
     this.ctx.scale(dpr, dpr);
   }
 
-  setupPathbar() {
-    // Initialize navDropdown
-    this.navDropdown = document.createElement("select");
-    this.navDropdown.id = "setNameList";
-    this.navDropdown.className = "nav-dropdown";
-    this.container.appendChild(this.navDropdown);
-      
-    this.navDropdown.addEventListener("change", (event) => {
-      const selectedValue = event.target.value;
-      if (selectedValue === "root") {
-        if (this.rootNode) {
-          this.drillDown(this.rootNode);
-        }
-        return;
-      }
-      
-      const selectedNode = this.rootNode.children.find(node => 
-        node.data.name === selectedValue
-      );
-      if (selectedNode) {
-        this.drillDown(selectedNode);
-      }
-    });
-  }
-
-  initializeNavDropdown(rootNode) {
-    this.rootNode = rootNode;
-    this.navDropdown.innerHTML = "";
-    
-    // Add "All sets" option
-    const rootOption = document.createElement("option");
-    rootOption.text = "All sets";
-    rootOption.value = "root";
-    this.navDropdown.add(rootOption);
-
-    // Add children of root node as options
-    if (rootNode?.children) {
-      rootNode.children
-        .sort((a, b) => a.data.name.localeCompare(b.data.name))
-        .forEach(child => {
-          const option = document.createElement("option");
-          option.value = child.data.name;
-          option.text = child.data.name;
-          this.navDropdown.add(option);
-        });
-    }
-  }
+  setupPathbar() {}
 
   bindEvents() {
     // Click handling for drill-down
@@ -190,15 +144,6 @@ class Treemap {
 
       if (node) {
         this.drillDown(node);
-        
-        // Update dropdown selection to match current node
-        if (node.parent.data.name === this.rootNode.data.name) {
-          // If clicked node is direct child of root, select it in dropdown
-          this.navDropdown.value = node.data.name;
-        } else if (node.data.name === this.rootNode.data.name) {
-          // If clicked node is root, select "All sets"
-          this.navDropdown.value = "root";
-        }
       }
       this.hideTooltip();
     });
@@ -815,8 +760,8 @@ async function fetchWithFallback(url) {
 }
 
 async function renderTreemap() {
-  const productLineList = document.getElementById('productLineList');
-  const productLineName = productLineList.value;
+  const urlParams = new URLSearchParams(window.location.search);
+  const productLineName = urlParams.get("productLine") || "pokemon";
 
   let rawDatafile;
   try {
@@ -841,7 +786,6 @@ async function renderTreemap() {
       .sort((a, b) => b.value - a.value);
 
     treemap.path = [root];
-    treemap.initializeNavDropdown(root);
     treemap.renderFromNode(root);
   } catch (error) {
     console.error("Error loading or processing data:", error);
@@ -850,10 +794,5 @@ async function renderTreemap() {
     // treemap.container.removeChild(loadingDiv);
   }
 }
-
-// Add product list change handler
-document.getElementById('productLineList').addEventListener('change', () => {
-  renderTreemap();
-});
 
 renderTreemap();
