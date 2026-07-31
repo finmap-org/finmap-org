@@ -18,54 +18,17 @@
   visibility: hidden;
 }
 
+.tooltip > [class^="tooltip-"] {
+  margin-bottom: 2px;
+}
+
 .tooltip-ticker {
   margin-bottom: 4px;
   font-weight: bold;
 }
 
-.tooltip-name {
-  margin-bottom: 2px;
-}
-
-.tooltip-price {
-  margin-bottom: 2px;
-}
-
-.tooltip-marketcap {
-  margin-bottom: 2px;
-}
-
-.tooltip-value {
-  margin-bottom: 2px;
-}
-
-.tooltip-volume {
-  margin-bottom: 2px;
-}
-
-.tooltip-trades {
-  margin-bottom: 2px;
-}
-
-.tooltip-exchange {
-  margin-bottom: 2px;
-}
-
-.tooltip-industry {
-  margin-bottom: 2px;
-}
-
 .tooltip-separator {
-  margin-bottom: 2px;
   height: 0;
-}
-
-.tooltip-sector-percent {
-  margin-bottom: 2px;
-}
-
-.tooltip-total-percent {
-  margin-bottom: 2px;
 }
 
 .tooltip-items {
