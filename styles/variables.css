@@ -1,7 +1,14 @@
 :root {
   --color-primary: rgb(65, 69, 84);
   --color-text-primary: #ffffff;
+  --color-text-muted: #9ca3af;
   --color-border: #6b7280;
+  --color-border-light: #e5e7eb;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #1d4ed8;
+  --color-tab-active: #afc6f7;
 
   --header-height: 45px;
   --footer-height: 25px;
@@ -11,5 +18,5 @@
   --z-header: 50;
   --z-menu: 99;
   --z-hamburger: 100;
-  --z-overlay: 1000;
+  --z-overlay: 10000;
 }
