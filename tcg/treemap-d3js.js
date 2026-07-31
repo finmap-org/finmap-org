@@ -272,7 +272,7 @@ class Treemap {
       section.style.display = "flex";
       section.style.alignItems = "center";
       section.style.justifyContent = "center";
-      section.style.cursor = isLast ? "default" : "pointer";
+      section.style.cursor = "pointer";
       section.style.transition = "background-color 0.2s ease";
       section.style.position = "relative";
       section.style.clipPath = clipPath;
@@ -315,33 +315,25 @@ class Treemap {
       chevronBtn.style.flexShrink = "0";
       chevronBtn.style.marginLeft = "4px";
       chevronBtn.style.fontSize = "10px";
-      chevronBtn.style.cursor = "pointer";
       chevronBtn.style.opacity = "0.85";
-      chevronBtn.style.pointerEvents = "auto";
+      chevronBtn.style.pointerEvents = "none";
       chevronBtn.style.display = "inline-flex";
       chevronBtn.style.alignItems = "center";
       chevronBtn.style.userSelect = "none";
       chevronBtn.textContent = "▼";
 
-      chevronBtn.addEventListener("mouseenter", () => {
-        chevronBtn.style.opacity = "1";
-      });
-      chevronBtn.addEventListener("mouseleave", () => {
-        chevronBtn.style.opacity = "0.85";
-      });
+      labelContainer.appendChild(chevronBtn);
+      section.appendChild(labelContainer);
 
-      if (isFirst) {
-        chevronBtn.addEventListener("click", (event) => {
-          event.stopPropagation();
-          this.showPathbarDropdown(chevronBtn, Treemap.PRODUCT_LINES, (opt) => {
+      section.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (isFirst) {
+          this.showPathbarDropdown(labelContainer, Treemap.PRODUCT_LINES, (opt) => {
             const newUrl = new URL(window.location.href);
             newUrl.searchParams.set("productLine", opt.value);
             window.location.href = newUrl.toString();
           });
-        });
-      } else {
-        chevronBtn.addEventListener("click", (event) => {
-          event.stopPropagation();
+        } else {
           const parentNode = node.parent || this.rootNode;
           if (parentNode?.children) {
             const setOptions = parentNode.children
@@ -352,30 +344,21 @@ class Treemap {
               }))
               .sort((a, b) => a.label.localeCompare(b.label));
 
-            this.showPathbarDropdown(chevronBtn, setOptions, (opt) => {
+            this.showPathbarDropdown(labelContainer, setOptions, (opt) => {
               if (opt.node) {
                 this.drillDown(opt.node);
               }
             });
           }
-        });
-      }
+        }
+      });
 
-      labelContainer.appendChild(chevronBtn);
-      section.appendChild(labelContainer);
-
-      if (!isLast) {
-        section.addEventListener("click", () => {
-          this.drillDown(node);
-        });
-
-        section.addEventListener("mouseenter", () => {
-          section.style.backgroundColor = "#555b6e";
-        });
-        section.addEventListener("mouseleave", () => {
-          section.style.backgroundColor = isFirst ? "#414554" : "#2C3E50";
-        });
-      }
+      section.addEventListener("mouseenter", () => {
+        section.style.backgroundColor = "#555b6e";
+      });
+      section.addEventListener("mouseleave", () => {
+        section.style.backgroundColor = isFirst ? "#414554" : "#2C3E50";
+      });
 
       section.addEventListener("mousemove", (event) => {
         this.showTooltip(node, event);
