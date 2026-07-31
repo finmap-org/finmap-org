@@ -190,8 +190,9 @@ class Treemap {
       const item = document.createElement("div");
       item.style.padding = "8px 14px";
       item.style.color = "#ffffff";
-      item.style.fontSize = "13px";
       item.style.fontFamily = "Arial, sans-serif";
+      item.style.fontSize = "13px";
+      item.style.fontWeight = "bold";
       item.style.cursor = "pointer";
       item.style.transition = "background-color 0.15s ease";
       item.style.display = "flex";
@@ -289,9 +290,16 @@ class Treemap {
 
       const labelSpan = document.createElement("span");
       labelSpan.style.color = "#ffffff";
-      labelSpan.style.fontFamily = "Arial, sans-serif";
-      labelSpan.style.fontSize = "13px";
-      labelSpan.style.fontWeight = "bold";
+      if (isFirst && (this.productLineName === "pokemon" || this.productLineName === "pokemon-japan")) {
+        labelSpan.style.fontFamily = "PokemonSolid, PokemonHollow, Arial, sans-serif";
+        labelSpan.style.letterSpacing = "1px";
+        labelSpan.style.fontSize = "13px";
+        labelSpan.style.fontWeight = "normal";
+      } else {
+        labelSpan.style.fontFamily = "Arial, sans-serif";
+        labelSpan.style.fontSize = "13px";
+        labelSpan.style.fontWeight = "bold";
+      }
       labelSpan.style.textAlign = "center";
       labelSpan.style.overflow = "hidden";
       labelSpan.style.textOverflow = "ellipsis";
