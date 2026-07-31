@@ -6,6 +6,13 @@ class Treemap {
     PATHBAR_HEIGHT: 40,
   };
 
+  static PRODUCT_LINES = [
+    { label: "Pokemon", value: "pokemon" },
+    { label: "Pokemon JP", value: "pokemon-japan" },
+    { label: "Yu-Gi-Oh!", value: "yugioh" },
+    { label: "One Piece", value: "one-piece-card-game" },
+  ];
+
   constructor(containerId, productLineName, rawData) {
     this.productLineName = productLineName;
     this.rawData = rawData;
@@ -159,6 +166,68 @@ class Treemap {
     return path;
   }
 
+  showPathbarDropdown(triggerElement, options, onSelect) {
+    const existing = document.getElementById("pathbarDropdownMenu");
+    if (existing) existing.remove();
+
+    const rect = triggerElement.getBoundingClientRect();
+    const menu = document.createElement("div");
+    menu.id = "pathbarDropdownMenu";
+    menu.style.position = "fixed";
+    menu.style.top = `${rect.bottom + 4}px`;
+    menu.style.left = `${Math.max(10, rect.left)}px`;
+    menu.style.backgroundColor = "#242834";
+    menu.style.border = "1px solid #3d4356";
+    menu.style.borderRadius = "6px";
+    menu.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.5)";
+    menu.style.zIndex = "10001";
+    menu.style.maxHeight = "300px";
+    menu.style.overflowY = "auto";
+    menu.style.minWidth = "160px";
+    menu.style.padding = "4px 0";
+
+    options.forEach((opt) => {
+      const item = document.createElement("div");
+      item.style.padding = "8px 14px";
+      item.style.color = "#ffffff";
+      item.style.fontSize = "13px";
+      item.style.fontFamily = "Arial, sans-serif";
+      item.style.cursor = "pointer";
+      item.style.transition = "background-color 0.15s ease";
+      item.style.display = "flex";
+      item.style.alignItems = "center";
+      item.style.justifyContent = "space-between";
+      item.style.userSelect = "none";
+      item.textContent = opt.label;
+
+      item.addEventListener("mouseenter", () => {
+        item.style.backgroundColor = "#3a4155";
+      });
+      item.addEventListener("mouseleave", () => {
+        item.style.backgroundColor = "transparent";
+      });
+      item.addEventListener("click", (event) => {
+        event.stopPropagation();
+        menu.remove();
+        onSelect(opt);
+      });
+
+      menu.appendChild(item);
+    });
+
+    document.body.appendChild(menu);
+
+    const closeHandler = (event) => {
+      if (!menu.contains(event.target) && event.target !== triggerElement) {
+        menu.remove();
+        document.removeEventListener("click", closeHandler);
+      }
+    };
+    setTimeout(() => {
+      document.addEventListener("click", closeHandler);
+    }, 0);
+  }
+
   updatePathbar() {
     if (!this.pathbarContainer) return;
 
@@ -211,6 +280,13 @@ class Treemap {
       section.style.zIndex = (totalCount - index).toString();
       section.style.padding = padding;
 
+      const labelContainer = document.createElement("div");
+      labelContainer.style.display = "flex";
+      labelContainer.style.alignItems = "center";
+      labelContainer.style.justifyContent = "center";
+      labelContainer.style.maxWidth = "100%";
+      labelContainer.style.overflow = "hidden";
+
       const labelSpan = document.createElement("span");
       labelSpan.style.color = "#ffffff";
       labelSpan.style.fontFamily = "Arial, sans-serif";
@@ -222,7 +298,59 @@ class Treemap {
       labelSpan.style.whiteSpace = "nowrap";
       labelSpan.style.pointerEvents = "none";
       labelSpan.textContent = node.data?.name || "All sets";
-      section.appendChild(labelSpan);
+      labelContainer.appendChild(labelSpan);
+
+      const chevronBtn = document.createElement("span");
+      chevronBtn.style.marginLeft = "6px";
+      chevronBtn.style.fontSize = "10px";
+      chevronBtn.style.cursor = "pointer";
+      chevronBtn.style.opacity = "0.85";
+      chevronBtn.style.pointerEvents = "auto";
+      chevronBtn.style.display = "inline-flex";
+      chevronBtn.style.alignItems = "center";
+      chevronBtn.style.userSelect = "none";
+      chevronBtn.textContent = "▼";
+
+      chevronBtn.addEventListener("mouseenter", () => {
+        chevronBtn.style.opacity = "1";
+      });
+      chevronBtn.addEventListener("mouseleave", () => {
+        chevronBtn.style.opacity = "0.85";
+      });
+
+      if (isFirst) {
+        chevronBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          this.showPathbarDropdown(chevronBtn, Treemap.PRODUCT_LINES, (opt) => {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set("productLine", opt.value);
+            window.location.href = newUrl.toString();
+          });
+        });
+      } else {
+        chevronBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const parentNode = node.parent || this.rootNode;
+          if (parentNode?.children) {
+            const setOptions = parentNode.children
+              .map((child) => ({
+                label: child.data?.name || "Unknown Set",
+                value: child.data?.name,
+                node: child,
+              }))
+              .sort((a, b) => a.label.localeCompare(b.label));
+
+            this.showPathbarDropdown(chevronBtn, setOptions, (opt) => {
+              if (opt.node) {
+                this.drillDown(opt.node);
+              }
+            });
+          }
+        });
+      }
+
+      labelContainer.appendChild(chevronBtn);
+      section.appendChild(labelContainer);
 
       if (!isLast) {
         section.addEventListener("click", () => {
