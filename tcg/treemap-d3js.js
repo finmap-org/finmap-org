@@ -297,11 +297,23 @@ class Treemap {
       labelSpan.style.textOverflow = "ellipsis";
       labelSpan.style.whiteSpace = "nowrap";
       labelSpan.style.pointerEvents = "none";
-      labelSpan.textContent = node.data?.name || "All sets";
+      labelSpan.style.minWidth = "0";
+      labelSpan.style.flex = "0 1 auto";
+
+      if (isFirst) {
+        const shortName = Treemap.PRODUCT_LINES.find(
+          (p) => p.value === this.productLineName
+        )?.label;
+        labelSpan.textContent = shortName || node.data?.name || "All sets";
+      } else {
+        labelSpan.textContent = node.data?.name || "All sets";
+      }
+
       labelContainer.appendChild(labelSpan);
 
       const chevronBtn = document.createElement("span");
-      chevronBtn.style.marginLeft = "6px";
+      chevronBtn.style.flexShrink = "0";
+      chevronBtn.style.marginLeft = "4px";
       chevronBtn.style.fontSize = "10px";
       chevronBtn.style.cursor = "pointer";
       chevronBtn.style.opacity = "0.85";
