@@ -1,5 +1,6 @@
 .menuItem {
   display: inline-block;
+  vertical-align: middle;
   margin: 0.4rem 0.5rem;
   font-size: 1.2rem;
   color: var(--color-text-primary);
@@ -12,10 +13,6 @@
 
 .menu > li {
   padding-bottom: 0.45rem;
-}
-
-.menuItem {
-  vertical-align: middle;
 }
 
 .hamburger {
@@ -57,8 +54,7 @@
   backdrop-filter: blur(10px);
   color: var(--color-text-primary);
   list-style: none;
-  padding: 2.3rem 2rem 1rem;
-  padding-top: 0.4rem;
+  padding: 0.4rem 2rem 1rem;
   text-align: right;
   visibility: hidden;
   pointer-events: none;

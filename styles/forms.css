@@ -1,10 +1,8 @@
 select,
 input {
-  min-height: 30px;
   height: 30px;
   margin: 0 2px;
   border-radius: 4px;
-  box-sizing: border-box;
 }
 
 #search {
@@ -17,8 +15,7 @@ input[type='date'] {
   margin: 0 2px;
 }
 
-input[type='date']::-webkit-clear-button,
-input[type='date']::-ms-clear {
+input[type='date']::-webkit-clear-button {
   display: none;
   margin: 0 2px;
 }
