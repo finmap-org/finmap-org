@@ -3,7 +3,7 @@ class Treemap {
   static CONFIG = {
     MINIMAL_MARKET_PRICE: 5.0,
     HEADER_HEIGHT: 24,
-    PATHBAR_HEIGHT: 26,
+    PATHBAR_HEIGHT: 40,
   };
 
   constructor(containerId, productLineName, rawData) {
@@ -138,7 +138,7 @@ class Treemap {
     this.pathbarContainer.style.position = "absolute";
     this.pathbarContainer.style.top = "0";
     this.pathbarContainer.style.left = "0";
-    this.pathbarContainer.style.width = "100%";
+    this.pathbarContainer.style.width = "calc(100% - 48px)";
     this.pathbarContainer.style.height = `${Treemap.CONFIG.PATHBAR_HEIGHT}px`;
     this.pathbarContainer.style.backgroundColor = "#1e222d";
     this.pathbarContainer.style.display = "flex";
@@ -215,7 +215,7 @@ class Treemap {
       labelSpan.style.color = "#ffffff";
       labelSpan.style.fontFamily = "Arial, sans-serif";
       labelSpan.style.fontSize = "13px";
-      labelSpan.style.fontWeight = isLast ? "normal" : "bold";
+      labelSpan.style.fontWeight = "bold";
       labelSpan.style.textAlign = "center";
       labelSpan.style.overflow = "hidden";
       labelSpan.style.textOverflow = "ellipsis";
