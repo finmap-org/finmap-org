@@ -283,7 +283,13 @@ export class TreemapChart implements ChartRenderer {
     const treemap = d3
       .treemap()
       .size([width, height])
-      .paddingTop((d: any) => (d.children ? LAYOUT.SECTOR_HEADER_HEIGHT : LAYOUT.PADDING.TOP))
+      .paddingTop((d: any) =>
+        !d.parent
+          ? LAYOUT.PADDING.TOP
+          : d.children
+            ? LAYOUT.SECTOR_HEADER_HEIGHT
+            : LAYOUT.PADDING.TOP,
+      )
       .paddingInner(LAYOUT.PADDING.INNER)
       .paddingOuter(LAYOUT.PADDING.OUTER)
       .paddingRight(LAYOUT.PADDING.RIGHT)
@@ -305,7 +311,7 @@ export class TreemapChart implements ChartRenderer {
 
   private adjustNodesForSectorHeaders(): void {
     this.nodes.forEach((node: any) => {
-      if (node.children && node.children.length > 0) {
+      if (node.parent && node.children && node.children.length > 0) {
         const sectorTop = node.y0;
         const sectorHeight = node.y1 - node.y0;
         const availableHeight = sectorHeight - LAYOUT.SECTOR_HEADER_HEIGHT;
