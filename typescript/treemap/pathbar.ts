@@ -66,18 +66,18 @@ export class PathbarComponent {
           marginLeft = '0px';
         } else if (isLast) {
           clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%, ${arrowWidth}px 50%)`;
-          padding = `0 10px 0 ${arrowWidth + 8}px`;
-          marginLeft = `-${arrowWidth - 2}px`;
+          padding = `0 10px 0 ${arrowWidth + 6}px`;
+          marginLeft = '0px';
         } else {
           clipPath = `polygon(0 0, calc(100% - ${arrowWidth}px) 0, 100% 50%, calc(100% - ${arrowWidth}px) 100%, 0 100%, ${arrowWidth}px 50%)`;
-          padding = `0 ${arrowWidth + 6}px 0 ${arrowWidth + 8}px`;
-          marginLeft = `-${arrowWidth - 2}px`;
+          padding = `0 ${arrowWidth + 6}px 0 ${arrowWidth + 6}px`;
+          marginLeft = '0px';
         }
       }
 
       const section = sectionsContainer
         .append('div')
-        .style('width', `${100 / totalCount}%`)
+        .style('flex', '1 1 0%')
         .style('height', '100%')
         .style('background-color', sectorColor)
         .style('display', 'flex')
