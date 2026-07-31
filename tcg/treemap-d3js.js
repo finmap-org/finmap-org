@@ -3,7 +3,7 @@ class Treemap {
   static CONFIG = {
     MINIMAL_MARKET_PRICE: 5.0,
     HEADER_HEIGHT: 24,
-    PATHBAR_HEIGHT: 40
+    PATHBAR_HEIGHT: 26,
   };
 
   constructor(containerId, productLineName, rawData) {
@@ -17,9 +17,9 @@ class Treemap {
     this.initializeProperties();
     
     // Set up UI components
+    this.setupPathbar();
     this.setupCanvas();
     this.bindEvents();
-    this.setupPathbar();
     
     // Initialize dimensions and observers
     this.updateDimensions();
@@ -100,6 +100,7 @@ class Treemap {
     this.nodes = this.cache.hierarchy.descendants();
 
     this.render();
+    this.updatePathbar();
   }
 
   destroy() {
@@ -131,7 +132,121 @@ class Treemap {
     this.ctx.scale(dpr, dpr);
   }
 
-  setupPathbar() {}
+  setupPathbar() {
+    this.pathbarContainer = document.createElement("div");
+    this.pathbarContainer.className = "pathbar-container";
+    this.pathbarContainer.style.position = "absolute";
+    this.pathbarContainer.style.top = "0";
+    this.pathbarContainer.style.left = "0";
+    this.pathbarContainer.style.width = "100%";
+    this.pathbarContainer.style.height = `${Treemap.CONFIG.PATHBAR_HEIGHT}px`;
+    this.pathbarContainer.style.backgroundColor = "#1e222d";
+    this.pathbarContainer.style.display = "flex";
+    this.pathbarContainer.style.alignItems = "center";
+    this.pathbarContainer.style.borderBottom = "1px solid #2a2e39";
+    this.pathbarContainer.style.overflow = "hidden";
+    this.pathbarContainer.style.boxSizing = "border-box";
+    this.container.appendChild(this.pathbarContainer);
+  }
+
+  getPathToRoot(node) {
+    const path = [];
+    let current = node;
+    while (current) {
+      path.unshift(current);
+      current = current.parent || null;
+    }
+    return path;
+  }
+
+  updatePathbar() {
+    if (!this.pathbarContainer) return;
+
+    this.pathbarContainer.innerHTML = "";
+
+    const path = this.getPathToRoot(this.currentRoot || this.rootNode);
+    if (!path.length) return;
+
+    const sectionsContainer = document.createElement("div");
+    sectionsContainer.style.display = "flex";
+    sectionsContainer.style.width = "100%";
+    sectionsContainer.style.height = "100%";
+    this.pathbarContainer.appendChild(sectionsContainer);
+
+    const totalCount = path.length;
+    const arrowWidth = 12;
+
+    path.forEach((node, index) => {
+      const isFirst = index === 0;
+      const isLast = index === totalCount - 1;
+
+      let clipPath = "none";
+      let padding = "0 10px";
+
+      if (totalCount > 1) {
+        if (isFirst) {
+          clipPath = `polygon(0 0, calc(100% - ${arrowWidth}px) 0, 100% 50%, calc(100% - ${arrowWidth}px) 100%, 0 100%)`;
+          padding = `0 ${arrowWidth + 6}px 0 10px`;
+        } else if (isLast) {
+          clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%, ${arrowWidth}px 50%)`;
+          padding = `0 10px 0 ${arrowWidth + 6}px`;
+        } else {
+          clipPath = `polygon(0 0, calc(100% - ${arrowWidth}px) 0, 100% 50%, calc(100% - ${arrowWidth}px) 100%, 0 100%, ${arrowWidth}px 50%)`;
+          padding = `0 ${arrowWidth + 6}px 0 ${arrowWidth + 6}px`;
+        }
+      }
+
+      const section = document.createElement("div");
+      section.style.flex = "1 1 0%";
+      section.style.height = "100%";
+      section.style.backgroundColor = isFirst ? "#414554" : "#2C3E50";
+      section.style.display = "flex";
+      section.style.alignItems = "center";
+      section.style.justifyContent = "center";
+      section.style.cursor = isLast ? "default" : "pointer";
+      section.style.transition = "background-color 0.2s ease";
+      section.style.position = "relative";
+      section.style.clipPath = clipPath;
+      section.style.marginLeft = "0px";
+      section.style.zIndex = (totalCount - index).toString();
+      section.style.padding = padding;
+
+      const labelSpan = document.createElement("span");
+      labelSpan.style.color = "#ffffff";
+      labelSpan.style.fontFamily = "Arial, sans-serif";
+      labelSpan.style.fontSize = "13px";
+      labelSpan.style.fontWeight = isLast ? "normal" : "bold";
+      labelSpan.style.textAlign = "center";
+      labelSpan.style.overflow = "hidden";
+      labelSpan.style.textOverflow = "ellipsis";
+      labelSpan.style.whiteSpace = "nowrap";
+      labelSpan.style.pointerEvents = "none";
+      labelSpan.textContent = node.data?.name || "All sets";
+      section.appendChild(labelSpan);
+
+      if (!isLast) {
+        section.addEventListener("click", () => {
+          this.drillDown(node);
+        });
+
+        section.addEventListener("mouseenter", () => {
+          section.style.backgroundColor = "#555b6e";
+        });
+        section.addEventListener("mouseleave", () => {
+          section.style.backgroundColor = isFirst ? "#414554" : "#2C3E50";
+        });
+      }
+
+      section.addEventListener("mousemove", (event) => {
+        this.showTooltip(node, event);
+      });
+      section.addEventListener("mouseleave", () => {
+        this.hideTooltip();
+      });
+
+      sectionsContainer.appendChild(section);
+    });
+  }
 
   bindEvents() {
     // Click handling for drill-down
@@ -257,6 +372,7 @@ class Treemap {
     treemap(this.cache.hierarchy);
     this.nodes = this.cache.hierarchy.descendants();
     this.render();
+    this.updatePathbar();
   }
 
   async render() {
