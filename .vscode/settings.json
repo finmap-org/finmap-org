@@ -1,0 +1,8 @@
+{
+  "telemetry.editStats.enabled": false,
+  "telemetry.feedback.enabled": false,
+  "telemetry.telemetryLevel": "off",
+  "editor.tabSize": 2,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "files.eol": "\n"
+}

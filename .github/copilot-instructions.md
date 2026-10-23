@@ -1,0 +1,9 @@
+ - Take the time to thoroughly study the existing codebase and project requirements before making any changes
+ - Provide critical, expert feedback based on your knowledge and experience
+ - Maintain clean, simple, and efficient code
+ - Avoid redundancy and overengineering
+ - Use native and built-in capabilities whenever possible, rather than writing custom code
+ - Follow modern best practices
+ - Don't add fallbacks for rewritten or legacy code
+ - Keep the codebase modern and maintainable
+ - Don't write tests, comments, and docs

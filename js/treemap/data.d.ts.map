@@ -1,0 +1,1 @@
+{"version":3,"file":"data.d.ts","sourceRoot":"","sources":["../../typescript/treemap/data.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAmC,aAAa,EAAE,MAAM,YAAY,CAAC;AAK7F,wBAAgB,cAAc,CAAC,IAAI,EAAE,UAAU,EAAE,GAAG,aAAa,CA4DhE;AAED,wBAAgB,mBAAmB,CAAC,IAAI,EAAE,UAAU,GAAG,MAAM,CAoB5D;AAID,wBAAsB,eAAe,CAAC,MAAM,CAAC,EAAE,WAAW,GAAG,OAAO,CAAC,UAAU,EAAE,CAAC,CA8BjF"}
