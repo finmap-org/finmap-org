@@ -55,7 +55,7 @@ export const EXCHANGE_INFO = {
     nativeCurrency: 'GBP' as const,
     dataRepo: 'data-uk',
     minDate: '2025-02-07',
-    maxDate: null,
+    maxDate: '2026-10-22',
     marketOpenHour: 5,
     updateFrequencyMinutes: 60,
     region: 'uk',
