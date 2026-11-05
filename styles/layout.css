@@ -1,0 +1,113 @@
+#logo {
+  margin-left: auto;
+}
+
+header {
+  height: var(--header-height);
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+  display: flex;
+  margin: 0 40px 0 0;
+  z-index: var(--z-header);
+}
+
+header::-webkit-scrollbar {
+  display: none;
+}
+
+header img,
+header label,
+header a,
+header select,
+header input {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+header form,
+header .autocomplete,
+header #search {
+  flex: 0 0 auto;
+}
+
+header input[type='file'] {
+  display: none !important;
+}
+
+#inputFileLabel,
+#linkEraseFilter,
+#inputFileLabel:visited,
+#linkEraseFilter:visited {
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 0 6px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+#aiLink,
+#aiLink:visited {
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 0 10px 0 12px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+#inputFileLabel:hover,
+#linkEraseFilter:hover,
+#aiLink:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-primary);
+  height: var(--footer-height);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 15px;
+  line-height: 1.95;
+  gap: 12px;
+  margin: 0 10px;
+  z-index: var(--z-header);
+}
+
+footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#currencyToggle {
+  margin-left: auto;
+}
+
+#chart {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-primary);
+  position: absolute;
+  top: var(--header-height);
+  bottom: var(--footer-height);
+}

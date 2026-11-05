@@ -1,0 +1,44 @@
+import type { MarketData, ChartRenderer } from './types.js';
+export declare class TreemapChart implements ChartRenderer {
+    private container;
+    private canvas;
+    private context;
+    private currentData;
+    private hierarchy;
+    private currentRoot;
+    private rootNode;
+    private nodes;
+    private resizeObserver;
+    private isTransitioning;
+    private pathToRestore;
+    private drillTimeout;
+    private readonly pathbar;
+    private readonly tooltip;
+    private readonly overlay;
+    private readonly renderer;
+    private readonly interactions;
+    constructor();
+    render(data: MarketData[], container: HTMLElement): void;
+    private cleanup;
+    private restorePreviousPath;
+    private getPathIdentifiers;
+    private findNodeByIdentifiers;
+    private setupContainer;
+    private setupCanvas;
+    private updateCanvasSize;
+    private buildHierarchyData;
+    private setupComponents;
+    private setupResizeObserver;
+    private renderTreemap;
+    private createSubHierarchy;
+    private applyTreemapLayout;
+    private updatePathbar;
+    private adjustNodesForSectorHeaders;
+    private drillTo;
+    private getPathToRoot;
+    private getNodeAtPosition;
+    searchAndHighlight(query: string): void;
+    destroy(): void;
+}
+export { TreemapChart as D3TreemapRenderer };
+//# sourceMappingURL=index.d.ts.map
